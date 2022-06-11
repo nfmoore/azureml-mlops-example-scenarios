@@ -1,0 +1,56 @@
+type: pipeline
+display_name: employee_attrition_pipeline
+experiment_name: employee_attrition_pipeline
+description: Pipeline to train and register an MLFlow model to determine the liklihood of employee attrition
+
+inputs:
+  raw_data:
+    type: uri_folder
+    path: azureml://datastores/workspaceblobstore/paths/data/hr-analytics-attrition-performance/
+
+outputs:
+  model_artifacts:
+    mode: rw_mount
+
+settings:
+  default_datastore: azureml:workspaceblobstore
+  default_compute: azureml:cpu-cluster
+  continue_on_step_failure: false
+
+jobs:
+  sweep_step:
+    type: sweep
+    compute: azureml:cpu-cluster
+    trial: file:../components/train.yml
+    inputs:
+      data: ${{parent.inputs.raw_data}}
+      random_state: 42
+    outputs:
+      model_output: ${{parent.outputs.model_artifacts}}
+    sampling_algorithm: random
+    search_space:
+      n_estimators:
+        type: uniform
+        min_value: 100
+        max_value: 1000
+      max_depth:
+        type: uniform
+        min_value: 1
+        max_value: 25
+      criterion:
+        type: choice
+        values: ["gini", "entropy"]
+    objective:
+      primary_metric: validation_f1_score
+      goal: maximize
+    limits:
+      max_total_trials: 2
+      max_concurrent_trials: 5
+      timeout: 720
+
+  register_step:
+    type: command
+    component: file:../components/register.yml
+    inputs:
+      model_name: employee_attrition_model
+      model_output: ${{parent.jobs.sweep_step.outputs.model_output}}

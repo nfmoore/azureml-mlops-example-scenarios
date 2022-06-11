@@ -1,0 +1,17 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+name: register_component
+display_name: register_component
+version: 1
+inputs:
+  model_name:
+    type: string
+    default: employee_attrition_model
+  model_output:
+    type: mlflow_model
+code: ..
+environment: azureml:hr-analytics@latest
+command: >-
+  python src/register.py 
+  --model_name ${{inputs.model_name}} 
+  --model_output ${{inputs.model_output}}
