@@ -1,7 +1,6 @@
 # imports
 import argparse
 import glob
-import os
 from distutils.dir_util import copy_tree
 
 import mlflow
@@ -33,12 +32,15 @@ def main(args):
     }
 
     # read in data
-    dataset_path = args.data
-    files = glob.glob(f'{dataset_path}/*.csv')
-    df = pd.concat([pd.read_csv(f) for f in files])
+    df = pd.read_csv(f"{args.prepared_data_dir}/data.csv")
 
-    # process data
-    X_train, X_test, y_train, y_test = process_data(df, args.random_state)
+    # split into train and test datasets
+    X_train, X_test, y_train, y_test = train_test_split(
+        df[CATEGORICAL_FEATURES + NUMERIC_FEATURES],
+        df[TARGET_FEATURE],
+        test_size=0.20,
+        random_state=args.random_state
+    )
 
     # build models
     classification_model = train_classification_model(
@@ -50,8 +52,6 @@ def main(args):
     mlflow.sklearn.save_model(classification_model, "model")
     save_detector(drift_detector, "drift")
     save_detector(outlier_detector, "outlier")
-
-    print(os.listdir())
 
     # log models
     mlflow.log_artifact("drift")
@@ -128,37 +128,12 @@ def make_classifer_pipeline(params):
     return classifer_pipeline
 
 
-def process_data(df, random_state):
-
-    # convert values of `Over18` feature for consistancy
-    df["Over18"] = df["Over18"].replace(
-        {"Y": "Yes", "N": "No"})
-
-    # change data types of features
-    df[TARGET_FEATURE] = df[TARGET_FEATURE].replace(
-        {"Yes": 1, "No": 0}).astype("str")
-    df[CATEGORICAL_FEATURES] = df[CATEGORICAL_FEATURES].astype(
-        "str")
-    df[NUMERIC_FEATURES] = df[NUMERIC_FEATURES].astype("float")
-
-    # split into train and test datasets
-    X_train, X_test, y_train, y_test = train_test_split(
-        df[CATEGORICAL_FEATURES + NUMERIC_FEATURES],
-        df[TARGET_FEATURE],
-        test_size=0.20,
-        random_state=random_state
-    )
-
-    # return split data
-    return X_train, X_test, y_train, y_test
-
-
 def parse_args():
     # setup arg parser
     parser = argparse.ArgumentParser("train")
 
     # add arguments
-    parser.add_argument("--data", type=str)
+    parser.add_argument("--prepared_data_dir", type=str)
     parser.add_argument("--model_output", type=str)
     parser.add_argument(
         "--random_state", type=lambda x: int(float(x)), default=24)

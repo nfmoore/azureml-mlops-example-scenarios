@@ -9,9 +9,12 @@ inputs:
     default: employee_attrition_model
   model_output:
     type: mlflow_model
+  prepared_data_dir:
+    type: uri_folder
 code: ..
 environment: azureml:hr-analytics@latest
 command: >-
   python src/register.py 
   --model_name ${{inputs.model_name}} 
   --model_output ${{inputs.model_output}}
+  --prepared_data_dir ${{inputs.prepared_data_dir}}

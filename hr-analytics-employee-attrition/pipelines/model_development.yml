@@ -1,15 +1,18 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 display_name: employee_attrition_pipeline
 experiment_name: employee_attrition_pipeline
-description: Pipeline to train and register an MLFlow model to determine the liklihood of employee attrition
+description: Pipeline to train and register an MLFlow model to determine the likelihood of employee attrition
 
 inputs:
-  raw_data:
+  raw_data_dir:
     type: uri_folder
     path: azureml://datastores/workspaceblobstore/paths/data/hr-analytics-attrition-performance/
 
 outputs:
   model_artifacts:
+    mode: rw_mount
+  processed_data_dir:
     mode: rw_mount
 
 settings:
@@ -18,12 +21,19 @@ settings:
   continue_on_step_failure: false
 
 jobs:
+  prepare_step:
+    type: command
+    component: file:../components/prepare.yml
+    inputs:
+      raw_data_dir: ${{parent.inputs.raw_data_dir}}
+    outputs:
+      prepared_data_dir: ${{parent.outputs.processed_data_dir}}
+
   sweep_step:
     type: sweep
-    compute: azureml:cpu-cluster
     trial: file:../components/train.yml
     inputs:
-      data: ${{parent.inputs.raw_data}}
+      prepared_data_dir: ${{parent.jobs.prepare_step.outputs.prepared_data_dir}}
       random_state: 42
     outputs:
       model_output: ${{parent.outputs.model_artifacts}}
@@ -54,3 +64,4 @@ jobs:
     inputs:
       model_name: employee_attrition_model
       model_output: ${{parent.jobs.sweep_step.outputs.model_output}}
+      prepared_data_dir: ${{parent.jobs.prepare_step.outputs.prepared_data_dir}}

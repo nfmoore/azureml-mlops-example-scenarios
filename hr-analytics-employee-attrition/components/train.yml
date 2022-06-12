@@ -4,7 +4,7 @@ name: train_component
 display_name: train_component
 version: 1
 inputs:
-  data:
+  prepared_data_dir:
     type: uri_folder
   random_state:
     type: integer
@@ -25,7 +25,7 @@ code: ..
 environment: azureml:hr-analytics@latest
 command: >-
   python src/train.py 
-    --data ${{inputs.data}}
+    --prepared_data_dir ${{inputs.prepared_data_dir}}
     --random_state ${{inputs.random_state}}
     --model_output ${{outputs.model_output}}
     --n_estimators ${{inputs.n_estimators}}
