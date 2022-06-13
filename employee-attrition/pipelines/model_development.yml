@@ -1,8 +1,8 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-display_name: employee_attrition_pipeline
-experiment_name: employee_attrition_pipeline
-description: Pipeline to train and register an MLFlow model to determine the likelihood of employee attrition
+display_name: employee-attrition-pipeline
+experiment_name: employee-attrition-pipeline
+description: Pipeline to build an MLFlow model to determine the likelihood of employee attrition.
 
 inputs:
   raw_data_dir:
@@ -55,13 +55,14 @@ jobs:
       goal: maximize
     limits:
       max_total_trials: 2
-      max_concurrent_trials: 5
+      max_concurrent_trials: 2
       timeout: 720
 
   register_step:
     type: command
     component: file:../components/register.yml
     inputs:
-      model_name: employee_attrition_model
+      model_name: employee-attrition
       model_output: ${{parent.jobs.sweep_step.outputs.model_output}}
       prepared_data_dir: ${{parent.jobs.prepare_step.outputs.prepared_data_dir}}
+      conda_env: environments/conda/score.yml

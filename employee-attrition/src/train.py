@@ -1,13 +1,9 @@
 # imports
 import argparse
-import glob
 from distutils.dir_util import copy_tree
 
 import mlflow
 import pandas as pd
-from alibi_detect.cd import TabularDrift
-from alibi_detect.od.isolationforest import IForest
-from alibi_detect.utils.saving import save_detector
 from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.impute import SimpleImputer
@@ -15,8 +11,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder
 
-from constants import (CATEGORICAL_FEATURES, CATEGORIES_PER_FEATURE,
-                       NUMERIC_FEATURES, TARGET_FEATURE)
+from constants import CATEGORICAL_FEATURES, NUMERIC_FEATURES, TARGET
 
 
 def main(args):
@@ -37,7 +32,7 @@ def main(args):
     # split into train and test datasets
     X_train, X_test, y_train, y_test = train_test_split(
         df[CATEGORICAL_FEATURES + NUMERIC_FEATURES],
-        df[TARGET_FEATURE],
+        df[TARGET],
         test_size=0.20,
         random_state=args.random_state
     )
@@ -45,23 +40,13 @@ def main(args):
     # build models
     classification_model = train_classification_model(
         params, X_train, X_test, y_train, y_test)
-    drift_detector = create_drift_detection_model(X_train)
-    outlier_detector = create_outlier_detection_model(X_train)
 
     # save models
     mlflow.sklearn.save_model(classification_model, "model")
-    save_detector(drift_detector, "drift")
-    save_detector(outlier_detector, "outlier")
-
-    # log models
-    mlflow.log_artifact("drift")
-    mlflow.log_artifact("outlier")
 
     # copy model artifact to directory
     to_directory = args.model_output
     copy_tree("model", f"{to_directory}/model")
-    copy_tree("drift", f"{to_directory}/drift")
-    copy_tree("outlier", f"{to_directory}/outlier")
 
 
 def train_classification_model(params, X_train, X_test, y_train, y_test):
@@ -75,28 +60,6 @@ def train_classification_model(params, X_train, X_test, y_train, y_test):
     mlflow.log_metrics(metrics)
 
     return estimator
-
-
-def create_drift_detection_model(df):
-    # data used as reference distribution
-    x_ref = df[CATEGORICAL_FEATURES + NUMERIC_FEATURES].values
-
-    # create model
-    drift_detector = TabularDrift(
-        x_ref, categories_per_feature=CATEGORIES_PER_FEATURE)
-
-    return drift_detector
-
-
-def create_outlier_detection_model(df, threshold=5):
-    # data used as reference distribution
-    x_ref = df[NUMERIC_FEATURES].values
-
-    # create model
-    outlier_detector = IForest(threshold=threshold)
-    outlier_detector.fit(x_ref)
-
-    return outlier_detector
 
 
 def make_classifer_pipeline(params):

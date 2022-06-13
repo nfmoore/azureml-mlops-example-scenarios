@@ -1,12 +1,11 @@
 # imports
 import argparse
 import glob
-from distutils.dir_util import copy_tree
 
 import mlflow
 import pandas as pd
 
-from constants import CATEGORICAL_FEATURES, NUMERIC_FEATURES, TARGET_FEATURE
+from constants import CATEGORICAL_FEATURES, NUMERIC_FEATURES, TARGET
 
 
 def main(args):
@@ -26,7 +25,7 @@ def process_data(df):
         {"Y": "Yes", "N": "No"})
 
     # change data types of features
-    df[TARGET_FEATURE] = df[TARGET_FEATURE].replace(
+    df[TARGET] = df[TARGET].replace(
         {"Yes": 1, "No": 0}).astype("str")
     df[CATEGORICAL_FEATURES] = df[CATEGORICAL_FEATURES].astype(
         "str")

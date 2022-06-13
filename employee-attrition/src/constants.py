@@ -1,5 +1,5 @@
 # define target column
-TARGET_FEATURE = ["Attrition"]
+TARGET = ["Attrition"]
 
 # define categorical feature columns
 CATEGORICAL_FEATURES = [
@@ -43,14 +43,4 @@ NUMERIC_FEATURES = [
     "YearsWithCurrManager",
 ]
 
-# define categories per categorical feature
-CATEGORIES_PER_FEATURE = {
-    0: None,
-    1: None,
-    2: None,
-    3: None,
-    4: None,
-    5: None,
-    6: None,
-    7: None,
-}
+FEATURES = CATEGORICAL_FEATURES + NUMERIC_FEATURES

@@ -1,20 +1,24 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 type: command
 name: register_component
-display_name: register_component
+display_name: Register Model
 version: 1
 inputs:
   model_name:
     type: string
-    default: employee_attrition_model
+    default: employee-attrition
   model_output:
     type: mlflow_model
   prepared_data_dir:
     type: uri_folder
+  conda_env:
+    type: string
+    default: environments/conda/score.yml
 code: ..
-environment: azureml:hr-analytics@latest
+environment: azureml:employee-attrition-train@latest
 command: >-
   python src/register.py 
   --model_name ${{inputs.model_name}} 
   --model_output ${{inputs.model_output}}
   --prepared_data_dir ${{inputs.prepared_data_dir}}
+  --conda_env ${{inputs.conda_env}}

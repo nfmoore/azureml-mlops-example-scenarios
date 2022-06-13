@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 type: command
 name: train_component
-display_name: train_component
+display_name: Train Model
 version: 1
 inputs:
   prepared_data_dir:
@@ -22,7 +22,7 @@ outputs:
   model_output:
     type: mlflow_model
 code: ..
-environment: azureml:hr-analytics@latest
+environment: azureml:employee-attrition-train@latest
 command: >-
   python src/train.py 
     --prepared_data_dir ${{inputs.prepared_data_dir}}
