@@ -7,7 +7,7 @@ description: Pipeline to build an MLFlow model to determine the likelihood of em
 inputs:
   raw_data_dir:
     type: uri_folder
-    path: azureml://datastores/workspaceblobstore/paths/data/hr-analytics-attrition-performance/
+    path: azureml://datastores/workspaceblobstore/paths/data/employee-attrition/raw
 
 outputs:
   model_artifacts:
