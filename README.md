@@ -16,8 +16,8 @@ The example scenarios will focus on classical machine learning problems. The `IB
 
 | Example Scenario | Inference Scenario | Description |
 | ---------------- | ------------------ | ----------- |
-| Real-time Endpoint | Online |  Consume a registered model as a real-time endpoint within Azure Machine Learning for low-latency scenarios. |
-| Batch Endpoint | Batch | Consume a registered model as a batch endpoint within Azure Machine Learning for high-throughput scenarios that can be executed within a single Azure Machine Learning workspace. |
+| [Real-time Endpoint](./.github/docs/real-time-endpoint.md) | Online |  Consume a registered model as a real-time endpoint within Azure Machine Learning for low-latency scenarios. |
+| [Batch Endpoint](./.github/docs/batch-endpoint.md) | Batch | Consume a registered model as a batch endpoint within Azure Machine Learning for high-throughput scenarios that can be executed within a single Azure Machine Learning workspace. |
 | Azure Data Factory / Synapse Pipeline | Batch | Consume a registered model as a batch endpoint within Azure Machine Learning for high-throughput scenarios orchestrated via Azure Data Factory (e.g. copy results to SQL DB). |
 | Azure Synapse Dedicated SQL Pool | Batch | Consume a registered model within a SQL Stored Procedure for high-throughput scenarios when loading data into an Azure Synapse Dedicated SQL Pool. |
 | Azure Stream Analytics | Streaming | Consume a registered model deployed as a real-time endpoint within an Azure Stream Analytics User Defined Function for processing high-volume data streams. |

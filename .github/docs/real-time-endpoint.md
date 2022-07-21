@@ -7,7 +7,11 @@ This approach is best suited for:
 - Low-latency and interactive workloads
 - Exposing machine learning models as a REST API to integrate with external applications
 
-## Design pattern
+## Workflow
+
+A high-level workflow for real-time model deployment using Azure Machine Learning Online Endpoints based on MLOps principles and practices is outlined below. This appraoch illistrates each of the main tasks that are executed  in Development, Staging, and Production environments orchastrated via GitHub Actions.
+
+![design](./images/real-time-endpoint.png)
 
 ## Implementation walkthrough
 

@@ -2,7 +2,15 @@
 
 ## Potential use cases
 
-## Design pattern
+This approach is best suited for:
+- High throughput scenarios
+- Enriching data residing in a data lake at a pre-defined frequency
+
+## Workflow
+
+A high-level workflow for batch model deployment using Azure Machine Learning Batch Endpoints based on MLOps principles and practices is outlined below. This appraoch illistrates each of the main tasks that are executed  in Development, Staging, and Production environments orchastrated via GitHub Actions.
+
+![design](./images/batch-endpoint.png)
 
 ## Implementation walkthrough
 
