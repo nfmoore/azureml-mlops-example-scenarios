@@ -49,6 +49,33 @@ az ml online-endpoint create -f employee-attrition/deploy/online/endpoint.yml
 az ml online-deployment create -f employee-attrition/deploy/online/deployment.yml
 ```
 
+```kql
+AmlOnlineEndpointConsoleLog
+| where TimeGenerated > ago (1d)
+| where Message has 'online/employee-attrition/1' and Message has 'InputData'
+| project TimeGenerated, ResponsePayload=split(Message, '|')
+| project TimeGenerated, InputData=parse_json(tostring(ResponsePayload[-1])).data
+| project TimeGenerated, InputData=parse_json(tostring(InputData))
+| mv-expand InputData
+| evaluate bag_unpack(InputData)
+```
+
+```kql
+traces
+| where message has 'employee-attrition' and message has 'OverallDriftMetrics'
+| project timestamp, data=parse_json(tostring(message)).data
+| evaluate bag_unpack(data)
+
+```
+
+```kql
+traces
+| where message has 'employee-attrition' and message has 'FeatureDriftMetrics'
+| project timestamp, data=parse_json(tostring(message)).data
+| mv-expand data
+| evaluate bag_unpack(data)
+```
+
 ## Related resources
 
 You might also find these references useful:

@@ -1,0 +1,13 @@
+name: employee-attrition-drift
+
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  - python=3.8.5
+  - pip=20.1.1
+  - pip:
+      - evidently==0.1.54.dev0
+      - opencensus-ext-azure~=1.1.5
+      - pandas~=1.1.5
