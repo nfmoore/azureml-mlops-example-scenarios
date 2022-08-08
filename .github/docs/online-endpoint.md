@@ -1,4 +1,4 @@
-# Managed Batch Endpoint Example Scenario
+# Managed Online Endpoint Example Scenario
 
 ## Solution Overview
 
@@ -21,7 +21,7 @@ The solution consists of:
 - **Experimentation workstation:** workstation where data scientists can access data, explore data and develop machine learning models.
 - **Artefact repository:** place to store machine learning models and experiment metrics.
 - **Training pipeline:** machine learning pipeline job used to build a model artifact for deployment.
-- **Model deployment:** managed batch endpoint used to host the model artifact for batch inferencing.
+- **Model deployment:** managed online endpoint used to host the model artifact for online inferencing.
 - **Monitoring:** central monitoring solution for application and model logs and metrics. Inference data and data drift metrics are stored here.
 - **Data drift pipeline:** pipeline job to calculate data drift metrics based on inference data and model training data.
 - **Data export:** solution to export inference data collected from the managed online endpoint. This can be used to retrain the model or determine data drift.

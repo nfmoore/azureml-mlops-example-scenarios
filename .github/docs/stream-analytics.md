@@ -47,7 +47,7 @@ Azure Machine Learning artifacts will follow the build and release process shown
 
 ![design](./images/cicd-online.png)
 
-Azure Stream Analytics will follow the build and release process shown in the below diagram. It's important that the associated Azure Machine Learning artifacts have been created first in each environment.
+Azure Stream Analytics will follow the build and release process shown in the below diagram. It's important that the associated Azure Machine Learning artifacts have to be created first in each environment.
 
 ![design](./images/cicd-streaming.png)
 

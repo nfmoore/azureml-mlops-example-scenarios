@@ -12,7 +12,7 @@ This approach is best suited for:
 
 ### Solution Design
 
-The below diagram shows a high-level design for implementing batch scoring workloads suitable for classical machine learning scenarios using Azure Machine Learning which is orchestrated via Azure Data Factory.
+The below diagram shows a high-level design for implementing batch scoring workloads suitable for classical machine learning scenarios using Azure Machine Learning which are orchestrated via Azure Data Factory.
 
 ![design](./images/design-adf.png)
 
@@ -29,6 +29,10 @@ The solution consists of the following components:
 - **Source control:** solution to track code.
 - **Automated workflows:** workflows to automate the build and deployment of different components used in the solution.
 
+> **Note:**
+>
+> The same Azure Data Factory instance can be shared across many use-cases.
+
 The end-to-end workflow operation consists of:
 
 1. Creating a machine learning model as an output from a pipeline job designed to develop a model artifact for the relevant use case.
@@ -40,10 +44,10 @@ The end-to-end workflow operation consists of:
 
 > **Note:**
 >
-> A metadata-driven approach should be adopted for scaling pipelines for orchestration.
+> A metadata-driven approach should be adopted for scaling pipelines used for orchestration.
 > In this approach Azure Data Factory pipelines will capture logic for generic workflows (e.g. calling a managed batch endpoint and writing data to Azure SQL DB).
 >
-> When executing each pipeline, metadata will be extracted from a database which will govern the exactly managed batch endpoint and sink used by the pipeline.
+> When executing each pipeline, metadata will be extracted from a database which will govern the exact managed batch endpoint and sink which will be used by the pipeline.
 > These will be passed to the pipeline as parameters.
 
 ### Continuous Integration and Continuous Delivery Workflow
@@ -54,7 +58,7 @@ Azure Machine Learning artifacts will follow the build and release process shown
 
 ![design](./images/cicd-batch.png)
 
-Azure Data Factory pipelines will follow the build and release process shown in the below diagram. It's important that the associated Azure Machine Learning artifacts have been created first in each environment.
+Azure Data Factory pipelines will follow the build and release process shown in the below diagram. It's important that the associated Azure Machine Learning artifacts have to be created first in each environment.
 
 ![design](./images/cicd-adf.png)
 
@@ -66,13 +70,9 @@ The environments include:
 
 > **Note:**
 >
-> The same Azure Data Factory instance can be shared across many use-cases.
-
-> **Note:**
->
-> In a metadata-driven approach if a separate use-case adopts logic captured in an existing Azure Data Factory pipeline re-deploying the Azure Data Factory is not necessary.
-> In this approach, a new record can be added to the control table in the database which stores metadata for the pipeline.
-> For this, an updated DACPAC or run scripts using SQLCMD can be used within the CI/CD pipeline.
+> In a metadata-driven approach re-deploying the Azure Data Factory pipelines is not necessary if a separate use-case adopts logic captured in an existing Azure Data Factory pipeline.
+> In this approach a new record can be added to the control table in the database which stores metadata for the pipeline.
+> For this an updated DACPAC or run scripts using SQLCMD can be used within the CI/CD pipeline.
 
 ## Related resources
 
