@@ -53,7 +53,7 @@ The environments include:
 
 ### Prerequisites
 
-Before implementing this example scenario you will need:
+Before implementing this example scenario the following are needed:
 
 - Azure subscription (contributor or owner)
 - GitHub account
@@ -61,21 +61,21 @@ Before implementing this example scenario you will need:
 
 ### Initial Setup
 
-Ensure you have created an Azure Machine Learning workspace with associated resources, forked this repository into a new Github repository, set the following required environment variables, and configure the Azure CLI defaults.
+Ensure an Azure Machine Learning workspace with associated resources is created, forked this repository into a new Github repository, set the following required environment variables, and configure the Azure CLI defaults. To configure the Azure CLI defaults execute:
 
 ```bash
-GROUP=<your-resource-group>
-WORKSPACE=<your-aml-workspace>
-LOCATION=<your-aml-workspace-location>
+GROUP=<resource-group>
+WORKSPACE=<aml-workspace>
+LOCATION=<aml-workspace-location>
 
 az configure --defaults group=$GROUP workspace=$WORKSPACE location=$LOCATION
 ```
 
-Upload the `raw` and `inference` data sets in the `core/data` directory to the default blob datastore `workspaceblobstore` used by Azure Machine Learning. Ensure these files are uploaded to `data/employee-attrition/raw` and `data/employee-attrition/inference` directories respectively.
+Upload the `core/data/raw/data.csv` and `core/data/inference/data.csv` data sets to the default blob datastore `workspaceblobstore` used by Azure Machine Learning. Ensure these files are uploaded to `data/employee-attrition/raw` and `data/employee-attrition/inference` directories respectively.
 
 ### Model Training Pipeline
 
-Create an Azure Machine Learning environment called `employee-attrition-train` for the model training pipeline. An Azure Machine Learning environment specifies the runtime, Python packages, environment variables, and software settings around your machine learning scripts.
+Create an Azure Machine Learning environment called `employee-attrition-train` for the model training pipeline. An Azure Machine Learning environment specifies the runtime, Python packages, environment variables, and software settings.
 
 To register the environment for the model training pipeline in the Azure Machine Learning workspace execute:
 
@@ -83,7 +83,7 @@ To register the environment for the model training pipeline in the Azure Machine
 az ml environment create -f core/environments/train.yml
 ```
 
-The model training pipeline is defined in `core/pipelines/model_development.yml`. It orchestrates the model development process by executing data preprocessing, model training with hyperparameter tuning, and model registration logic encapsulated in different scripts in the `core/src` directory. This pipeline can be used to train an initial model and subsequent model version (i.e. retraining).
+The model training pipeline is defined in `core/pipelines/model_development.yml`. It orchestrates the model development process by executing data preprocessing, model training with hyperparameter tuning, and model registration logic encapsulated in different scripts. These are found in the `core/src` directory. This pipeline can be used to train an initial model and subsequent model version (i.e. retraining).
 
 To create the machine learning model artifact a pipeline job must be triggered by executing:
 
@@ -103,7 +103,7 @@ To deploy the managed batch endpoint an endpoint must first be created. An endpo
 az ml online-endpoint create -f core/deploy/batch/endpoint.yml
 ```
 
-Next, deployment must be created for the endpoint. A deployment is a set of computing resources hosting the model that does the actual scoring. A deployment can be created by executing:
+Next, a deployment must be created for the endpoint. A deployment is a set of computing resources hosting the model that does the actual scoring. A deployment can be created by executing:
 
 ```bash
 az ml online-deployment create -f core/deploy/online/deployment.yml
@@ -118,7 +118,7 @@ DATA_SET_LOCAL_PATH=data/employee-attrition/inference/data.csv
 az ml batch-endpoint invoke --name $ENDPOINT_NAME --input $DATA_SET_LOCAL_PATH
 ```
 
-You can learn more about managed batch endpoints [here](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-use-batch-endpoint).
+The following resource available [here](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-use-batch-endpoint) provides more information about managed batch endpoints.
 
 ### Data Drift Pipeline
 
@@ -126,14 +126,14 @@ Data drift is one of the top reasons model accuracy degrades over time. For mach
 
 Causes of data drift include:
 
-- Upstream process changes, such as a sensor being replaced that changes the units of measurement from inches to centimeters.
+- Upstream process changes, such as a sensor being replaced that changes the units of measurement from inches to centimetres.
 - Data quality issues, such as a broken sensor always reading 0.
 - Natural drift in the data, such as mean temperature changing with the seasons.
 - Change in the relation between features, or covariate shift.
 
 To calculate data drift Evidently AI, an open-source framework to evaluate, test, and monitor ML models, is used.
 
-In this example scenario, a data drift pipeline job will be triggered and metrics will be calculated and sent to Azure Monitor via Application Insights as custom metrics. The model data drift pipeline is defined in `core/pipelines/data_drift.yml`. This pipeline can be triggered on a re-occurring schedule whenever drift metrics need to be calculated.
+In this example scenario, a data drift pipeline job will be triggered and metrics will be calculated and sent to Azure Monitor via Application Insights as custom metrics. The model data drift pipeline is defined in `core/pipelines/data_drift.yml`. This pipeline can be triggered on a re-occurring schedule whenever data drift metrics need to be calculated.
 
 First, an environment called `employee-attrition-drift` for the data drift pipeline must be created by executing:
 
@@ -149,11 +149,11 @@ az ml job create -f core/pipelines/data_drift.yml
 
 ### Model Monitoring
 
-Azure Monitor is used as the central solution for collecting, analyzing, and acting on telemetry within this example scenario. logs can be analysed via Log Analytics, visualisations can be created from metrics, and alerts can be configured.
+Azure Monitor is used as the central solution for collecting, analysing, and acting on telemetry within this example scenario. With Azure Monitor, logs can be analysed via Log Analytics, visualisations can be created from metrics, and alerts can be configured.
 
-Using the log analytics workspace, logs collected from the data drift pipeline through Azure Application Insights can be analysed to monitor data drift to ensure models are performing well.
+The data drift pipeline generates logs for the overall level of data drift and the level of data drift for each feature between the baseline and target data sets. The baseline data set can be thought of the data set used to develop the machine learning model and the inference data set can be thought of the data set which has been consumed by the model to make predictions over a given time period.
 
-The data drift pipeline generated logs for the overall level of data drift between the baseline (ie. training) and target (ie. inference ) data sets and the level of drift for each feature in the baseline (ie. training) and target (ie. inference ) data sets.
+Using the Log Analytics workspace logs collected from the data drift pipeline through Azure Application Insights can be analysed to monitor data drift to ensure models are performing well.
 
 To view overall data drift metrics the following query can be executed in Log Analytics:
 
@@ -164,7 +164,7 @@ traces
 | evaluate bag_unpack(data)
 ```
 
-To view feature-level data drift metrics the following query can be executed in Log Analytics:
+To view feature level data drift metrics the following query can be executed in Log Analytics:
 
 ```kql
 traces
@@ -176,6 +176,6 @@ traces
 
 ## Related resources
 
-You might also find these references useful:
+The following references might be useful:
 
 - [Use batch endpoints for batch scoring](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-use-batch-endpoint)
