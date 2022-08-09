@@ -1,0 +1,20 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+name: data_drift_component
+display_name: Data Drift
+version: 1
+inputs:
+  model_name:
+    type: string
+    default: employee-attrition
+  reference_data_dir:
+    type: uri_folder
+  target_data_dir:
+    type: uri_folder
+code: ..
+environment: azureml:employee-attrition-drift@latest
+command: >-
+  python src/drift.py 
+  --model_name ${{inputs.model_name}} 
+  --reference_data_dir ${{inputs.reference_data_dir}}
+  --target_data_dir ${{inputs.target_data_dir}}

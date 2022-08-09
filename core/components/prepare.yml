@@ -1,0 +1,17 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+name: prepare_data_component
+display_name: Prepare Data
+version: 1
+inputs:
+  raw_data_dir:
+    type: uri_folder
+outputs:
+  prepared_data_dir:
+    type: uri_folder
+code: ..
+environment: azureml:employee-attrition-train@latest
+command: >-
+  python src/prepare.py 
+  --raw_data_dir ${{inputs.raw_data_dir}} 
+  --prepared_data_dir ${{outputs.prepared_data_dir}}

@@ -1,0 +1,28 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: employee-attrition-drift-pipeline
+experiment_name: employee-attrition-drift-pipeline
+description: Pipeline to measure data drift between a reference dataset and target dataset.
+
+inputs:
+  reference_data_dir:
+    type: uri_folder
+    path: azureml://datastores/workspaceblobstore/paths/data/employee-attrition/processed
+  target_data_dir:
+    type: uri_folder
+    path: azureml://datastores/workspaceblobstore/paths/data/employee-attrition/inference
+
+settings:
+  default_datastore: azureml:workspaceblobstore
+  default_compute: azureml:cpu-cluster
+  continue_on_step_failure: false
+
+jobs:
+  data_drift_step:
+    type: command
+    component: file:../components/drift.yml
+    environment_variables:
+      APPLICATIONINSIGHTS_CONNECTION_STRING: "InstrumentationKey=7738a7b1-000f-4fd8-a9a4-36ec42434ad7"
+    inputs:
+      reference_data_dir: ${{parent.inputs.reference_data_dir}}
+      target_data_dir: ${{parent.inputs.target_data_dir}}
