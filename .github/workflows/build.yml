@@ -1,13 +1,17 @@
-name: Build-Deploy
+name: Build Workflow
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - workflow
+  workflow_dispatch:
 
 env:
   PROJECT_NAME: employee-attrition
 
 jobs:
-  build:
-    name: Build
+  code-quality:
+    name: Code Quality
     runs-on: ubuntu-latest
 
     steps:
