@@ -1,0 +1,17 @@
+name: Release
+
+on:
+  repository_dispatch:
+    types:
+      - webhook
+
+jobs:
+  staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: Event Details
+        run: |
+          echo "Event triggered by $GITHUB_EVENT_NAME"
+          echo "Dispatch type ${{ github.event.action }}"
+          echo "Client payload ${{ github.event.client_payload.unit }}"
