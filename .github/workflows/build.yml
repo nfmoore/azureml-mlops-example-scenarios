@@ -44,14 +44,11 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Install Azure ML CLI v2
-        uses: azure/CLI@v1
-        with:
-          azcliversion: 2.30.0
-          inlineScript: |
-            set -e # fail on error
-            az version
-            az extension add -n ml -y
-            az extension update -n ml
+        run: |
+          set -e # fail on error
+          az version
+          az extension add -n ml -y
+          az extension update -n ml
 
       - name: Install yq
         run: sudo snap install yq
