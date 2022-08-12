@@ -18,3 +18,4 @@ command: >-
   --model_name ${{inputs.model_name}} 
   --reference_data_dir ${{inputs.reference_data_dir}}
   --target_data_dir ${{inputs.target_data_dir}}
+is_deterministic: false

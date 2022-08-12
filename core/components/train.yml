@@ -31,3 +31,4 @@ command: >-
     --n_estimators ${{inputs.n_estimators}}
     --max_depth ${{inputs.max_depth}}
     --criterion ${{inputs.criterion}}
+is_deterministic: false
