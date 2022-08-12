@@ -3,14 +3,11 @@ name: Create Environment
 description: Create Azure ML environment if one does not exist.
 
 inputs:
-  environment_name:
-    description: Name of the environment
-    required: true
-  environment_version:
-    description: Version of the environment
-    required: true
   environment_file:
     description: Local path to the YAML file containing the Azure ML environment specification
+    required: true
+  azure_credentials:
+    description: JSON object for the service principal used to authenticate with Azure
     required: true
 
 runs:
@@ -20,7 +17,7 @@ runs:
     - name: Azure login
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        creds: ${{ inputs.azure_credentials }}
 
     - uses: chrisdickinson/setup-yq@latest
 

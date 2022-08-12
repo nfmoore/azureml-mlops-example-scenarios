@@ -24,7 +24,7 @@ jobs:
         uses: github/codeql-action/analyze@v2
 
   train-model:
-    name: Train ML model
+    name: Train model
     runs-on: ubuntu-latest
 
     environment:
@@ -64,6 +64,7 @@ jobs:
         uses: "./.github/template/create-environment"
         with:
           environment_file: ./core/environments/train.yml
+          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Create scoring environment
         uses: "./.github/template/create-environment"
