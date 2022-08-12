@@ -26,7 +26,7 @@ jobs:
   create-model-staging:
     name: Create model in staging environment
     runs-on: ubuntu-latest
-    needs: build
+    needs: code-quality
 
     environment:
       name: Staging
