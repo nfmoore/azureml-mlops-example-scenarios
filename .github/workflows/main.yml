@@ -76,16 +76,13 @@ jobs:
           MODEL_VERSION=$(az ml model list --name $MODEL_NAME --query "[0].version" | bc -l)
           echo $MODEL_NAME $MODEL_VERSION
 
-          echo "model_name=$MODEL_NAME" >> GITHUB_ENV
-          echo "model_version=$MODEL_NAME" >> GITHUB_ENV
-
           az ml model update --name $MODEL_NAME --version $MODEL_VERSION \
             --set tags.github_run_id=${{ github.run_id }} tags.github_workflow_url="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
       - name: Download model
         run: |
           echo ${{ env.model_name }} ${{ env.model_version }}
-          az ml model download --name ${{ env.model_name }} --version ${{ env.model_version }}
+          az ml model download --name $MODEL_NAME --version $MODEL_VERSION
 
   deploy-staging:
     name: Deploy to Staging
