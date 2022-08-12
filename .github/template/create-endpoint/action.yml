@@ -9,6 +9,9 @@ inputs:
   endpoint_file:
     description: Local path to the YAML file containing the Azure ML endpoint specification
     required: true
+  azure_credentials:
+    description: JSON object for the service principal used to authenticate with Azure
+    required: true
 
 runs:
   using: "composite"
@@ -17,7 +20,7 @@ runs:
     - name: Azure login
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        creds: ${{ inputs.azure_credentials }}
 
     - uses: chrisdickinson/setup-yq@latest
 
