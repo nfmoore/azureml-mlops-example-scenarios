@@ -6,6 +6,9 @@ inputs:
   job_file:
     description: Local path to the YAML file containing the Azure ML job specification
     required: true
+  azure_credentials:
+    description: JSON object for the service principal used to authenticate with Azure
+    required: true
 
 runs:
   using: "composite"
@@ -14,40 +17,38 @@ runs:
     - name: Azure login
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        creds: ${{ inputs.azure_credentials }}
 
     - name: Run job
-      uses: azure/CLI@v1
-      with:
-        azcliversion: 2.30.0
-        inlineScript: |
-          RUN_ID=$(az ml job create --file ${{ inputs.job_file }} --query name -o tsv)
+      shell: bash
+      run: |
+        RUN_ID=$(az ml job create --file ${{ inputs.job_file }} --query name -o tsv)
 
-          if [[ -z "$RUN_ID" ]]
-          then
-            echo "Job creation failed"
-            exit 3
-          fi
+        if [[ -z "$RUN_ID" ]]
+        then
+          echo "Job creation failed"
+          exit 3
+        fi
 
-          az ml job show -n $RUN_ID --web
+        az ml job show -n $RUN_ID --web
+        JOB_STATUS=$(az ml job show -n $RUN_ID --query status -o tsv)
+
+        if [[ -z "$JOB_STATUS" ]]
+        then
+          echo "Status query failed"
+          exit 4
+        fi
+
+        JOB_RUNING=("NotStarted" "Queued" "Starting" "Preparing" "Running" "Finalizing" "CancelRequested")
+        while [[ ${JOB_RUNING[*]} =~ $JOB_STATUS ]]
+        do
+          sleep 15 
           JOB_STATUS=$(az ml job show -n $RUN_ID --query status -o tsv)
+          echo $JOB_STATUS
+        done
 
-          if [[ -z "$JOB_STATUS" ]]
-          then
-            echo "Status query failed"
-            exit 4
-          fi
-
-          JOB_RUNING=("NotStarted" "Queued" "Starting" "Preparing" "Running" "Finalizing" "CancelRequested")
-          while [[ ${JOB_RUNING[*]} =~ $JOB_STATUS ]]
-          do
-            sleep 15 
-            JOB_STATUS=$(az ml job show -n $RUN_ID --query status -o tsv)
-            echo $JOB_STATUS
-          done
-
-          if [[ "$JOB_STATUS" != "Completed" ]]  
-          then
-            echo "Training Job failed or canceled"
-            exit 3
-          fi
+        if [[ "$JOB_STATUS" != "Completed" ]]  
+        then
+          echo "Training Job failed or canceled"
+          exit 3
+        fi

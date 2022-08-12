@@ -70,13 +70,16 @@ jobs:
         uses: "./.github/template/create-environment"
         with:
           environment_file: ./core/environments/score.yml
+          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Create drift environment
         uses: "./.github/template/create-environment"
         with:
           environment_file: ./core/environments/drift.yml
+          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Run pipeline job to train model
         uses: "./.github/template/run-job"
         with:
           job_file: ./core/pipelines/train_model.yml
+          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}

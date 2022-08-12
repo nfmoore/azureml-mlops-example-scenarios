@@ -22,16 +22,14 @@ runs:
     - uses: chrisdickinson/setup-yq@latest
 
     - name: Create environment
-      uses: azure/CLI@v1
-      with:
-        azcliversion: 2.30.0
-        inlineScript: |
-          ENVIRONMENT_NAME=$(yq '.name' < ${{ inputs.environment_file }})
-          ENVIRONMENT_VERSION=$(yq '.version' < ${{ inputs.environment_file }})
-          ENVIRONMENT_EXISTS=$(az ml environment list --name $ENVIRONMENT_NAME --query "[?version=='$ENVIRONMENT_VERSION']" | wc -l)
+      shell: bash
+      run: |
+        ENVIRONMENT_NAME=$(yq '.name' < ${{ inputs.environment_file }})
+        ENVIRONMENT_VERSION=$(yq '.version' < ${{ inputs.environment_file }})
+        ENVIRONMENT_EXISTS=$(az ml environment list --name $ENVIRONMENT_NAME --query "[?version=='$ENVIRONMENT_VERSION']" | wc -l)
 
-          if [[ $ENVIRONMENT_EXISTS -ne 1 ]]; then
-              az ml environment create --file ${{ inputs.environment_file }}
-          else
-              echo "Environment exists"
-          fi
+        if [[ $ENVIRONMENT_EXISTS -ne 1 ]]; then
+            az ml environment create --file ${{ inputs.environment_file }}
+        else
+            echo "Environment exists"
+        fi
