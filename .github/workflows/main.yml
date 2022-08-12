@@ -114,7 +114,7 @@ jobs:
           endpoint_type: online
           endpoint_file: ./core/deploy/online/endpoint.yml
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          unique_id: ${{ secrets.AZURE_CREDENTIALS }}
+          unique_id: ${{ secrets.UNIQUE_ID }}
 
       - name: Create batch endpoint
         uses: "./.github/template/create-deployment"
@@ -122,7 +122,7 @@ jobs:
           endpoint_type: batch
           endpoint_file: ./core/deploy/batch/endpoint.yml
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          unique_id: ${{ secrets.AZURE_CREDENTIALS }}
+          unique_id: ${{ secrets.UNIQUE_ID }}
 
       - name: Create online deployment
         uses: "./.github/template/create-endpoint"
@@ -131,7 +131,7 @@ jobs:
           deployment_file: ./core/deploy/online/deployment.yml
           endpoint_file: ./core/deploy/online/endpoint.yml
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          unique_id: ${{ secrets.AZURE_CREDENTIALS }}
+          unique_id: ${{ secrets.UNIQUE_ID }}
 
       - name: Create batch deployment
         uses: "./.github/template/create-deployment"
@@ -140,4 +140,4 @@ jobs:
           deployment_file: ./core/deploy/batch/deployment.yml
           endpoint_file: ./core/deploy/batch/endpoint.yml
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          unique_id: ${{ secrets.AZURE_CREDENTIALS }}
+          unique_id: ${{ secrets.UNIQUE_ID }}
