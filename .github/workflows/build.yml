@@ -53,6 +53,9 @@ jobs:
             az extension add -n ml -y
             az extension update -n ml
 
+      - name: Install yq
+        run: snap install yq
+
       - name: Set default azureml resource group and workspace
         uses: azure/CLI@v1
         with:
