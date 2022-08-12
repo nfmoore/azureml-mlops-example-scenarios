@@ -12,6 +12,9 @@ inputs:
   azure_credentials:
     description: JSON object for the service principal used to authenticate with Azure
     required: true
+  unique_id:
+    description: Unique identifier to append to endpoint name
+    required: true
 
 runs:
   using: "composite"
@@ -25,7 +28,7 @@ runs:
     - name: Create endpoint
       shell: bash
       run: |
-        ENDPOINT_NAME=$(yq '.name' < ${{ inputs.endpoint_file }})
+        ENDPOINT_NAME=$(yq '.name' < ${{ inputs.endpoint_file }})-${{  inputs.unique_id }}
 
         ENDPOINT_EXISTS=$(az ml ${{ inputs.endpoint_type }}-endpoint list -o tsv --query "[?name=='$ENDPOINT_NAME'][name]" | wc -l)
         echo '$ENDPOINT_NAME' $ENDPOINT_EXISTS

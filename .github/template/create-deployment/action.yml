@@ -15,6 +15,9 @@ inputs:
   azure_credentials:
     description: JSON object for the service principal used to authenticate with Azure
     required: true
+  unique_id:
+    description: Unique identifier to append to endpoint name
+    required: true
 
 runs:
   using: "composite"
@@ -29,7 +32,7 @@ runs:
       uses: azure/CLI@v1
       shell: bash
       run: |
-        ENDPOINT_NAME=$(yq '.name' < ${{ inputs.endpoint_file }})
+        ENDPOINT_NAME=$(yq '.name' < ${{ inputs.endpoint_file }})-${{  inputs.unique_id }}
         DEPLOYMENT_NAME=$(yq '.name' < ${{ inputs.deployment_file }})
 
         az ml ${{ inputs.deployment_type }}-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file ${{ inputs.deployment_file }}
