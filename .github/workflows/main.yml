@@ -81,7 +81,6 @@ jobs:
 
       - name: Download model
         run: |
-          echo ${{ env.model_name }} ${{ env.model_version }}
           az ml model download --name $MODEL_NAME --version $MODEL_VERSION
 
   deploy-staging:
