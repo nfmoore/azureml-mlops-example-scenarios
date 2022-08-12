@@ -3,7 +3,7 @@ name: Release Workflow
 on:
   repository_dispatch:
     types:
-      - webhook
+      - release-workflow
 
 jobs:
   staging:
