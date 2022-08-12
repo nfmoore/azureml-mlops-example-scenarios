@@ -19,7 +19,7 @@ runs:
       with:
         creds: ${{ inputs.azure_credentials }}
 
-    - uses: chrisdickinson/setup-yq@latest
+    - uses: frenck/action-setup-yq@latest
 
     - name: Create environment
       shell: bash
