@@ -29,7 +29,6 @@ runs:
         creds: ${{ inputs.azure_credentials }}
 
     - name: Create deployment
-      uses: azure/CLI@v1
       shell: bash
       run: |
         ENDPOINT_NAME=$(yq '.name' < ${{ inputs.endpoint_file }})-${{ inputs.unique_id }}
