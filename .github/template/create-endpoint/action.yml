@@ -1,0 +1,38 @@
+name: Create endpoint
+
+description: Create Azure ML endpoint if one does not exist.
+
+inputs:
+  endpoint_type:
+    description: Type of the endpoint
+    required: true
+  endpoint_file:
+    description: Local path to the YAML file containing the Azure ML endpoint specification
+    required: true
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - uses: chrisdickinson/setup-yq@latest
+
+    - name: Create endpoint
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.30.0
+        inlineScript: |
+          ENDPOINT_NAME=$(yq '.name' < ${{ inputs.endpoint_file }})
+
+          ENDPOINT_EXISTS=$(az ml ${{ inputs.endpoint_type }}-endpoint list -o tsv --query "[?name=='$ENDPOINT_NAME'][name]" | wc -l)
+          echo '$ENDPOINT_NAME' $ENDPOINT_EXISTS
+
+          if [[ $ENDPOINT_EXISTS -ne 1 ]]; then
+              az ml ${{ inputs.endpoint_type }}-endpoint create --name $ENDPOINT_NAME --file ${{ inputs.endpoint_file }}
+          else
+              echo "Endpoint exists"
+          fi

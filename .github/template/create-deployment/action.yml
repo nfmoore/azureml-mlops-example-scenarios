@@ -1,0 +1,35 @@
+name: Create deployment
+
+description: Create Azure ML deployment if one does not exist.
+
+inputs:
+  deployment_type:
+    description: Type of the deployment
+    required: true
+  deployment_file:
+    description: Local path to the YAML file containing the Azure ML deployment specification
+    required: true
+  endpoint_file:
+    description: Local path to the YAML file containing the Azure ML endpoint specification
+    required: true
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - uses: chrisdickinson/setup-yq@latest
+
+    - name: Create deployment
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.30.0
+        inlineScript: |
+          ENDPOINT_NAME=$(yq '.name' < ${{ inputs.endpoint_file }})
+          DEPLOYMENT_NAME=$(yq '.name' < ${{ inputs.deployment_file }})
+
+          az ml ${{ inputs.deployment_type }}-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file ${{ inputs.deployment_file }}

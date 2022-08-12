@@ -6,12 +6,9 @@ on:
       - workflow
   workflow_dispatch:
 
-env:
-  PROJECT_NAME: employee-attrition
-
 jobs:
   code-quality:
-    name: Code Quality
+    name: Code scanning
     runs-on: ubuntu-latest
 
     steps:
@@ -23,5 +20,62 @@ jobs:
         with:
           languages: python
 
-      - name: Perform CodeQL Analysis
+      - name: Perform CodeQL analysis
         uses: github/codeql-action/analyze@v2
+
+  train-model:
+    name: Train ML model
+    runs-on: ubuntu-latest
+
+    environment:
+      name: Staging
+
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Install Azure ML CLI v2
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.30.0
+          inlineScript: |
+            set -e # fail on error
+            az version
+            az extension add -n ml -y
+            az extension update -n ml
+
+      - name: Set default azureml resource group and workspace
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.30.0
+          inlineScript: |
+            az configure --defaults group=${{ secrets.WORKSPACE_RESOURCE_GROUP }} workspace=${{ secrets.WORKSPACE_NAME }}
+
+      - name: Create training environment
+        uses: "./.github/template/create-environment"
+        with:
+          environment_file: ./core/environments/train.yml
+
+      - name: Create scoring environment
+        uses: "./.github/template/create-environment"
+        with:
+          environment_file: ./core/environments/score.yml
+
+      - name: Create drift environment
+        uses: "./.github/template/create-environment"
+        with:
+          environment_file: ./core/environments/drift.yml
+
+      - name: Run pipeline job to train model
+        uses: "./.github/template/run-job"
+        with:
+          job_file: ./core/pipelines/train_model.yml

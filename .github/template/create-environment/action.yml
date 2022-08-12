@@ -1,0 +1,40 @@
+name: Create Environment
+
+description: Create Azure ML environment if one does not exist.
+
+inputs:
+  environment_name:
+    description: Name of the environment
+    required: true
+  environment_version:
+    description: Version of the environment
+    required: true
+  environment_file:
+    description: Local path to the YAML file containing the Azure ML environment specification
+    required: true
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - uses: chrisdickinson/setup-yq@latest
+
+    - name: Create environment
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.30.0
+        inlineScript: |
+          ENVIRONMENT_NAME=$(yq '.name' < ${{ inputs.environment_file }})
+          ENVIRONMENT_VERSION=$(yq '.version' < ${{ inputs.environment_file }})
+          ENVIRONMENT_EXISTS=$(az ml environment list --name $ENVIRONMENT_NAME --query "[?version=='$ENVIRONMENT_VERSION']" | wc -l)
+
+          if [[ $ENVIRONMENT_EXISTS -ne 1 ]]; then
+              az ml environment create --file ${{ inputs.environment_file }}
+          else
+              echo "Environment exists"
+          fi
