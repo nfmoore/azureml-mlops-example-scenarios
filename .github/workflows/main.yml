@@ -8,7 +8,7 @@ on:
 
 jobs:
   code-quality:
-    name: Code scanning
+    name: Code Scanning
     runs-on: ubuntu-latest
 
     steps:
