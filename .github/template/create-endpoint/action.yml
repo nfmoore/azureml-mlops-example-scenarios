@@ -28,10 +28,11 @@ runs:
     - name: Create endpoint
       shell: bash
       run: |
-        ENDPOINT_NAME=$(yq '.name' < ${{ inputs.endpoint_file }})-${{  inputs.unique_id }}
+        ENDPOINT_NAME=$(yq '.name' < ${{ inputs.endpoint_file }})-${{ inputs.unique_id }}
+        echo $ENDPOINT_NAME
 
         ENDPOINT_EXISTS=$(az ml ${{ inputs.endpoint_type }}-endpoint list -o tsv --query "[?name=='$ENDPOINT_NAME'][name]" | wc -l)
-        echo '$ENDPOINT_NAME' $ENDPOINT_EXISTS
+        echo $ENDPOINT_NAME $ENDPOINT_EXISTS
 
         if [[ $ENDPOINT_EXISTS -ne 1 ]]; then
             az ml ${{ inputs.endpoint_type }}-endpoint create --name $ENDPOINT_NAME --file ${{ inputs.endpoint_file }}

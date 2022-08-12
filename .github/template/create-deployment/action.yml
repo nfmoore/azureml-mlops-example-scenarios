@@ -32,7 +32,8 @@ runs:
       uses: azure/CLI@v1
       shell: bash
       run: |
-        ENDPOINT_NAME=$(yq '.name' < ${{ inputs.endpoint_file }})-${{  inputs.unique_id }}
+        ENDPOINT_NAME=$(yq '.name' < ${{ inputs.endpoint_file }})-${{ inputs.unique_id }}
         DEPLOYMENT_NAME=$(yq '.name' < ${{ inputs.deployment_file }})
+        echo $ENDPOINT_NAME $DEPLOYMENT_NAME
 
         az ml ${{ inputs.deployment_type }}-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file ${{ inputs.deployment_file }}
