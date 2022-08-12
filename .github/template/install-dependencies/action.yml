@@ -38,4 +38,4 @@ runs:
     - name: Set default Azure ML resource group and workspace
       shell: bash
       run: |
-        az configure --defaults group=${{ inputs.workspace_resource_group }} workspace=${{ secrets.workspace_name }}
+        az configure --defaults group=${{ inputs.workspace_resource_group }} workspace=${{ inputs.workspace_name }}
