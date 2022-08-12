@@ -117,7 +117,7 @@ jobs:
           unique_id: ${{ secrets.UNIQUE_ID }}
 
       - name: Create batch endpoint
-        uses: "./.github/template/create-deployment"
+        uses: "./.github/template/create-endpoint"
         with:
           endpoint_type: batch
           endpoint_file: ./core/deploy/batch/endpoint.yml
@@ -125,7 +125,7 @@ jobs:
           unique_id: ${{ secrets.UNIQUE_ID }}
 
       - name: Create online deployment
-        uses: "./.github/template/create-endpoint"
+        uses: "./.github/template/create-deployment"
         with:
           deployment_type: online
           deployment_file: ./core/deploy/online/deployment.yml
