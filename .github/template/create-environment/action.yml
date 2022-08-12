@@ -22,8 +22,6 @@ runs:
     - name: Create environment
       shell: bash
       run: |
-        az ml -h
-
         ENVIRONMENT_NAME=$(yq '.name' < ${{ inputs.environment_file }})
         ENVIRONMENT_VERSION=$(yq '.version' < ${{ inputs.environment_file }})
         echo $ENVIRONMENT_NAME $ENVIRONMENT_VERSION
@@ -35,7 +33,7 @@ runs:
         else
             ENVIRONMENT_VERSION_EXISTS=$(az ml environment list --name $ENVIRONMENT_NAME --query "[?version=='$ENVIRONMENT_VERSION']" | wc -l)
 
-            if [[ $ENVIRONMENT_EXISTS -ne 1 ]]; then
+            if [[ $ENVIRONMENT_VERSION_EXISTS -ne 1 ]]; then
                   az ml environment create --file ${{ inputs.environment_file }}
               else
                   echo "Environment version exists"
