@@ -28,10 +28,16 @@ runs:
         ENVIRONMENT_VERSION=$(yq '.version' < ${{ inputs.environment_file }})
         echo $ENVIRONMENT_NAME $ENVIRONMENT_VERSION
 
-        ENVIRONMENT_EXISTS=$(az ml environment list --name $ENVIRONMENT_NAME --query "[?version=='$ENVIRONMENT_VERSION']" | wc -l)
+        ENVIRONMENT_EXISTS=$(az ml environment list --query "[?name=='$ENVIRONMENT_NAME']" | wc -l)
 
         if [[ $ENVIRONMENT_EXISTS -ne 1 ]]; then
             az ml environment create --file ${{ inputs.environment_file }}
         else
-            echo "Environment exists"
+            ENVIRONMENT_VERSION_EXISTS=$(az ml environment list --name $ENVIRONMENT_NAME --query "[?version=='$ENVIRONMENT_VERSION']" | wc -l)
+
+            if [[ $ENVIRONMENT_EXISTS -ne 1 ]]; then
+                  az ml environment create --file ${{ inputs.environment_file }}
+              else
+                  echo "Environment version exists"
+              fi
         fi
