@@ -22,20 +22,16 @@ runs:
       with:
         creds: ${{ inputs.azure_credentials }}
 
-    - uses: chrisdickinson/setup-yq@latest
-
     - name: Create endpoint
-      uses: azure/CLI@v1
-      with:
-        azcliversion: 2.30.0
-        inlineScript: |
-          ENDPOINT_NAME=$(yq '.name' < ${{ inputs.endpoint_file }})
+      shell: bash
+      run: |
+        ENDPOINT_NAME=$(yq '.name' < ${{ inputs.endpoint_file }})
 
-          ENDPOINT_EXISTS=$(az ml ${{ inputs.endpoint_type }}-endpoint list -o tsv --query "[?name=='$ENDPOINT_NAME'][name]" | wc -l)
-          echo '$ENDPOINT_NAME' $ENDPOINT_EXISTS
+        ENDPOINT_EXISTS=$(az ml ${{ inputs.endpoint_type }}-endpoint list -o tsv --query "[?name=='$ENDPOINT_NAME'][name]" | wc -l)
+        echo '$ENDPOINT_NAME' $ENDPOINT_EXISTS
 
-          if [[ $ENDPOINT_EXISTS -ne 1 ]]; then
-              az ml ${{ inputs.endpoint_type }}-endpoint create --name $ENDPOINT_NAME --file ${{ inputs.endpoint_file }}
-          else
-              echo "Endpoint exists"
-          fi
+        if [[ $ENDPOINT_EXISTS -ne 1 ]]; then
+            az ml ${{ inputs.endpoint_type }}-endpoint create --name $ENDPOINT_NAME --file ${{ inputs.endpoint_file }}
+        else
+            echo "Endpoint exists"
+        fi

@@ -25,14 +25,11 @@ runs:
       with:
         creds: ${{ inputs.azure_credentials }}
 
-    - uses: chrisdickinson/setup-yq@latest
-
     - name: Create deployment
       uses: azure/CLI@v1
-      with:
-        azcliversion: 2.30.0
-        inlineScript: |
-          ENDPOINT_NAME=$(yq '.name' < ${{ inputs.endpoint_file }})
-          DEPLOYMENT_NAME=$(yq '.name' < ${{ inputs.deployment_file }})
+      shell: bash
+      run: |
+        ENDPOINT_NAME=$(yq '.name' < ${{ inputs.endpoint_file }})
+        DEPLOYMENT_NAME=$(yq '.name' < ${{ inputs.deployment_file }})
 
-          az ml ${{ inputs.deployment_type }}-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file ${{ inputs.deployment_file }}
+        az ml ${{ inputs.deployment_type }}-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file ${{ inputs.deployment_file }}
