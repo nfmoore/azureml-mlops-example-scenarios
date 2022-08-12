@@ -30,9 +30,6 @@ runs:
         echo $ENVIRONMENT_EXISTS 
 
         if [[ $ENVIRONMENT_EXISTS -ne 1 ]]; then
-        echo "Creating new environment"
-            az ml environment create --file ${{ inputs.environment_file }}
-        else
             ENVIRONMENT_VERSION_EXISTS=$(az ml environment list --name $ENVIRONMENT_NAME --query "[?version=='$ENVIRONMENT_VERSION']" | wc -l)
             echo $ENVIRONMENT_VERSION_EXISTS 
 
@@ -42,4 +39,7 @@ runs:
               else
                   echo "Environment version exists"
               fi
+        else
+            echo "Creating new environment"
+            az ml environment create --file ${{ inputs.environment_file }}
         fi
