@@ -24,7 +24,7 @@ jobs:
         uses: github/codeql-action/analyze@v2
 
   create-model-staging:
-    name: Create model in staging environment
+    name: Create Model in Staging
     runs-on: ubuntu-latest
     needs: code-quality
 
@@ -73,7 +73,7 @@ jobs:
       - name: Tag model
         run: |
           echo "MODEL_NAME=$(yq '.jobs.register_step.inputs.model_name' < core/pipelines/train_model.yml)" >> $GITHUB_ENV
-          echo "MODEL_VERSION=$(az ml model list --name $MODEL_NAME --query "[0].version")" >> $GITHUB_ENV
+          echo "MODEL_VERSION=$(az ml model list --name ${{ env.MODEL_NAME }} --query "[0].version")" >> $GITHUB_ENV
 
           az ml model update --name ${{ env.MODEL_NAME }} --version ${{ env.MODEL_VERSION }} \
             --set tags.github_workflow=${{ github.workflow }} tags.github_run_id=${{ github.run_id }} tags.github_run_number=${{ github.run_number }} tags.github_repository_url="https://github.com/${{ github.repository }}"
@@ -83,7 +83,7 @@ jobs:
           az ml model download --name ${{ env.MODEL_NAME }} --version ${{ env.MODEL_VERSION }}
 
   deploy-staging:
-    name: Deploy model in staging environment
+    name: Deploy to Staging
     runs-on: ubuntu-latest
     needs: create-model-staging
 
