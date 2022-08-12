@@ -74,13 +74,15 @@ jobs:
         run: |
           MODEL_NAME=$(yq '.jobs.register_step.inputs.model_name' < core/pipelines/train_model.yml)
           MODEL_VERSION=$(az ml model list --name $MODEL_NAME --query "[0].version" | bc -l)
-          echo $MODEL_NAME $MODEL_VERSION
 
           az ml model update --name $MODEL_NAME --version $MODEL_VERSION \
             --set tags.github_run_id=${{ github.run_id }} tags.github_workflow_url="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
       - name: Download model
         run: |
+          MODEL_NAME=$(yq '.jobs.register_step.inputs.model_name' < core/pipelines/train_model.yml)
+          MODEL_VERSION=$(az ml model list --name $MODEL_NAME --query "[0].version" | bc -l)
+
           az ml model download --name $MODEL_NAME --version $MODEL_VERSION
 
   deploy-staging:
