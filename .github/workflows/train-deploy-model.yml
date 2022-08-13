@@ -48,7 +48,7 @@ jobs:
           MODEL_NAME=$(yq '.jobs.register_step.inputs.model_name' < core/pipelines/train_model.yml)
           MODEL_VERSION=$(az ml model list --name $MODEL_NAME --query "[0].version" | bc -l)
 
-          az ml model download --name $MODEL_NAME --version $MODEL_VERSION --download-path ./model-artifact
+          az ml model download --name $MODEL_NAME --version $MODEL_VERSION --download-path model-artifact
           echo '{"model_name":"$MODEL_NAME","model_version":"$MODEL_VERSION"}' > model-artifact/model.json
 
       - name: Upload model artifact
@@ -132,28 +132,28 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
 
-      - name: Install dependencies
-        uses: "./.github/template/install-dependencies"
-        with:
-          workspace_resource_group: ${{ secrets.WORKSPACE_RESOURCE_GROUP }}
-          workspace_name: ${{ secrets.WORKSPACE_NAME }}
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      # - name: Install dependencies
+      #   uses: "./.github/template/install-dependencies"
+      #   with:
+      #     workspace_resource_group: ${{ secrets.WORKSPACE_RESOURCE_GROUP }}
+      #     workspace_name: ${{ secrets.WORKSPACE_NAME }}
+      #     azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Invoke online endpoint
-        run: |
-          ENDPOINT_NAME=$(yq '.name' < core/deploy/online/endpoint.yml)-${{ secrets.UNIQUE_ID }}
-          DEPLOYMENT_NAME=$(yq '.name' < core/deploy/online/deployment.yml)
-          echo $ENDPOINT_NAME $DEPLOYMENT_NAME
+      # - name: Invoke online endpoint
+      #   run: |
+      #     ENDPOINT_NAME=$(yq '.name' < core/deploy/online/endpoint.yml)-${{ secrets.UNIQUE_ID }}
+      #     DEPLOYMENT_NAME=$(yq '.name' < core/deploy/online/deployment.yml)
+      #     echo $ENDPOINT_NAME $DEPLOYMENT_NAME
 
-          az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME --request-file core/deploy/online/sample.json
+      #     az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME --request-file core/deploy/online/sample.json
 
-      - name: Send all traffic to deployment
-        run: |
-          ENDPOINT_NAME=$(yq '.name' < core/deploy/online/endpoint.yml)-${{ secrets.UNIQUE_ID }}
-          DEPLOYMENT_NAME=$(yq '.name' < core/deploy/online/deployment.yml)
-          echo $ENDPOINT_NAME $DEPLOYMENT_NAME
+      # - name: Send all traffic to deployment
+      #   run: |
+      #     ENDPOINT_NAME=$(yq '.name' < core/deploy/online/endpoint.yml)-${{ secrets.UNIQUE_ID }}
+      #     DEPLOYMENT_NAME=$(yq '.name' < core/deploy/online/deployment.yml)
+      #     echo $ENDPOINT_NAME $DEPLOYMENT_NAME
 
-          az ml online-endpoint update --name $ENDPOINT_NAME --traffic "$DEPLOYMENT_NAME=100"
+      #     az ml online-endpoint update --name $ENDPOINT_NAME --traffic "$DEPLOYMENT_NAME=100"
 
   upload-model-production:
     name: Upload Model to Production
@@ -189,14 +189,14 @@ jobs:
           ls model-artifact
 
           MODEL_NAME=$(yq '.jobs.register_step.inputs.model_name' < core/pipelines/train_model.yml)
-          MODEL_VERSION=$(jq '.model_version' model-artifact/model.json | bc -l)
+          MODEL_VERSION=$(jq '.model_version' model.json | bc -l)
 
-          az ml model create --name $MODEL_NAME --version $MODEL_VERSION --path model-artifact/$MODEL_NAME/model --type mlflow_model
+          az ml model create --name $MODEL_NAME --version $MODEL_VERSION --path $MODEL_NAME/model --type mlflow_model
 
       - name: Tag model
         run: |
           MODEL_NAME=$(yq '.jobs.register_step.inputs.model_name' < core/pipelines/train_model.yml)
-          MODEL_VERSION=$(jq '.model_version' model-artifact/model.json | bc -l)
+          MODEL_VERSION=$(jq '.model_version' model.json | bc -l)
 
           az ml model update --name $MODEL_NAME --version $MODEL_VERSION \
             --set tags.github_run_id=${{ github.run_id }} tags.github_workflow_url="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
