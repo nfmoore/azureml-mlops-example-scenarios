@@ -29,6 +29,12 @@ jobs:
           workspace_name: ${{ secrets.WORKSPACE_NAME }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: Run pipeline job to train model
+        uses: "./.github/template/run-job"
+        with:
+          job_file: ./core/pipelines/train_model.yml
+          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: Tag model
         run: |
           MODEL_NAME=$(yq '.jobs.register_step.inputs.model_name' < core/pipelines/train_model.yml)
