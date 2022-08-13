@@ -142,9 +142,18 @@ jobs:
       - name: Invoke online endpoint
         run: |
           ENDPOINT_NAME=$(yq '.name' < core/deploy/online/endpoint.yml)-${{ secrets.UNIQUE_ID }}
-          echo $ENDPOINT_NAME
+          DEPLOYMENT_NAME=$(yq '.name' < core/deploy/online/deployment.yml)
+          echo $ENDPOINT_NAME $DEPLOYMENT_NAME
 
-          az ml online-endpoint invoke --name $ENDPOINT_NAME --request-file core/deploy/online/sample.json
+          az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment --request-file core/deploy/online/sample.json
+
+      - name: Send all traffic to deployment
+        run: |
+          ENDPOINT_NAME=$(yq '.name' < core/deploy/online/endpoint.yml)-${{ secrets.UNIQUE_ID }}
+          DEPLOYMENT_NAME=$(yq '.name' < core/deploy/online/deployment.yml)
+          echo $ENDPOINT_NAME $DEPLOYMENT_NAME
+
+          az ml online-endpoint update --name $ENDPOINT_NAME --traffic "$DEPLOYMENT_NAME=100"
 
   upload-model-production:
     name: Upload Model to Production
@@ -250,3 +259,11 @@ jobs:
           endpoint_file: ./core/deploy/batch/endpoint.yml
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
           unique_id: ${{ secrets.UNIQUE_ID }}
+
+      - name: Send all traffic to deployment
+        run: |
+          ENDPOINT_NAME=$(yq '.name' < core/deploy/online/endpoint.yml)-${{ secrets.UNIQUE_ID }}
+          DEPLOYMENT_NAME=$(yq '.name' < core/deploy/online/deployment.yml)
+          echo $ENDPOINT_NAME $DEPLOYMENT_NAME
+
+          az ml online-endpoint update --name $ENDPOINT_NAME --traffic "$DEPLOYMENT_NAME=100"
