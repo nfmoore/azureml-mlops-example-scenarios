@@ -24,8 +24,8 @@ def parse_args():
 
     # add arguments
     parser.add_argument("--model_name", type=str)
-    parser.add_argument("--reference_data_dir", type=str)
-    parser.add_argument("--target_data_dir", type=str)
+    parser.add_argument("--reference_data", type=str)
+    parser.add_argument("--target_data", type=str)
 
     # parse args
     args = parser.parse_args()
@@ -61,8 +61,8 @@ def process_data_drift_output(data_drift_metrics):
 def main(args):
     try:
         # load datasets
-        reference_df = pd.read_csv(f"{args.reference_data_dir}/data.csv")
-        target_df = pd.read_csv(f"{args.target_data_dir}/data.csv")
+        reference_df = pd.read_csv(args.reference_data)
+        target_df = pd.read_csv(args.target_data)
 
         # define column mapping for evidently
         column_mapping = ColumnMapping()

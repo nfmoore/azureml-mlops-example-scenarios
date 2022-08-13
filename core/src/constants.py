@@ -9,7 +9,6 @@ CATEGORICAL_FEATURES = [
     "Gender",
     "JobRole",
     "MaritalStatus",
-    "Over18",
     "OverTime",
 ]
 
@@ -19,7 +18,6 @@ NUMERIC_FEATURES = [
     "DailyRate",
     "DistanceFromHome",
     "Education",
-    "EmployeeCount",
     "EmployeeNumber",
     "EnvironmentSatisfaction",
     "HourlyRate",
@@ -32,7 +30,6 @@ NUMERIC_FEATURES = [
     "PercentSalaryHike",
     "PerformanceRating",
     "RelationshipSatisfaction",
-    "StandardHours",
     "StockOptionLevel",
     "TotalWorkingYears",
     "TrainingTimesLastYear",

@@ -29,7 +29,7 @@ def main(args):
     model = mlflow.sklearn.load_model(f"{args.model_output}/model")
 
     # create model signature
-    df = pd.read_csv(f"{args.prepared_data_dir}/data.csv")
+    df = pd.read_csv(f"{args.prepared_data_dir}/train.csv")
     model_input = df[FEATURES].head()
     model_output = model.predict(model_input)
     model_signature = infer_signature(model_input, model_output)

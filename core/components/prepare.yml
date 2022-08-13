@@ -4,8 +4,11 @@ name: prepare_data_component
 display_name: Prepare Data
 version: 1
 inputs:
-  raw_data_dir:
+  curated_dataset:
     type: uri_folder
+  random_state:
+    type: integer
+    default: 42
 outputs:
   prepared_data_dir:
     type: uri_folder
@@ -13,6 +16,7 @@ code: ..
 environment: azureml:employee-attrition-train@latest
 command: >-
   python src/prepare.py 
-  --raw_data_dir ${{inputs.raw_data_dir}} 
+  --curated_dataset ${{inputs.curated_dataset}} 
   --prepared_data_dir ${{outputs.prepared_data_dir}}
+  --random_state ${{inputs.random_state}}
 is_deterministic: false

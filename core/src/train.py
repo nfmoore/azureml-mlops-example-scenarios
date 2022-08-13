@@ -7,7 +7,6 @@ import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.impute import SimpleImputer
-from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder
 
@@ -26,16 +25,15 @@ def main(args):
         "random_state": args.random_state,
     }
 
-    # read in data
-    df = pd.read_csv(f"{args.prepared_data_dir}/data.csv")
+    # read data
+    df_train = pd.read_csv(f"{args.prepared_data_dir}/train.csv")
+    df_test = pd.read_csv(f"{args.prepared_data_dir}/test.csv")
 
-    # split into train and test datasets
-    X_train, X_test, y_train, y_test = train_test_split(
-        df[CATEGORICAL_FEATURES + NUMERIC_FEATURES],
-        df[TARGET],
-        test_size=0.20,
-        random_state=args.random_state
-    )
+    # seperate features and target variables
+    X_train, y_train = df_train[CATEGORICAL_FEATURES +
+                                NUMERIC_FEATURES], df_train[TARGET]
+    X_test, y_test = df_test[CATEGORICAL_FEATURES +
+                             NUMERIC_FEATURES], df_test[TARGET]
 
     # build models
     classification_model = train_classification_model(
