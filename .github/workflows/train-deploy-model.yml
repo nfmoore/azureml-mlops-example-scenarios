@@ -73,12 +73,12 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
 
-      - name: Install dependencies
-        uses: "./.github/template/install-dependencies"
-        with:
-          workspace_resource_group: ${{ secrets.WORKSPACE_RESOURCE_GROUP }}
-          workspace_name: ${{ secrets.WORKSPACE_NAME }}
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      # - name: Install dependencies
+      #   uses: "./.github/template/install-dependencies"
+      #   with:
+      #     workspace_resource_group: ${{ secrets.WORKSPACE_RESOURCE_GROUP }}
+      #     workspace_name: ${{ secrets.WORKSPACE_NAME }}
+      #     azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       # - name: Create online endpoint
       #   uses: "./.github/template/create-endpoint"
@@ -98,23 +98,23 @@ jobs:
       #     unique_id: ${{ secrets.UNIQUE_ID }}
       #     log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
 
-      - name: Create online deployment
-        uses: "./.github/template/create-deployment"
-        with:
-          deployment_type: online
-          deployment_file: ./core/deploy/online/deployment.yml
-          endpoint_file: ./core/deploy/online/endpoint.yml
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          unique_id: ${{ secrets.UNIQUE_ID }}
+      # - name: Create online deployment
+      #   uses: "./.github/template/create-deployment"
+      #   with:
+      #     deployment_type: online
+      #     deployment_file: ./core/deploy/online/deployment.yml
+      #     endpoint_file: ./core/deploy/online/endpoint.yml
+      #     azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      #     unique_id: ${{ secrets.UNIQUE_ID }}
 
-      - name: Create batch deployment
-        uses: "./.github/template/create-deployment"
-        with:
-          deployment_type: batch
-          deployment_file: ./core/deploy/batch/deployment.yml
-          endpoint_file: ./core/deploy/batch/endpoint.yml
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          unique_id: ${{ secrets.UNIQUE_ID }}
+      # - name: Create batch deployment
+      #   uses: "./.github/template/create-deployment"
+      #   with:
+      #     deployment_type: batch
+      #     deployment_file: ./core/deploy/batch/deployment.yml
+      #     endpoint_file: ./core/deploy/batch/endpoint.yml
+      #     azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      #     unique_id: ${{ secrets.UNIQUE_ID }}
 
   end-to-end-testing:
     name: End to End Testing
@@ -145,7 +145,7 @@ jobs:
           DEPLOYMENT_NAME=$(yq '.name' < core/deploy/online/deployment.yml)
           echo $ENDPOINT_NAME $DEPLOYMENT_NAME
 
-          az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment --request-file core/deploy/online/sample.json
+          az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME --request-file core/deploy/online/sample.json
 
       - name: Send all traffic to deployment
         run: |
