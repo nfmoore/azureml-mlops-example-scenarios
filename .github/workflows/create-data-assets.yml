@@ -32,13 +32,13 @@ jobs:
       - name: Create curated data asset
         uses: "./.github/template/create-data-asset"
         with:
-          environment_file: ./core/data/curated.yml
+          data_file: ./core/data/curated.yml
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Create inference data asset
         uses: "./.github/template/create-data-asset"
         with:
-          environment_file: ./core/data/inference.yml
+          data_file: ./core/data/inference.yml
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
   create-data-assets-production:
@@ -67,11 +67,11 @@ jobs:
       - name: Create curated data asset
         uses: "./.github/template/create-data-asset"
         with:
-          environment_file: ./core/data/curated.yml
+          data_file: ./core/data/curated.yml
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Create inference data asset
         uses: "./.github/template/create-data-asset"
         with:
-          environment_file: ./core/data/inference.yml
+          data_file: ./core/data/inference.yml
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
