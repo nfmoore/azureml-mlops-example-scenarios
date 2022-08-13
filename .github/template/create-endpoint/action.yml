@@ -15,16 +15,14 @@ inputs:
   unique_id:
     description: Unique identifier to append to endpoint name
     required: true
+  log_analytics_workspace_name:
+    description: Name of the log analytics workspace
+    required: true
 
 runs:
   using: "composite"
 
   steps:
-    - name: Azure login
-      uses: azure/login@v1
-      with:
-        creds: ${{ inputs.azure_credentials }}
-
     - name: Create endpoint
       shell: bash
       run: |
@@ -36,6 +34,16 @@ runs:
 
         if [[ $ENDPOINT_EXISTS -ne 1 ]]; then
             az ml ${{ inputs.endpoint_type }}-endpoint create --name $ENDPOINT_NAME --file ${{ inputs.endpoint_file }}
+
+            az ml ${{ inputs.endpoint_type }}-endpoint update --name $ENDPOINT_NAME \
+              --set tags.github_run_id=${{ github.run_id }} tags.github_workflow_url="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+            if [[ "${{ inputs.endpoint_type }}" == "online" ]]; then
+                echo "Configuring endpoint diagnostic settings"
+                ENDPOINT_RESOURCE_ID=$(az ml online-endpoint show --name $ENDPOINT_NAME | jq '.id')
+                az monitor diagnostic-settings create --resource $ENDPOINT_RESOURCE_ID --name azureml-online-endpoint-console-log-export \
+                  --workspace ${{ inputs.log_analytics_workspace_name }} --logs '[{"category": "AmlOnlineEndpointConsoleLog","enabled": true}]'
+            fi
         else
             echo "Endpoint exists"
         fi

@@ -23,11 +23,6 @@ runs:
   using: "composite"
 
   steps:
-    - name: Azure login
-      uses: azure/login@v1
-      with:
-        creds: ${{ inputs.azure_credentials }}
-
     - name: Create deployment
       shell: bash
       run: |

@@ -1,0 +1,24 @@
+name: Code Quality
+
+on:
+  push:
+    branches:
+      - workflow
+  workflow_dispatch:
+
+jobs:
+  code-quality:
+    name: Code Scanning
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: python
+
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@v2
