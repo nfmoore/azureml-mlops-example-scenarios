@@ -49,7 +49,7 @@ jobs:
           MODEL_VERSION=$(az ml model list --name $MODEL_NAME --query "[0].version" | bc -l)
 
           az ml model download --name $MODEL_NAME --version $MODEL_VERSION --download-path model-artifact
-          echo '{"model_name":"$MODEL_NAME","model_version":"$MODEL_VERSION"}' > model-artifact/model.json
+          echo '{"model_name":"'"$MODEL_NAME"'","model_version":"'"$MODEL_VERSION"'"}' > model-artifact/model.json
 
       - name: Upload model artifact
         uses: actions/upload-artifact@v2
