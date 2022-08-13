@@ -28,11 +28,11 @@ runs:
       run: |
         ENDPOINT_NAME=$(yq '.name' < ${{ inputs.endpoint_file }})-${{ inputs.unique_id }}
         DEPLOYMENT_NAME=$(yq '.name' < ${{ inputs.deployment_file }})
-        DEPLOYMENT_EXISTS=$(az ml ${{ inputs.endpoint_type }}-deployment --endpoint-name $ENDPOINT_NAME list -o tsv --query "[?name=='$DEPLOYMENT_NAME'][name]" | wc -l)
+        DEPLOYMENT_EXISTS=$(az ml ${{ inputs.endpoint_type }}-deployment list --endpoint-name $ENDPOINT_NAME list -o tsv --query "[?name=='$DEPLOYMENT_NAME'][name]" | wc -l)
         echo $ENDPOINT_NAME $DEPLOYMENT_NAME $DEPLOYMENT_EXISTS
 
         if [[ $ENDPOINT_EXISTS -ne 1 ]]; then
-            az ml ${{ inputs.deployment_type }}-deployment create --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME --file ${{ inputs.deployment_file }} --all-traffic
+            az ml ${{ inputs.deployment_type }}-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file ${{ inputs.deployment_file }} --all-traffic
         else
-            az ml ${{ inputs.deployment_type }}-deployment update --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME --file ${{ inputs.deployment_file }} --all-traffic
+            az ml ${{ inputs.deployment_type }}-deployment update --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file ${{ inputs.deployment_file }} --all-traffic
         fi
