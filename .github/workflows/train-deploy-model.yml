@@ -80,23 +80,23 @@ jobs:
           workspace_name: ${{ secrets.WORKSPACE_NAME }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Create online endpoint
-        uses: "./.github/template/create-endpoint"
-        with:
-          endpoint_type: online
-          endpoint_file: ./core/deploy/online/endpoint.yml
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          unique_id: ${{ secrets.UNIQUE_ID }}
-          log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
+      # - name: Create online endpoint
+      #   uses: "./.github/template/create-endpoint"
+      #   with:
+      #     endpoint_type: online
+      #     endpoint_file: ./core/deploy/online/endpoint.yml
+      #     azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      #     unique_id: ${{ secrets.UNIQUE_ID }}
+      #     log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
 
-      - name: Create batch endpoint
-        uses: "./.github/template/create-endpoint"
-        with:
-          endpoint_type: batch
-          endpoint_file: ./core/deploy/batch/endpoint.yml
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          unique_id: ${{ secrets.UNIQUE_ID }}
-          log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
+      # - name: Create batch endpoint
+      #   uses: "./.github/template/create-endpoint"
+      #   with:
+      #     endpoint_type: batch
+      #     endpoint_file: ./core/deploy/batch/endpoint.yml
+      #     azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      #     unique_id: ${{ secrets.UNIQUE_ID }}
+      #     log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
 
       - name: Create online deployment
         uses: "./.github/template/create-deployment"

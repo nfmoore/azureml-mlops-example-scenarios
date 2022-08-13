@@ -30,4 +30,4 @@ runs:
         DEPLOYMENT_NAME=$(yq '.name' < ${{ inputs.deployment_file }})
         echo $ENDPOINT_NAME $DEPLOYMENT_NAME
 
-        az ml ${{ inputs.deployment_type }}-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file ${{ inputs.deployment_file }}
+        az ml ${{ inputs.deployment_type }}-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file ${{ inputs.deployment_file }} --all-traffic
