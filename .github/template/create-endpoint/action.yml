@@ -40,11 +40,10 @@ runs:
 
             if [[ "${{ inputs.endpoint_type }}" == "online" ]]; then
                 echo "Configuring endpoint diagnostic settings"
-                ENDPOINT_RESOURCE_ID=$(az ml online-endpoint show --name $ENDPOINT_NAME | jq '.id')
+                ENDPOINT_RESOURCE_ID=$(az ml online-endpoint show --name $ENDPOINT_NAME | jq --raw-output '.id')
                 echo $ENDPOINT_RESOURCE_ID
-                
-                az monitor diagnostic-settings create --resource $ENDPOINT_RESOURCE_ID --name azureml-online-endpoint-console-log-export \
-                  --workspace ${{ inputs.log_analytics_workspace_name }} --logs '[{"category": "AmlOnlineEndpointConsoleLog","enabled": true}]'
+
+                az monitor diagnostic-settings create --resource $ENDPOINT_RESOURCE_ID --name azureml-online-endpoint-console-log-export --workspace ${{ inputs.log_analytics_workspace_name }} --logs '[{"category": "AmlOnlineEndpointConsoleLog","enabled": true}]'
             fi
         else
             echo "Endpoint exists"
