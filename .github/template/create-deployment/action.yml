@@ -32,7 +32,7 @@ runs:
         echo $ENDPOINT_NAME $DEPLOYMENT_NAME $DEPLOYMENT_EXISTS
 
         if [[ $ENDPOINT_EXISTS -ne 1 ]]; then
-            az ml ${{ inputs.deployment_type }}-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file ${{ inputs.deployment_file }} --all-traffic
+            az ml ${{ inputs.deployment_type }}-deployment create --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME --file ${{ inputs.deployment_file }} --all-traffic
         else
-            az ml ${{ inputs.deployment_type }}-deployment update --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file ${{ inputs.deployment_file }} --all-traffic
+            az ml ${{ inputs.deployment_type }}-deployment update --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME --file ${{ inputs.deployment_file }} --all-traffic
         fi
