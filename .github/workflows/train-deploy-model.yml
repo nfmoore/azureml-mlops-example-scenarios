@@ -185,9 +185,6 @@ jobs:
 
       - name: Upload model
         run: |
-          ls
-          ls model-artifact
-
           MODEL_NAME=$(yq '.jobs.register_step.inputs.model_name' < core/pipelines/train_model.yml)
           MODEL_VERSION=$(jq '.model_version' model.json | bc -l)
 

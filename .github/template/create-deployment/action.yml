@@ -32,9 +32,9 @@ runs:
         echo $ENDPOINT_NAME $DEPLOYMENT_NAME $DEPLOYMENT_EXISTS
 
         if [[ $ENDPOINT_EXISTS -ne 1 ]]; then
-            echo "Updating deployment"
-            az ml ${{ inputs.deployment_type }}-deployment update --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file ${{ inputs.deployment_file }}
-        else
             echo "Creating deployment"
             az ml ${{ inputs.deployment_type }}-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file ${{ inputs.deployment_file }}
+        else
+            echo "Updating deployment"
+            az ml ${{ inputs.deployment_type }}-deployment update --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file ${{ inputs.deployment_file }}
         fi
