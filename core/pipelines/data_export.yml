@@ -2,7 +2,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 display_name: employee-attrition-export-pipeline
 experiment_name: employee-attrition-export-pipeline
-description: Pipeline to export inference data from log analytics workspace and write to storage
+description: Pipeline to export inference data from log analytics workspace and write to storage.
 
 outputs:
   prepared_data_dir:
