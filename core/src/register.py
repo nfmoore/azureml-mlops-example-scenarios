@@ -1,5 +1,5 @@
 # imports
-import argparse
+from argparse import ArgumentParser, Namespace
 
 import mlflow
 import pandas as pd
@@ -8,23 +8,7 @@ from mlflow.models.signature import infer_signature
 from constants import FEATURES
 
 
-def parse_args():
-    # setup arg parser
-    parser = argparse.ArgumentParser("register")
-
-    # add arguments
-    parser.add_argument("--prepared_data_dir", type=str)
-    parser.add_argument("--model_name", type=str)
-    parser.add_argument("--model_output", type=str)
-    parser.add_argument("--conda_env", type=str)
-
-    # parse args
-    args = parser.parse_args()
-
-    return args
-
-
-def main(args):
+def main(args: Namespace) -> None:
     # load model
     model = mlflow.sklearn.load_model(f"{args.model_output}/model")
 
@@ -41,6 +25,22 @@ def main(args):
         signature=model_signature,
         registered_model_name=args.model_name
     )
+
+
+def parse_args() -> Namespace:
+    # setup arg parser
+    parser = ArgumentParser("register")
+
+    # add arguments
+    parser.add_argument("--prepared_data_dir", type=str)
+    parser.add_argument("--model_name", type=str)
+    parser.add_argument("--model_output", type=str)
+    parser.add_argument("--conda_env", type=str)
+
+    # parse args
+    args = parser.parse_args()
+
+    return args
 
 
 if __name__ == "__main__":

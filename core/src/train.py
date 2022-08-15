@@ -1,6 +1,8 @@
 # imports
-import argparse
+from argparse import ArgumentParser, Namespace
+from ctypes import Union
 from distutils.dir_util import copy_tree
+from typing import Dict
 
 import mlflow
 import pandas as pd
@@ -13,7 +15,7 @@ from sklearn.preprocessing import OneHotEncoder
 from constants import CATEGORICAL_FEATURES, NUMERIC_FEATURES, TARGET
 
 
-def main(args):
+def main(args: Namespace) -> None:
     # enable auto logging
     mlflow.autolog()
 
@@ -35,19 +37,6 @@ def main(args):
     X_test, y_test = df_test[CATEGORICAL_FEATURES +
                              NUMERIC_FEATURES], df_test[TARGET]
 
-    # build models
-    classification_model = train_classification_model(
-        params, X_train, X_test, y_train, y_test)
-
-    # save models
-    mlflow.sklearn.save_model(classification_model, "model")
-
-    # copy model artifact to directory
-    to_directory = args.model_output
-    copy_tree("model", f"{to_directory}/model")
-
-
-def train_classification_model(params, X_train, X_test, y_train, y_test):
     # train model
     estimator = make_classifer_pipeline(params)
     estimator = estimator.fit(X_train, y_train.values.ravel())
@@ -57,10 +46,15 @@ def train_classification_model(params, X_train, X_test, y_train, y_test):
         estimator, X_test, y_test.values.ravel(), prefix="validation_")
     mlflow.log_metrics(metrics)
 
-    return estimator
+    # save models
+    mlflow.sklearn.save_model(estimator, "model")
+
+    # copy model artifact to directory
+    to_directory = args.model_output
+    copy_tree("model", f"{to_directory}/model")
 
 
-def make_classifer_pipeline(params):
+def make_classifer_pipeline(params: Dict[str, Union[str,  int]]) -> Pipeline:
     # categorical features transformations
     categorical_transformer = Pipeline(steps=[
         ("imputer", SimpleImputer(strategy="constant", fill_value="missing")),
@@ -89,9 +83,9 @@ def make_classifer_pipeline(params):
     return classifer_pipeline
 
 
-def parse_args():
+def parse_args() -> Namespace:
     # setup arg parser
-    parser = argparse.ArgumentParser("train")
+    parser = ArgumentParser("train")
 
     # add arguments
     parser.add_argument("--prepared_data_dir", type=str)

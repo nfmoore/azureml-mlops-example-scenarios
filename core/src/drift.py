@@ -1,7 +1,8 @@
 # imports
-import argparse
 import json
 import logging
+from argparse import ArgumentParser, Namespace
+from typing import Dict, Tuple
 
 import pandas as pd
 from evidently.model_profile import Profile
@@ -12,53 +13,8 @@ from opencensus.ext.azure.log_exporter import AzureLogHandler
 
 from constants import CATEGORICAL_FEATURES, FEATURES, NUMERIC_FEATURES
 
-# Configure logger
-LOGGER = logging.getLogger('root')
-LOGGER.setLevel(logging.INFO)
-LOGGER.addHandler(AzureLogHandler())
 
-
-def parse_args():
-    # setup arg parser
-    parser = argparse.ArgumentParser("drift")
-
-    # add arguments
-    parser.add_argument("--model_name", type=str)
-    parser.add_argument("--reference_data", type=str)
-    parser.add_argument("--target_data", type=str)
-
-    # parse args
-    args = parser.parse_args()
-
-    return args
-
-
-def process_data_drift_output(data_drift_metrics):
-    # define overall data drift metrics table
-    overall_data_drift_metrics = {
-        "n_features": data_drift_metrics["n_features"],
-        "n_drifted_features": data_drift_metrics["n_drifted_features"],
-        "share_drifted_features": data_drift_metrics["share_drifted_features"],
-        "dataset_drift": data_drift_metrics["dataset_drift"]
-    }
-
-    # define feature data drift metrics table
-    feature_data_drift_metrics = []
-
-    # preprocess json output
-    for feature in FEATURES:
-        feature_data_drift_metrics.append({
-            "feature_name": feature,
-            "drift_score": data_drift_metrics[feature]["drift_score"],
-            "drift_detected": data_drift_metrics[feature]["drift_detected"],
-            "feature_type": data_drift_metrics[feature]["feature_type"],
-            "stattest_name": data_drift_metrics[feature]["stattest_name"],
-        })
-
-    return overall_data_drift_metrics, feature_data_drift_metrics
-
-
-def main(args):
+def main(args: Namespace, logger: logging.Logger) -> None:
     try:
         # load datasets
         reference_df = pd.read_csv(args.reference_data)
@@ -91,30 +47,75 @@ def main(args):
         print("Feature data drift metrics:", feature_data_drift_metrics)
 
         # Log overall drift metrics
-        LOGGER.info(json.dumps({
+        logger.info(json.dumps({
             "model_name": args.model_name,
             "type": "OverallDriftMetrics",
             "data": overall_data_drift_metrics
         }))
 
         # Log feature drift metrics
-        LOGGER.info(json.dumps({
+        logger.info(json.dumps({
             "model_name": args.model_name,
             "type": "FeatureDriftMetrics",
             "data": feature_data_drift_metrics
         }))
 
     except Exception as e:
-        LOGGER.error(json.dumps({
+        logger.error(json.dumps({
             "model_name": args.model_name,
             "type": "Exception",
             "error": e
         }), exc_info=e)
 
 
+def process_data_drift_output(data_drift_metrics: Dict) -> Tuple[Dict, Dict]:
+    # define overall data drift metrics table
+    overall_data_drift_metrics = {
+        "n_features": data_drift_metrics["n_features"],
+        "n_drifted_features": data_drift_metrics["n_drifted_features"],
+        "share_drifted_features": data_drift_metrics["share_drifted_features"],
+        "dataset_drift": data_drift_metrics["dataset_drift"]
+    }
+
+    # define feature data drift metrics table
+    feature_data_drift_metrics = []
+
+    # preprocess json output
+    for feature in FEATURES:
+        feature_data_drift_metrics.append({
+            "feature_name": feature,
+            "drift_score": data_drift_metrics[feature]["drift_score"],
+            "drift_detected": data_drift_metrics[feature]["drift_detected"],
+            "feature_type": data_drift_metrics[feature]["feature_type"],
+            "stattest_name": data_drift_metrics[feature]["stattest_name"],
+        })
+
+    return overall_data_drift_metrics, feature_data_drift_metrics
+
+
+def parse_args() -> Namespace:
+    # setup arg parser
+    parser = ArgumentParser("drift")
+
+    # add arguments
+    parser.add_argument("--model_name", type=str)
+    parser.add_argument("--reference_data", type=str)
+    parser.add_argument("--target_data", type=str)
+
+    # parse args
+    args = parser.parse_args()
+
+    return args
+
+
 if __name__ == "__main__":
     # parse args
     args = parse_args()
 
+    # Configure logger
+    logger = logging.getLogger('root')
+    logger.setLevel(logging.INFO)
+    logger.addHandler(AzureLogHandler())
+
     # run main
-    main(args)
+    main(args, logger)

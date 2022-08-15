@@ -54,7 +54,7 @@ OUTPUT_SAMPLE = {"probability": [0.26883566156891225]}
 LOGGER = logging.getLogger('root')
 
 
-def init():
+def init() -> None:
     """
     A startup event handler to load an MLFLow model.
     """
@@ -75,7 +75,7 @@ def init():
 
 @input_schema("data", StandardPythonParameterType(INPUT_SAMPLE))
 @output_schema(StandardPythonParameterType(OUTPUT_SAMPLE))
-def run(data: List[Dict]):
+def run(data: List[Dict]) -> str:
     """
     Function performing scoring for every invocation of the endpoint.
     Parameters:
