@@ -1,5 +1,5 @@
 # imports
-import argparse
+from argparse import ArgumentParser, Namespace
 
 import mlflow
 import pandas as pd
@@ -9,7 +9,7 @@ from deepchecks.tabular.suites import data_integrity, train_test_validation
 from constants import CATEGORICAL_FEATURES, TARGET
 
 
-def main(args):
+def main(args: Namespace) -> None:
     # read data
     df_train = pd.read_csv(f"{args.prepared_data_dir}/train.csv")
     df_test = pd.read_csv(f"{args.prepared_data_dir}/test.csv")
@@ -43,9 +43,9 @@ def main(args):
     mlflow.log_artifact("./train_test_validation.html")
 
 
-def parse_args():
+def parse_args() -> Namespace:
     # setup arg parser
-    parser = argparse.ArgumentParser("data_quality")
+    parser = ArgumentParser("data_quality")
 
     # add arguments
     parser.add_argument("--prepared_data_dir", type=str)
