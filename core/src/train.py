@@ -1,8 +1,7 @@
 # imports
 from argparse import ArgumentParser, Namespace
-from ctypes import Union
 from distutils.dir_util import copy_tree
-from typing import Dict
+from typing import Dict, Union
 
 import mlflow
 import pandas as pd
