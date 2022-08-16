@@ -36,7 +36,7 @@ jobs:
       # - name: Run pipeline job to train model
       #   uses: "./.github/templates/run-job"
       #   with:
-      #     job_file: ./core/pipelines/train_model.yml
+      #     job_file: core/pipelines/train_model.yml
 
       - name: Tag and download model
         run: |
@@ -82,7 +82,7 @@ jobs:
       #   uses: "./.github/templates/create-endpoint"
       #   with:
       #     endpoint_type: online
-      #     endpoint_file: ./core/deploy/online/endpoint.yml
+      #     endpoint_file: core/deploy/online/endpoint.yml
       #     endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
       #     log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
 
@@ -90,7 +90,7 @@ jobs:
       #   uses: "./.github/templates/create-endpoint"
       #   with:
       #     endpoint_type: batch
-      #     endpoint_file: ./core/deploy/batch/endpoint.yml
+      #     endpoint_file: core/deploy/batch/endpoint.yml
       #     endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
       #     log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
 
@@ -98,16 +98,16 @@ jobs:
       #   uses: "./.github/templates/create-deployment"
       #   with:
       #     deployment_type: online
-      #     deployment_file: ./core/deploy/online/deployment.yml
-      #     endpoint_file: ./core/deploy/online/endpoint.yml
+      #     deployment_file: core/deploy/online/deployment.yml
+      #     endpoint_file: core/deploy/online/endpoint.yml
       #     endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
 
       # - name: Create batch deployment
       #   uses: "./.github/templates/create-deployment"
       #   with:
       #     deployment_type: batch
-      #     deployment_file: ./core/deploy/batch/deployment.yml
-      #     endpoint_file: ./core/deploy/batch/endpoint.yml
+      #     deployment_file: core/deploy/batch/deployment.yml
+      #     endpoint_file: core/deploy/batch/endpoint.yml
       #     endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
 
       - name: Add variables to data export job specification
@@ -116,32 +116,28 @@ jobs:
           export MODEL_NAME=$(yq '.jobs.register_step.inputs.model_name' < core/pipelines/train_model.yml)
           export MODEL_VERSION=$(az ml model list --name $MODEL_NAME --query "[0].version" | bc -l)
           export LOG_ANALYTICS_WORKSPACE_ID=$(az monitor log-analytics workspace show --workspace-name ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }} | jq --raw-output '.customerId')
-          envsubst < core/pipelines/data_export.yml > core/pipelines/data_export.yml
-          cat core/pipelines/data_export.yml
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: artifact
-          path: core/pipelines/data_export.yml
+          envsubst < core/pipelines/data_export.yml > core/pipelines/temp_data_export.yml
+          cp core/pipelines/temp_data_export.yml core/pipelines/data_export.yml
 
       - name: Create data export schedule
         uses: "./.github/templates/schedule-job"
         with:
-          schedule_file: ./core/schedules/data_export.yml
+          schedule_file: core/schedules/data_export.yml
           log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
 
       - name: Add variables to data drift job specification
         shell: bash
         run: |
           export INSTRUMENTATION_KEY=$(az resource show -g $RESOURCE_GROUP -n ${{ secrets.APPLICATION_INSIGHTS_NAME }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
-          envsubst < ./core/pipelines/data_drift.yml > ./core/pipelines/data_drift.yml
-          cat ./core/pipelines/data_drift.yml
+
+          envsubst < core/pipelines/data_drift.yml > core/pipelines/temp_data_drift.yml
+          cp core/pipelines/temp_data_export.yml core/pipelines/data_export.yml
 
       - name: Create data drift schedule
         uses: "./.github/templates/schedule-job"
         with:
-          schedule_file: ./core/schedules/data_drift.yml
+          schedule_file: core/schedules/data_drift.yml
           log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
 
   end-to-end-testing:
@@ -247,7 +243,7 @@ jobs:
         uses: "./.github/templates/create-endpoint"
         with:
           endpoint_type: online
-          endpoint_file: ./core/deploy/online/endpoint.yml
+          endpoint_file: core/deploy/online/endpoint.yml
           endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
           log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
 
@@ -255,7 +251,7 @@ jobs:
         uses: "./.github/templates/create-endpoint"
         with:
           endpoint_type: batch
-          endpoint_file: ./core/deploy/batch/endpoint.yml
+          endpoint_file: core/deploy/batch/endpoint.yml
           endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
           log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
 
@@ -263,16 +259,16 @@ jobs:
         uses: "./.github/templates/create-deployment"
         with:
           deployment_type: online
-          deployment_file: ./core/deploy/online/deployment.yml
-          endpoint_file: ./core/deploy/online/endpoint.yml
+          deployment_file: core/deploy/online/deployment.yml
+          endpoint_file: core/deploy/online/endpoint.yml
           endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
 
       - name: Create batch deployment
         uses: "./.github/templates/create-deployment"
         with:
           deployment_type: batch
-          deployment_file: ./core/deploy/batch/deployment.yml
-          endpoint_file: ./core/deploy/batch/endpoint.yml
+          deployment_file: core/deploy/batch/deployment.yml
+          endpoint_file: core/deploy/batch/endpoint.yml
           endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
 
       - name: Send all traffic to deployment
@@ -289,24 +285,26 @@ jobs:
           export MODEL_NAME=$(yq '.jobs.register_step.inputs.model_name' < core/pipelines/train_model.yml)
           export MODEL_VERSION=$(az ml model list --name $MODEL_NAME --query "[0].version" | bc -l)
           export LOG_ANALYTICS_WORKSPACE_ID=$(az monitor log-analytics workspace show --workspace-name ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }} | jq --raw-output '.customerId')
-          envsubst < ./core/pipelines/data_export.yml > ./core/pipelines/data_export.yml
-          cat ./core/pipelines/data_export.yml
+
+          envsubst < core/pipelines/data_export.yml > core/pipelines/temp_data_export.yml
+          cp core/pipelines/temp_data_export.yml core/pipelines/data_export.yml
 
       - name: Create data export schedule
         uses: "./.github/templates/schedule-job"
         with:
-          schedule_file: ./core/schedules/data_export.yml
+          schedule_file: core/schedules/data_export.yml
           log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
 
       - name: Add variables to data drift job specification
         shell: bash
         run: |
-          export INSTRUMENTATION_KEY=$(az resource show -g ${{ secrets.RESOURCE_GROUP }} -n ${{ secrets.APPLICATION_INSIGHTS_NAME }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
-          envsubst < ./core/pipelines/data_drift.yml > ./core/pipelines/data_drift.yml
-          cat ./core/pipelines/data_drift.yml
+          export INSTRUMENTATION_KEY=$(az resource show -g $RESOURCE_GROUP -n ${{ secrets.APPLICATION_INSIGHTS_NAME }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
+
+          envsubst < core/pipelines/data_drift.yml > core/pipelines/temp_data_drift.yml
+          cp core/pipelines/temp_data_export.yml core/pipelines/data_export.yml
 
       - name: Create data drift schedule
         uses: "./.github/templates/schedule-job"
         with:
-          schedule_file: ./core/schedules/data_drift.yml
+          schedule_file: core/schedules/data_drift.yml
           log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
