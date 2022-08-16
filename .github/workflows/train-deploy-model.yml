@@ -120,6 +120,12 @@ jobs:
           envsubst < core/pipelines/data_export.yml > core/pipelines/temp_data_export.yml
           cp core/pipelines/temp_data_export.yml core/pipelines/data_export.yml
 
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifact
+          path: core/pipelines/data_export.yml
+
       - name: Create data export schedule
         uses: "./.github/templates/schedule-job"
         with:
