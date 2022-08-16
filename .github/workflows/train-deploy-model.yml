@@ -117,8 +117,14 @@ jobs:
           export MODEL_VERSION=$(az ml model list --name $MODEL_NAME --query "[0].version" | bc -l)
           export LOG_ANALYTICS_WORKSPACE_ID=$(az monitor log-analytics workspace show --workspace-name ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }} | jq --raw-output '.customerId')
 
-          envsubst < core/pipelines/data_export.yml > core/pipelines/temp_data_export.yml
+          envsubst '$MODEL_NAME:$MODEL_VERSION:$LOG_ANALYTICS_WORKSPACE_ID' < core/pipelines/data_export.yml > core/pipelines/temp_data_export.yml
           cp core/pipelines/temp_data_export.yml core/pipelines/data_export.yml
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifact
+          path: core/pipelines/temp_data_export.yml
 
       - name: Create data export schedule
         uses: "./.github/templates/schedule-job"
@@ -131,7 +137,7 @@ jobs:
         run: |
           export INSTRUMENTATION_KEY=$(az resource show -g $RESOURCE_GROUP -n ${{ secrets.APPLICATION_INSIGHTS_NAME }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
 
-          envsubst < core/pipelines/data_drift.yml > core/pipelines/temp_data_drift.yml
+          envsubst '$INSTRUMENTATION_KEY' < core/pipelines/data_drift.yml > core/pipelines/temp_data_drift.yml
           cp core/pipelines/temp_data_drift.yml core/pipelines/data_drift.yml
 
       - name: Create data drift schedule
@@ -278,7 +284,7 @@ jobs:
           echo $ENDPOINT_NAME $DEPLOYMENT_NAME
 
           az ml online-endpoint update --name $ENDPOINT_NAME --traffic "$DEPLOYMENT_NAME=100"
-
+          
       - name: Add variables to data export job specification
         shell: bash
         run: |
@@ -286,7 +292,7 @@ jobs:
           export MODEL_VERSION=$(az ml model list --name $MODEL_NAME --query "[0].version" | bc -l)
           export LOG_ANALYTICS_WORKSPACE_ID=$(az monitor log-analytics workspace show --workspace-name ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }} | jq --raw-output '.customerId')
 
-          envsubst < core/pipelines/data_export.yml > core/pipelines/temp_data_export.yml
+          envsubst '$MODEL_NAME:$MODEL_VERSION:$LOG_ANALYTICS_WORKSPACE_ID' < core/pipelines/data_export.yml > core/pipelines/temp_data_export.yml
           cp core/pipelines/temp_data_export.yml core/pipelines/data_export.yml
 
       - name: Create data export schedule
@@ -300,7 +306,7 @@ jobs:
         run: |
           export INSTRUMENTATION_KEY=$(az resource show -g $RESOURCE_GROUP -n ${{ secrets.APPLICATION_INSIGHTS_NAME }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
 
-          envsubst < core/pipelines/data_drift.yml > core/pipelines/temp_data_drift.yml
+          envsubst '$INSTRUMENTATION_KEY' < core/pipelines/data_drift.yml > core/pipelines/temp_data_drift.yml
           cp core/pipelines/temp_data_drift.yml core/pipelines/data_drift.yml
 
       - name: Create data drift schedule
