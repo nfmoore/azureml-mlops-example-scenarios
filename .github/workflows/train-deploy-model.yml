@@ -33,10 +33,10 @@ jobs:
           workspace_name: ${{ secrets.WORKSPACE_NAME }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Run pipeline job to train model
-        uses: "./.github/templates/run-job"
-        with:
-          job_file: ./core/pipelines/train_model.yml
+      # - name: Run pipeline job to train model
+      #   uses: "./.github/templates/run-job"
+      #   with:
+      #     job_file: ./core/pipelines/train_model.yml
 
       - name: Tag and download model
         run: |
