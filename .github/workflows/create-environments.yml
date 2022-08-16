@@ -1,10 +1,11 @@
 name: Create Environments
 
 on:
-  push:
-    branches:
-      - workflow
-  workflow_dispatch:
+  workflow_dispatch: # For demonstration purposes
+
+  # push: # Runs workflow when you push a commit or tag
+  #   branches:
+  #     - main
 
 jobs:
   create-environments-staging:
@@ -25,7 +26,7 @@ jobs:
       - name: Install dependencies
         uses: "./.github/template/install-dependencies"
         with:
-          workspace_resource_group: ${{ secrets.WORKSPACE_RESOURCE_GROUP }}
+          workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
           workspace_name: ${{ secrets.WORKSPACE_NAME }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
@@ -33,19 +34,16 @@ jobs:
         uses: "./.github/template/create-environment"
         with:
           environment_file: ./core/environments/train.yml
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Create scoring environment
         uses: "./.github/template/create-environment"
         with:
           environment_file: ./core/environments/score.yml
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Create drift environment
         uses: "./.github/template/create-environment"
         with:
           environment_file: ./core/environments/drift.yml
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
   create-environments-production:
     name: Create Environments in Production
@@ -66,7 +64,7 @@ jobs:
       - name: Install dependencies
         uses: "./.github/template/install-dependencies"
         with:
-          workspace_resource_group: ${{ secrets.WORKSPACE_RESOURCE_GROUP }}
+          workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
           workspace_name: ${{ secrets.WORKSPACE_NAME }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
@@ -74,16 +72,13 @@ jobs:
         uses: "./.github/template/create-environment"
         with:
           environment_file: ./core/environments/train.yml
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Create scoring environment
         uses: "./.github/template/create-environment"
         with:
           environment_file: ./core/environments/score.yml
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Create drift environment
         uses: "./.github/template/create-environment"
         with:
           environment_file: ./core/environments/drift.yml
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}

@@ -1,10 +1,13 @@
 name: Code Quality
 
 on:
-  push:
+  push: # Runs workflow when you push a commit or tag
     branches:
-      - workflow
-  workflow_dispatch:
+      - main
+      - development
+
+  schedule: # Runs workflow at a scheduled time.
+    - cron: "0 0 * * 0"
 
 jobs:
   code-quality:

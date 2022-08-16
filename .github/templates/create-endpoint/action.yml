@@ -9,10 +9,7 @@ inputs:
   endpoint_file:
     description: Local path to the YAML file containing the Azure ML endpoint specification
     required: true
-  azure_credentials:
-    description: JSON object for the service principal used to authenticate with Azure
-    required: true
-  unique_id:
+  endpoint_suffix:
     description: Unique identifier to append to endpoint name
     required: true
   log_analytics_workspace_name:
@@ -26,9 +23,7 @@ runs:
     - name: Create endpoint
       shell: bash
       run: |
-        ENDPOINT_NAME=$(yq '.name' < ${{ inputs.endpoint_file }})-${{ inputs.unique_id }}
-        echo $ENDPOINT_NAME
-
+        ENDPOINT_NAME=$(yq '.name' < ${{ inputs.endpoint_file }})-${{ inputs.endpoint_suffix }}
         ENDPOINT_EXISTS=$(az ml ${{ inputs.endpoint_type }}-endpoint list -o tsv --query "[?name=='$ENDPOINT_NAME'][name]" | wc -l)
         echo $ENDPOINT_NAME $ENDPOINT_EXISTS
 

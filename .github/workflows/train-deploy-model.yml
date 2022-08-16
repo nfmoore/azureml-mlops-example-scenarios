@@ -1,10 +1,14 @@
 name: Train and Deploy Model
 
 on:
-  push:
-    branches:
-      - workflow
-  workflow_dispatch:
+  workflow_dispatch: # For demonstration purposes
+
+  # push: # Runs workflow when you push a commit or tag
+  #   branches:
+  #     - main
+
+  # schedule: # Runs workflow at a scheduled time.
+  #   - cron: "0 0 * * 0"
 
 jobs:
   create-model-staging:
@@ -23,17 +27,16 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install dependencies
-        uses: "./.github/template/install-dependencies"
+        uses: "./.github/templates/install-dependencies"
         with:
-          workspace_resource_group: ${{ secrets.WORKSPACE_RESOURCE_GROUP }}
+          workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
           workspace_name: ${{ secrets.WORKSPACE_NAME }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Run pipeline job to train model
-        uses: "./.github/template/run-job"
+        uses: "./.github/templates/run-job"
         with:
           job_file: ./core/pipelines/train_model.yml
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Tag and download model
         run: |
@@ -69,47 +72,71 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install dependencies
-        uses: "./.github/template/install-dependencies"
+        uses: "./.github/templates/install-dependencies"
         with:
-          workspace_resource_group: ${{ secrets.WORKSPACE_RESOURCE_GROUP }}
+          workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
           workspace_name: ${{ secrets.WORKSPACE_NAME }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Create online endpoint
-        uses: "./.github/template/create-endpoint"
+        uses: "./.github/templates/create-endpoint"
         with:
           endpoint_type: online
           endpoint_file: ./core/deploy/online/endpoint.yml
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          unique_id: ${{ secrets.UNIQUE_ID }}
+          endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
           log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
 
       - name: Create batch endpoint
-        uses: "./.github/template/create-endpoint"
+        uses: "./.github/templates/create-endpoint"
         with:
           endpoint_type: batch
           endpoint_file: ./core/deploy/batch/endpoint.yml
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          unique_id: ${{ secrets.UNIQUE_ID }}
+          endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
           log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
 
       - name: Create online deployment
-        uses: "./.github/template/create-deployment"
+        uses: "./.github/templates/create-deployment"
         with:
           deployment_type: online
           deployment_file: ./core/deploy/online/deployment.yml
           endpoint_file: ./core/deploy/online/endpoint.yml
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          unique_id: ${{ secrets.UNIQUE_ID }}
+          endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
 
       - name: Create batch deployment
-        uses: "./.github/template/create-deployment"
+        uses: "./.github/templates/create-deployment"
         with:
           deployment_type: batch
           deployment_file: ./core/deploy/batch/deployment.yml
           endpoint_file: ./core/deploy/batch/endpoint.yml
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          unique_id: ${{ secrets.UNIQUE_ID }}
+          endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
+
+      - name: Add variables to data export job specification
+        shell: bash
+        run: |
+          export MODEL_NAME=$(yq '.jobs.register_step.inputs.model_name' < core/pipelines/train_model.yml)
+          export MODEL_VERSION=$(az ml model list --name $MODEL_NAME --query "[0].version" | bc -l)
+          export LOG_ANALYTICS_WORKSPACE_ID=$(az monitor log-analytics workspace show --workspace-name ${{ inputs.log_analytics_workspace_name }} | jq '.customerId' --raw-output)
+          envsubst < ./core/pipelines/data_export.yml > ./core/pipelines/data_export.yml
+          cat ./core/pipelines/data_export.yml
+
+      - name: Create data export schedule
+        uses: "./.github/templates/create-schedule"
+        with:
+          schedule_file: ./core/schedule/data_export.yml
+          log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
+
+      - name: Add variables to data drift job specification
+        shell: bash
+        run: |
+          export INSTRUMENTATION_KEY=$(az resource show -g $RESOURCE_GROUP -n ${{ secrets.APPLICATION_INSIGHTS_NAME }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
+          envsubst < ./core/pipelines/data_drift.yml > ./core/pipelines/data_drift.yml
+          cat ./core/pipelines/data_drift.yml
+
+      - name: Create data drift schedule
+        uses: "./.github/templates/create-schedule"
+        with:
+          schedule_file: ./core/schedule/data_drift.yml
+          log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
 
   end-to-end-testing:
     name: End to End Testing
@@ -128,15 +155,15 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install dependencies
-        uses: "./.github/template/install-dependencies"
+        uses: "./.github/templates/install-dependencies"
         with:
-          workspace_resource_group: ${{ secrets.WORKSPACE_RESOURCE_GROUP }}
+          workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
           workspace_name: ${{ secrets.WORKSPACE_NAME }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Invoke online endpoint
         run: |
-          ENDPOINT_NAME=$(yq '.name' < core/deploy/online/endpoint.yml)-${{ secrets.UNIQUE_ID }}
+          ENDPOINT_NAME=$(yq '.name' < core/deploy/online/endpoint.yml)-${{ secrets.ENDPOINT_SUFFIX }}
           DEPLOYMENT_NAME=$(yq '.name' < core/deploy/online/deployment.yml)
           echo $ENDPOINT_NAME $DEPLOYMENT_NAME
 
@@ -144,7 +171,7 @@ jobs:
 
       - name: Send all traffic to deployment
         run: |
-          ENDPOINT_NAME=$(yq '.name' < core/deploy/online/endpoint.yml)-${{ secrets.UNIQUE_ID }}
+          ENDPOINT_NAME=$(yq '.name' < core/deploy/online/endpoint.yml)-${{ secrets.ENDPOINT_SUFFIX }}
           DEPLOYMENT_NAME=$(yq '.name' < core/deploy/online/deployment.yml)
           echo $ENDPOINT_NAME $DEPLOYMENT_NAME
 
@@ -167,9 +194,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install dependencies
-        uses: "./.github/template/install-dependencies"
+        uses: "./.github/templates/install-dependencies"
         with:
-          workspace_resource_group: ${{ secrets.WORKSPACE_RESOURCE_GROUP }}
+          workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
           workspace_name: ${{ secrets.WORKSPACE_NAME }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
@@ -204,52 +231,76 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install dependencies
-        uses: "./.github/template/install-dependencies"
+        uses: "./.github/templates/install-dependencies"
         with:
-          workspace_resource_group: ${{ secrets.WORKSPACE_RESOURCE_GROUP }}
+          workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
           workspace_name: ${{ secrets.WORKSPACE_NAME }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Create online endpoint
-        uses: "./.github/template/create-endpoint"
+        uses: "./.github/templates/create-endpoint"
         with:
           endpoint_type: online
           endpoint_file: ./core/deploy/online/endpoint.yml
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          unique_id: ${{ secrets.UNIQUE_ID }}
+          endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
           log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
 
       - name: Create batch endpoint
-        uses: "./.github/template/create-endpoint"
+        uses: "./.github/templates/create-endpoint"
         with:
           endpoint_type: batch
           endpoint_file: ./core/deploy/batch/endpoint.yml
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          unique_id: ${{ secrets.UNIQUE_ID }}
+          endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
           log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
 
       - name: Create online deployment
-        uses: "./.github/template/create-deployment"
+        uses: "./.github/templates/create-deployment"
         with:
           deployment_type: online
           deployment_file: ./core/deploy/online/deployment.yml
           endpoint_file: ./core/deploy/online/endpoint.yml
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          unique_id: ${{ secrets.UNIQUE_ID }}
+          endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
 
       - name: Create batch deployment
-        uses: "./.github/template/create-deployment"
+        uses: "./.github/templates/create-deployment"
         with:
           deployment_type: batch
           deployment_file: ./core/deploy/batch/deployment.yml
           endpoint_file: ./core/deploy/batch/endpoint.yml
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          unique_id: ${{ secrets.UNIQUE_ID }}
+          endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
 
       - name: Send all traffic to deployment
         run: |
-          ENDPOINT_NAME=$(yq '.name' < core/deploy/online/endpoint.yml)-${{ secrets.UNIQUE_ID }}
+          ENDPOINT_NAME=$(yq '.name' < core/deploy/online/endpoint.yml)-${{ secrets.ENDPOINT_SUFFIX }}
           DEPLOYMENT_NAME=$(yq '.name' < core/deploy/online/deployment.yml)
           echo $ENDPOINT_NAME $DEPLOYMENT_NAME
 
           az ml online-endpoint update --name $ENDPOINT_NAME --traffic "$DEPLOYMENT_NAME=100"
+
+      - name: Add variables to data export job specification
+        shell: bash
+        run: |
+          export MODEL_NAME=$(yq '.jobs.register_step.inputs.model_name' < core/pipelines/train_model.yml)
+          export MODEL_VERSION=$(az ml model list --name $MODEL_NAME --query "[0].version" | bc -l)
+          export LOG_ANALYTICS_WORKSPACE_ID=$(az monitor log-analytics workspace show --workspace-name ${{ inputs.log_analytics_workspace_name }} | jq '.customerId' --raw-output)
+          envsubst < ./core/pipelines/data_export.yml > ./core/pipelines/data_export.yml
+          cat ./core/pipelines/data_export.yml
+
+      - name: Create data export schedule
+        uses: "./.github/templates/create-schedule"
+        with:
+          schedule_file: ./core/schedule/data_export.yml
+          log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
+
+      - name: Add variables to data drift job specification
+        shell: bash
+        run: |
+          export INSTRUMENTATION_KEY=$(az resource show -g ${{ secrets.RESOURCE_GROUP }} -n ${{ secrets.APPLICATION_INSIGHTS_NAME }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
+          envsubst < ./core/pipelines/data_drift.yml > ./core/pipelines/data_drift.yml
+          cat ./core/pipelines/data_drift.yml
+
+      - name: Create data drift schedule
+        uses: "./.github/templates/create-schedule"
+        with:
+          schedule_file: ./core/schedule/data_drift.yml
+          log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}

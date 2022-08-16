@@ -6,9 +6,6 @@ inputs:
   environment_file:
     description: Local path to the YAML file containing the Azure ML environment specification
     required: true
-  azure_credentials:
-    description: JSON object for the service principal used to authenticate with Azure
-    required: true
 
 runs:
   using: "composite"

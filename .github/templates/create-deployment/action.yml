@@ -12,10 +12,7 @@ inputs:
   endpoint_file:
     description: Local path to the YAML file containing the Azure ML endpoint specification
     required: true
-  azure_credentials:
-    description: JSON object for the service principal used to authenticate with Azure
-    required: true
-  unique_id:
+  endpoint_suffix:
     description: Unique identifier to append to endpoint name
     required: true
 
@@ -26,7 +23,7 @@ runs:
     - name: Create deployment
       shell: bash
       run: |
-        ENDPOINT_NAME=$(yq '.name' < ${{ inputs.endpoint_file }})-${{ inputs.unique_id }}
+        ENDPOINT_NAME=$(yq '.name' < ${{ inputs.endpoint_file }})-${{ inputs.endpoint_suffix }}
         DEPLOYMENT_NAME=$(yq '.name' < ${{ inputs.deployment_file }})
         DEPLOYMENT_EXISTS=$(az ml ${{ inputs.deployment_type }}-deployment list --endpoint-name $ENDPOINT_NAME -o tsv --query "[?name=='$DEPLOYMENT_NAME'][name]" | wc -l)
         echo $ENDPOINT_NAME $DEPLOYMENT_NAME $DEPLOYMENT_EXISTS
