@@ -122,7 +122,7 @@ jobs:
       - name: Create data export schedule
         uses: "./.github/templates/schedule-job"
         with:
-          schedule_file: ./core/schedule/data_export.yml
+          schedule_file: ./core/schedules/data_export.yml
           log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
 
       - name: Add variables to data drift job specification
@@ -135,7 +135,7 @@ jobs:
       - name: Create data drift schedule
         uses: "./.github/templates/schedule-job"
         with:
-          schedule_file: ./core/schedule/data_drift.yml
+          schedule_file: ./core/schedules/data_drift.yml
           log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
 
   end-to-end-testing:
@@ -289,7 +289,7 @@ jobs:
       - name: Create data export schedule
         uses: "./.github/templates/schedule-job"
         with:
-          schedule_file: ./core/schedule/data_export.yml
+          schedule_file: ./core/schedules/data_export.yml
           log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
 
       - name: Add variables to data drift job specification
@@ -302,5 +302,5 @@ jobs:
       - name: Create data drift schedule
         uses: "./.github/templates/schedule-job"
         with:
-          schedule_file: ./core/schedule/data_drift.yml
+          schedule_file: ./core/schedules/data_drift.yml
           log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
