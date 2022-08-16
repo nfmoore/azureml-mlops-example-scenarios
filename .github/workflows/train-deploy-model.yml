@@ -116,8 +116,13 @@ jobs:
           export MODEL_NAME=$(yq '.jobs.register_step.inputs.model_name' < core/pipelines/train_model.yml)
           export MODEL_VERSION=$(az ml model list --name $MODEL_NAME --query "[0].version" | bc -l)
           export LOG_ANALYTICS_WORKSPACE_ID=$(az monitor log-analytics workspace show --workspace-name ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }} | jq --raw-output '.customerId')
-          envsubst < ./core/pipelines/data_export.yml > ./core/pipelines/data_export.yml
-          cat ./core/pipelines/data_export.yml
+          envsubst < core/pipelines/data_export.yml > core/pipelines/data_export.yml
+          cat core/pipelines/data_export.yml
+
+      - name: Show file
+        shell: bash
+        run: |
+          cat core/pipelines/data_export.yml
 
       - name: Create data export schedule
         uses: "./.github/templates/schedule-job"
