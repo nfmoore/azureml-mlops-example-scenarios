@@ -120,12 +120,6 @@ jobs:
           envsubst < core/pipelines/data_export.yml > core/pipelines/temp_data_export.yml
           cp core/pipelines/temp_data_export.yml core/pipelines/data_export.yml
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: artifact
-          path: core/pipelines/data_export.yml
-
       - name: Create data export schedule
         uses: "./.github/templates/schedule-job"
         with:
@@ -138,7 +132,7 @@ jobs:
           export INSTRUMENTATION_KEY=$(az resource show -g $RESOURCE_GROUP -n ${{ secrets.APPLICATION_INSIGHTS_NAME }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
 
           envsubst < core/pipelines/data_drift.yml > core/pipelines/temp_data_drift.yml
-          cp core/pipelines/temp_data_export.yml core/pipelines/data_export.yml
+          cp core/pipelines/temp_data_drift.yml core/pipelines/data_drift.yml
 
       - name: Create data drift schedule
         uses: "./.github/templates/schedule-job"
@@ -307,7 +301,7 @@ jobs:
           export INSTRUMENTATION_KEY=$(az resource show -g $RESOURCE_GROUP -n ${{ secrets.APPLICATION_INSIGHTS_NAME }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
 
           envsubst < core/pipelines/data_drift.yml > core/pipelines/temp_data_drift.yml
-          cp core/pipelines/temp_data_export.yml core/pipelines/data_export.yml
+          cp core/pipelines/temp_data_drift.yml core/pipelines/data_drift.yml
 
       - name: Create data drift schedule
         uses: "./.github/templates/schedule-job"

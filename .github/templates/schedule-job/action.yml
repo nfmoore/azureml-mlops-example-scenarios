@@ -20,5 +20,5 @@ runs:
         SCHEDULE_NAME=$(yq '.name' < ${{ inputs.schedule_file }})
         echo $SCHEDULE_NAME
 
-        az ml schedule create --file ${{ inputs.schedule_file }} --debug
+        az ml schedule create --file ${{ inputs.schedule_file }}
         az ml schedule enable --name $SCHEDULE_NAME
