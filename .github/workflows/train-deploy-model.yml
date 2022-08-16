@@ -78,44 +78,44 @@ jobs:
           workspace_name: ${{ secrets.WORKSPACE_NAME }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Create online endpoint
-        uses: "./.github/templates/create-endpoint"
-        with:
-          endpoint_type: online
-          endpoint_file: ./core/deploy/online/endpoint.yml
-          endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
-          log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
+      # - name: Create online endpoint
+      #   uses: "./.github/templates/create-endpoint"
+      #   with:
+      #     endpoint_type: online
+      #     endpoint_file: ./core/deploy/online/endpoint.yml
+      #     endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
+      #     log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
 
-      - name: Create batch endpoint
-        uses: "./.github/templates/create-endpoint"
-        with:
-          endpoint_type: batch
-          endpoint_file: ./core/deploy/batch/endpoint.yml
-          endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
-          log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
+      # - name: Create batch endpoint
+      #   uses: "./.github/templates/create-endpoint"
+      #   with:
+      #     endpoint_type: batch
+      #     endpoint_file: ./core/deploy/batch/endpoint.yml
+      #     endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
+      #     log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
 
-      - name: Create online deployment
-        uses: "./.github/templates/create-deployment"
-        with:
-          deployment_type: online
-          deployment_file: ./core/deploy/online/deployment.yml
-          endpoint_file: ./core/deploy/online/endpoint.yml
-          endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
+      # - name: Create online deployment
+      #   uses: "./.github/templates/create-deployment"
+      #   with:
+      #     deployment_type: online
+      #     deployment_file: ./core/deploy/online/deployment.yml
+      #     endpoint_file: ./core/deploy/online/endpoint.yml
+      #     endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
 
-      - name: Create batch deployment
-        uses: "./.github/templates/create-deployment"
-        with:
-          deployment_type: batch
-          deployment_file: ./core/deploy/batch/deployment.yml
-          endpoint_file: ./core/deploy/batch/endpoint.yml
-          endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
+      # - name: Create batch deployment
+      #   uses: "./.github/templates/create-deployment"
+      #   with:
+      #     deployment_type: batch
+      #     deployment_file: ./core/deploy/batch/deployment.yml
+      #     endpoint_file: ./core/deploy/batch/endpoint.yml
+      #     endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
 
       - name: Add variables to data export job specification
         shell: bash
         run: |
           export MODEL_NAME=$(yq '.jobs.register_step.inputs.model_name' < core/pipelines/train_model.yml)
           export MODEL_VERSION=$(az ml model list --name $MODEL_NAME --query "[0].version" | bc -l)
-          export LOG_ANALYTICS_WORKSPACE_ID=$(az monitor log-analytics workspace show --workspace-name ${{ inputs.log_analytics_workspace_name }} | jq '.customerId' --raw-output)
+          export LOG_ANALYTICS_WORKSPACE_ID=$(az monitor log-analytics workspace show --workspace-name ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }} | jq --raw-output '.customerId')
           envsubst < ./core/pipelines/data_export.yml > ./core/pipelines/data_export.yml
           cat ./core/pipelines/data_export.yml
 
@@ -208,7 +208,7 @@ jobs:
       - name: Upload and tag model
         run: |
           MODEL_NAME=$(yq '.jobs.register_step.inputs.model_name' < core/pipelines/train_model.yml)
-          MODEL_VERSION=$(jq '.model_version' model.json | bc -l)
+          MODEL_VERSION=$(jq --raw-output '.model_version' model.json | bc -l)
 
           az ml model create --name $MODEL_NAME --version $MODEL_VERSION --path $MODEL_NAME/model --type mlflow_model
           az ml model update --name $MODEL_NAME --version $MODEL_VERSION \
@@ -282,7 +282,7 @@ jobs:
         run: |
           export MODEL_NAME=$(yq '.jobs.register_step.inputs.model_name' < core/pipelines/train_model.yml)
           export MODEL_VERSION=$(az ml model list --name $MODEL_NAME --query "[0].version" | bc -l)
-          export LOG_ANALYTICS_WORKSPACE_ID=$(az monitor log-analytics workspace show --workspace-name ${{ inputs.log_analytics_workspace_name }} | jq '.customerId' --raw-output)
+          export LOG_ANALYTICS_WORKSPACE_ID=$(az monitor log-analytics workspace show --workspace-name ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }} | jq --raw-output '.customerId')
           envsubst < ./core/pipelines/data_export.yml > ./core/pipelines/data_export.yml
           cat ./core/pipelines/data_export.yml
 
