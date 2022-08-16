@@ -33,10 +33,10 @@ jobs:
           workspace_name: ${{ secrets.WORKSPACE_NAME }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Run pipeline job to train model
-        uses: "./.github/templates/run-job"
-        with:
-          job_file: ./core/pipelines/train_model.yml
+      # - name: Run pipeline job to train model
+      #   uses: "./.github/templates/run-job"
+      #   with:
+      #     job_file: ./core/pipelines/train_model.yml
 
       - name: Tag and download model
         run: |
@@ -120,7 +120,7 @@ jobs:
           cat ./core/pipelines/data_export.yml
 
       - name: Create data export schedule
-        uses: "./.github/templates/create-schedule"
+        uses: "./.github/templates/schedule-job"
         with:
           schedule_file: ./core/schedule/data_export.yml
           log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
@@ -133,7 +133,7 @@ jobs:
           cat ./core/pipelines/data_drift.yml
 
       - name: Create data drift schedule
-        uses: "./.github/templates/create-schedule"
+        uses: "./.github/templates/schedule-job"
         with:
           schedule_file: ./core/schedule/data_drift.yml
           log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
@@ -287,7 +287,7 @@ jobs:
           cat ./core/pipelines/data_export.yml
 
       - name: Create data export schedule
-        uses: "./.github/templates/create-schedule"
+        uses: "./.github/templates/schedule-job"
         with:
           schedule_file: ./core/schedule/data_export.yml
           log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
@@ -300,7 +300,7 @@ jobs:
           cat ./core/pipelines/data_drift.yml
 
       - name: Create data drift schedule
-        uses: "./.github/templates/create-schedule"
+        uses: "./.github/templates/schedule-job"
         with:
           schedule_file: ./core/schedule/data_drift.yml
           log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
