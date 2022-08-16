@@ -35,7 +35,7 @@ def main(args: Namespace) -> None:
 
     # define file name and path
     file_name = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-    file_path = f"{args.prepared_data_dir}/export/online/{args.model_name}/{args.model_version}"
+    file_path = f"{args.prepared_data_dir}/employee-attrition/inference/online"
 
     # create directories if they do not exist
     os.makedirs(file_path, exist_ok=False)

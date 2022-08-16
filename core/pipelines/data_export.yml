@@ -19,9 +19,9 @@ jobs:
     type: command
     component: file:../components/export.yml
     inputs:
-      model_name: employee-attrition # ${MODEL_NAME}
-      model_version: 3 # ${MODEL_VERSION}
-      log_analytics_workspace_id: 8eba176a-1e34-40c4-aefc-142f7ef3565d # ${LOG_ANALYTICS_WORKSPACE_ID}
+      model_name: ${MODEL_NAME}
+      model_version: ${MODEL_VERSION}
+      log_analytics_workspace_id: ${LOG_ANALYTICS_WORKSPACE_ID}
       number_of_previous_days: 7
     outputs:
       prepared_data_dir: ${{parent.outputs.prepared_data_dir}}

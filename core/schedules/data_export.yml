@@ -7,4 +7,4 @@ trigger:
   type: cron
   expression: "0 0 * * 0"
 
-create_job: core/pipelines/data_export.yml
+create_job: ../pipelines/data_export.yml
