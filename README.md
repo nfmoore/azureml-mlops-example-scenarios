@@ -4,9 +4,9 @@
 
 MLOps is a set of repeatable, automated, and collaborative workflows with best practices that empower teams of ML professionals to quickly and easily get their machine learning models deployed into production.
 
-This repository provides prescriptive guidance when building, deploying, and monitoring machine learning models with [Azure Machine Learning](https://docs.microsoft.com/en-us/azure/machine-learning/) in line with MLOps principles and practices.
+This repository provides prescriptive guidance when building, deploying, and monitoring machine learning models with [Azure Machine Learning](https://docs.microsoft.com/azure/machine-learning/) in line with MLOps principles and practices.
 
-These example scenarios provided an end-to-end approach for MLOps in Azure based on common inference scenarios. The example scenarios will focus on [Azure Machine Learning](https://docs.microsoft.com/en-us/azure/machine-learning) and [GitHub Actions](https://github.com/features/actions).
+These example scenarios provided an end-to-end approach for MLOps in Azure based on common inference scenarios. The example scenarios will focus on [Azure Machine Learning](https://docs.microsoft.com/azure/machine-learning) and [GitHub Actions](https://github.com/features/actions).
 
 > **Note:** the [Azure MLOps (v2) Solution Accelerator](https://github.com/Azure/mlops-v2) is intended to serve as the starting point for MLOps implementation in Azure.
 
@@ -27,6 +27,8 @@ All example scenarios will focus on classical machine learning problems. The `IB
 | ---------------- | ------------------ | ----------- |
 | [Batch Managed Endpoint](./.github/docs/batch-endpoint.md) | Batch | Consume a registered model as a batch managed endpoint within Azure Machine Learning for high-throughput scenarios that can be executed within a single Azure Machine Learning workspace. |
 | [Online Managed Endpoint](./.github/docs/online-endpoint.md) | Online | Consume a registered model as an online managed endpoint within Azure Machine Learning for low-latency scenarios. |
+
+> For detailed instructions to deploy example scenarios for batch managed endpoints and online managed endpoints to a personal Azure environment see the [Step-by-Step Setup](./step-by-step.md) section of this repository. This will result in a machine learning model being trainined, registered in both environments, deployed as both types of endpoints.
 
 ### Native integrations between Azure services and deployments within Azure Machine Learning
 
