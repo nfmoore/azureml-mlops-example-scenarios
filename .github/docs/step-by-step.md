@@ -61,14 +61,16 @@ In this example scenario, four workflows have been developed in the `.github/wor
 - `**Create Environments`:** workflow intended to deploy new Azure Machine Learning environments to staging and production environments as they are created. Azure Machine Learning environments are defined in specification files which trigger the workflow as changes are committed.
 - `**Train and Deploy Model`:** a workflow that trains a model in a staging environment, creates endpoints and deployments referencing the model, runs end-to-end tests, copies model assets to the production environment, and recreates endpoints and deployments in the production environment. Triggering this workflow on a schedule can be used to implement a model retraining process.
 
-To execute the workflow you can manually trigger the workflow in GitHub Actions `Workflows` menu. In the sidebar, you will need to trigger all four workflows. To trigger a workflow, select the workflow then click `Run workflow`. Execute the workflows in the following order (note that the `Train and Deploy Model` workflow depends on `Create Data Assets` and `Create Environments`):
+To execute the workflow you can manually trigger the workflow in GitHub Actions `Workflows` menu. In the sidebar, you will need to trigger all four workflows. To trigger a workflow, select the workflow then click `Run workflow`. Execute the workflows in the following order:
 
-`Code Quality
-`Create Data Assets`
-`Create Environments`
-`Train and Deploy Model`'
+1. `Code Quality`
+2. `Create Data Assets`
+3. `Create Environments`
+4. `Train and Deploy Model`
 
-Note that manual approval is required to deploy the Docker container to the `Production` environment. Once the `End to End Testing` job is complete you will be prompted to review the deployment. Click the `Review Deployment` button to give approval and commence the `Upload Model to Production` job. This will need to be repeated for the `Deploy to Production` job. The approver(s) were specified in `1.3` above.
+Note that the `Train and Deploy Model` workflow depends on `Create Data Assets` and `Create Environments`
+
+Manual approval is required to deploy the Docker container to the `Production` environment. Once the `End to End Testing` job is complete you will be prompted to review the deployment. Click the `Review Deployment` button to give approval and commence the `Upload Model to Production` job. This will need to be repeated for the `Deploy to Production` job. The approver(s) were specified in `1.3` above.
 
 Once the workflow has finished executing all artifacts will have been deployed to both `Staging` and `Production` environments.
 
@@ -77,4 +79,4 @@ Once the workflow has finished executing all artifacts will have been deployed t
 You might also find these references useful:
 
 - [Using environments for deployment](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment)
-- [Understanding GitHub Actions](hhttps://docs.github.com/en/actions/learn-github-actions/understanding-github-actions)
+- [Understanding GitHub Actions](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions)
