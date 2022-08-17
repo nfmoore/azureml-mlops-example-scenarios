@@ -29,7 +29,7 @@ The solution consists of the following components:
 - **Source control:** solution to track code.
 - **Automated workflows:** workflows to automate the build and deployment of different components used in the solution.
 
-## Related resources
+## Related Resources
 
 You might also find these references useful:
 

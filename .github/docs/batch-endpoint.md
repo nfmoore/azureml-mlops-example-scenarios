@@ -2,7 +2,7 @@
 
 ## Solution Overview
 
-### Potential use cases
+### Potential Use Cases
 
 This approach is best suited for:
 
@@ -47,35 +47,25 @@ The environments include:
 - **Staging:** used to test deployments before going to production in a production-like environment. Any integration tests are run in this environment.
 - **Production:** used for the final production environment.
 
-## Implementation Process
+## Code Walkthrough
 
-> **Note:** As with all Azure Deployments, this will incur associated costs. Remember to teardown all related resources after use to avoid unnecessary costs.
+This section describes the main components of the example scenario that relate to implementing a batch scoring scenario with Azure Machine Learning managed batch endpoints. Each section will describe the key files and the role they play in the context of the overall solution.
 
-### Prerequisites
+> **Note:**
+> For detailed instructions to deploy this example scenario to a personal Azure environment see the [Step-by-Step Setup](./step-by-step.md) section of this repository. This will result in a machine learning model being trainined, registered in both environments, deployed as both a managed batch endpoint and a managed online endpoint, and scheduled execution of the `Data Export` and `Data Drift` pipelines periodically.
 
-Before implementing this example scenario the following are needed:
+### Data Assets
 
-- Azure subscription (contributor or owner)
-- GitHub account
-- Azure Machine Learning workspace
+A reference to data assets stored within a datastore needs to be created. Two data assets will be created in this example scenario - one for training a model referencing `core/data/curated/data.csv` and another for model inference referencing `core/data/inference/data.csv`. Azure Machine Learning datasets enable:
 
-### Initial Setup
-
-Ensure an Azure Machine Learning workspace with associated resources is created, forked this repository into a new Github repository, set the following required environment variables, and configure the Azure CLI defaults. To configure the Azure CLI defaults execute:
-
-```bash
-GROUP=<resource-group>
-WORKSPACE=<aml-workspace>
-LOCATION=<aml-workspace-location>
-
-az configure --defaults group=$GROUP workspace=$WORKSPACE location=$LOCATION
-```
-
-Upload the `core/data/raw/data.csv` and `core/data/inference/data.csv` data sets to the default blob datastore `workspaceblobstore` used by Azure Machine Learning. Ensure these files are uploaded to `data/employee-attrition/raw` and `data/employee-attrition/inference` directories respectively.
+- Keep a single copy of data in storage referenced by datasets.
+- Seamlessly access data during model training without worrying about connection strings or data paths.
+- Share data and collaborate with other users.
+- Create different versions of datasets.
 
 ### Model Training Pipeline
 
-Create an Azure Machine Learning environment called `employee-attrition-train` for the model training pipeline. An Azure Machine Learning environment specifies the runtime, Python packages, environment variables, and software settings.
+An Azure Machine Learning environment called `employee-attrition-train` for the model training pipeline will need to be created. An Azure Machine Learning environment specifies the runtime, Python packages, environment variables, and software settings.
 
 To register the environment for the model training pipeline in the Azure Machine Learning workspace execute:
 
@@ -83,19 +73,19 @@ To register the environment for the model training pipeline in the Azure Machine
 az ml environment create -f core/environments/train.yml
 ```
 
-The model training pipeline is defined in `core/pipelines/model_development.yml`. It orchestrates the model development process by executing data preprocessing, model training with hyperparameter tuning, and model registration logic encapsulated in different scripts. These are found in the `core/src` directory. This pipeline can be used to train an initial model and subsequent model version (i.e. retraining).
+The model training pipeline is defined in `core/pipelines/train_model.yml`. It orchestrates the model development process by executing data preprocessing, data quality reporting, model training with hyperparameter tuning, and model registration logic encapsulated in different scripts. These are found in the `core/src` directory. This pipeline can be used to train an initial model and subsequent model version (i.e. retraining).
 
 To create the machine learning model artifact a pipeline job must be triggered by executing:
 
 ```bash
-az ml job create -f core/pipelines/model_development.yml
+az ml job create -f core/pipelines/train_model.yml
 ```
 
-A byproduct of executing the model training pipeline is the preprocessed dataset that will be written to the default blob datastore `workspaceblobstore`. This can be used as an input to the data drift pipeline.
+A byproduct of executing the model training pipeline is a prepared dataset that will be written to the default blob datastore `workspaceblobstore`.
 
 ### Managed Batch Endpoint Deployment
 
-Once the model has been developed and the model artifact has been registered in the Azure Machine Learning workspace a managed batch endpoint can be created. Managed batch endpoints simplify the process of hosting machine learning models by exposing an HTTPS endpoint that clients can call to trigger a batch scoring job. When deploying MLflow model scoring code and an execution environment is auto-generated. This approach is adopted in this example scenario.
+Once the model has been developed and the model artifact has been registered in the Azure Machine Learning workspace a managed batch endpoint can be created. Managed batch endpoints simplify the process of hosting machine learning models by exposing an HTTPS endpoint that clients can call to trigger a batch scoring job. When deploying MLflow model, scoring code and an execution environment is automatically generated. This approach is adopted in this example scenario.
 
 To deploy the managed batch endpoint an endpoint must first be created. An endpoint defines the HTTPS endpoint that clients can call. An endpoint can be created by executing:
 
@@ -113,12 +103,12 @@ To evoke the batch endpoint several options exist including CLI, REST, or manual
 
 ```bash
 ENDPOINT_NAME=employee-attrition-be
-DATA_SET_LOCAL_PATH=data/employee-attrition/inference/data.csv
+DATA_SET_LOCAL_PATH=core/data/inference/data.csv
 
 az ml batch-endpoint invoke --name $ENDPOINT_NAME --input $DATA_SET_LOCAL_PATH
 ```
 
-The following resource available [here](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-use-batch-endpoint) provides more information about managed batch endpoints.
+The following resource available [here](https://docs.microsoft.com/azure/machine-learning/how-to-use-batch-endpoint) provides more information about managed batch endpoints.
 
 ### Data Drift Pipeline
 
@@ -147,6 +137,8 @@ Next, the data drift pipeline job can be triggered by executing:
 az ml job create -f core/pipelines/data_drift.yml
 ```
 
+This pipeline will be triggered as part of an Azure Machine Learning pipeline schedule.
+
 ### Model Monitoring
 
 Azure Monitor is used as the central solution for collecting, analysing, and acting on telemetry within this example scenario. With Azure Monitor, logs can be analysed via Log Analytics, visualisations can be created from metrics, and alerts can be configured.
@@ -174,7 +166,28 @@ traces
 | evaluate bag_unpack(data)
 ```
 
-## Related resources
+### Automated Model Training, Deployment, and Monitoring
+
+To automatically build all assets and deploy them to staging and production environments GitHub Actions is used. GitHub Actions is a continuous integration and continuous delivery (CI/CD) platform that allows for the creation of automated build, test, and deployment pipelines. Workflows can be created that build and test every pull recommendation to a repository or deploy merged pull requests to production.
+
+With GitHub Actions and establishing similar workflows, machine learning teams can build their levels of maturity operationalising machine learning models (MLOps). Some goals of implementing MLOps for machine learning projects include:
+
+- Automated deployment of machine learning models to production.
+- Creating secured, reproducible and scalable machine learning workflows.
+- Manage models and capture data lineage.
+- Enable continuous delivery with IaC and CI/CD pipelines.
+- Monitor performance and feedback information from models.
+- Providing compliance, security, and cost tools for machine learning development.
+- Increasing collaboration and experimentation.
+
+In this example scenario, four workflows have been developed in the `.github/workflows` directory. Reusable sub workflows are in the `.github/templates` directory and are used more than once across one or more workflows. The main workflows in this example scenario are:
+
+- **Code Quality:** implementing regular code scanning on select branches when code is pushed and on a schedule.
+- **Create Data Assets:** workflow intended to deploy new data assets to staging and production environments as they are created. Data assets are defined in specification files which trigger the workflow as changes are committed.
+- **Create Environments:** workflow intended to deploy new Azure Machine Learning environments to staging and production environments as they are created. Azure Machine Learning environments are defined in specification files which trigger the workflow as changes are committed.
+- **Train and Deploy Model:** a workflow that trains a model in a staging environment, creates endpoints and deployments referencing the model, runs end-to-end tests, copies model assets to the production environment, and recreates endpoints and deployments in the production environment. Triggering this workflow on a schedule can be used to implement a model retraining process.
+
+## Related Resources
 
 The following references might be useful:
 

@@ -57,7 +57,7 @@ The environments include:
 - **Staging:** used to test deployments before going to production in a production-like environment. Any integration tests are run in this environment.
 - **Production:** used for the final production environment.
 
-## Related resources
+## Related Resources
 
 You might also find these references useful:
 

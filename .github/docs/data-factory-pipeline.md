@@ -74,7 +74,7 @@ The environments include:
 > In this approach a new record can be added to the control table in the database which stores metadata for the pipeline.
 > For this an updated DACPAC or run scripts using SQLCMD can be used within the CI/CD pipeline.
 
-## Related resources
+## Related Resources
 
 You might also find these references useful:
 
