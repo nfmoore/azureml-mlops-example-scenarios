@@ -1,20 +1,21 @@
-# imports
-import argparse
+"""Script to develop a machine learning model from input data"""
+from argparse import ArgumentParser, Namespace
 from distutils.dir_util import copy_tree
+from typing import Dict, Union
 
 import mlflow
 import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.impute import SimpleImputer
-from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder
 
 from constants import CATEGORICAL_FEATURES, NUMERIC_FEATURES, TARGET
 
 
-def main(args):
+def main(args: Namespace) -> None:
+    """Develop an sklearn model and use mlflow to log metrics"""
     # enable auto logging
     mlflow.autolog()
 
@@ -26,43 +27,35 @@ def main(args):
         "random_state": args.random_state,
     }
 
-    # read in data
-    df = pd.read_csv(f"{args.prepared_data_dir}/data.csv")
+    # read data
+    df_train = pd.read_csv(f"{args.prepared_data_dir}/train.csv")
+    df_test = pd.read_csv(f"{args.prepared_data_dir}/test.csv")
 
-    # split into train and test datasets
-    X_train, X_test, y_train, y_test = train_test_split(
-        df[CATEGORICAL_FEATURES + NUMERIC_FEATURES],
-        df[TARGET],
-        test_size=0.20,
-        random_state=args.random_state
-    )
+    # seperate features and target variables
+    x_train, y_train = df_train[CATEGORICAL_FEATURES +
+                                NUMERIC_FEATURES], df_train[TARGET]
+    x_test, y_test = df_test[CATEGORICAL_FEATURES +
+                             NUMERIC_FEATURES], df_test[TARGET]
 
-    # build models
-    classification_model = train_classification_model(
-        params, X_train, X_test, y_train, y_test)
+    # train model
+    estimator = make_classifer_pipeline(params)
+    estimator = estimator.fit(x_train, y_train.values.ravel())
+
+    # evaluate model performance
+    metrics = mlflow.sklearn.eval_and_log_metrics(
+        estimator, x_test, y_test.values.ravel(), prefix="validation_")
+    mlflow.log_metrics(metrics)
 
     # save models
-    mlflow.sklearn.save_model(classification_model, "model")
+    mlflow.sklearn.save_model(estimator, "model")
 
     # copy model artifact to directory
     to_directory = args.model_output
     copy_tree("model", f"{to_directory}/model")
 
 
-def train_classification_model(params, X_train, X_test, y_train, y_test):
-    # train model
-    estimator = make_classifer_pipeline(params)
-    estimator = estimator.fit(X_train, y_train.values.ravel())
-
-    # evaluate model performance
-    metrics = mlflow.sklearn.eval_and_log_metrics(
-        estimator, X_test, y_test.values.ravel(), prefix="validation_")
-    mlflow.log_metrics(metrics)
-
-    return estimator
-
-
-def make_classifer_pipeline(params):
+def make_classifer_pipeline(params: Dict[str, Union[str,  int]]) -> Pipeline:
+    """Create sklearn pipeline to apply transforms and a final estimator"""
     # categorical features transformations
     categorical_transformer = Pipeline(steps=[
         ("imputer", SimpleImputer(strategy="constant", fill_value="missing")),
@@ -91,9 +84,10 @@ def make_classifer_pipeline(params):
     return classifer_pipeline
 
 
-def parse_args():
+def parse_args() -> Namespace:
+    """Parse command line arguments"""
     # setup arg parser
-    parser = argparse.ArgumentParser("train")
+    parser = ArgumentParser("train")
 
     # add arguments
     parser.add_argument("--prepared_data_dir", type=str)
@@ -109,15 +103,9 @@ def parse_args():
     # parse args
     args = parser.parse_args()
 
-    # return args
     return args
 
 
-# run script
 if __name__ == "__main__":
-    # parse args
-    args = parse_args()
-
-    # run main function
     with mlflow.start_run():
-        main(args)
+        main(parse_args())

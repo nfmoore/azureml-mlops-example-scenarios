@@ -1,3 +1,4 @@
+"""Script for an azureml online deployment"""
 import json
 import logging
 import os
@@ -10,59 +11,17 @@ from inference_schema.parameter_types.standard_py_parameter_type import \
     StandardPythonParameterType
 from inference_schema.schema_decorators import input_schema, output_schema
 
-# Define sample data
-INPUT_SAMPLE = [
-    {
-        "BusinessTravel": "Travel_Rarely",
-        "Department": "Research & Development",
-        "EducationField": "Medical",
-        "Gender": "Male",
-        "JobRole": "Manager",
-        "MaritalStatus": "Married",
-        "Over18": "Yes",
-        "OverTime": "No",
-        "Age": 36,
-        "DailyRate": 989,
-        "DistanceFromHome": 8,
-        "Education": 1,
-        "EmployeeCount": 1,
-        "EmployeeNumber": 253,
-        "EnvironmentSatisfaction": 4,
-        "HourlyRate": 46,
-        "JobInvolvement": 3,
-        "JobLevel": 5,
-        "JobSatisfaction": 3,
-        "MonthlyIncome": 19033,
-        "MonthlyRate": 6499,
-        "NumCompaniesWorked": 1,
-        "PercentSalaryHike": 14,
-        "PerformanceRating": 3,
-        "RelationshipSatisfaction": 2,
-        "StandardHours": 65,
-        "StockOptionLevel": 1,
-        "TotalWorkingYears": 14,
-        "TrainingTimesLastYear": 3,
-        "WorkLifeBalance": 2,
-        "YearsAtCompany": 3,
-        "YearsInCurrentRole": 3,
-        "YearsSinceLastPromotion": 3,
-        "YearsWithCurrManager": 1
-    }
-]
+from constants import INPUT_SAMPLE, OUTPUT_SAMPLE
 
-OUTPUT_SAMPLE = {"probability": [0.26883566156891225]}
-
-
-# Configure logger
+# define global variables
+SERVICE_NAME = None
+MODEL = None
 LOGGER = logging.getLogger('root')
 
 
-def init():
-    """
-    A startup event handler to load an MLFLow model.
-    """
-    global SERVICE_NAME
-    global MODEL
+def init() -> None:
+    """Startup event handler to load an MLFLow model."""
+    global SERVICE_NAME, MODEL
 
     # Load MLFlow model
     SERVICE_NAME = "online/" + os.getenv("AZUREML_MODEL_DIR").split('/', 4)[-1]
@@ -78,15 +37,8 @@ def init():
 
 @input_schema("data", StandardPythonParameterType(INPUT_SAMPLE))
 @output_schema(StandardPythonParameterType(OUTPUT_SAMPLE))
-def run(data: List[Dict]):
-    """
-    Function performing scoring for every invocation of the endpoint.
-    Parameters:
-        request (List[Dict]): Web service request containing inference data.
-    Returns:
-        response_payload (str): JSON string containing model predictions
-        and drift / outlier results for monitoring.
-    """
+def run(data: List[Dict]) -> str:
+    """Perform scoring for every invocation of the endpoint"""
 
     try:
         # Define UUID for the request
@@ -120,10 +72,10 @@ def run(data: List[Dict]):
 
         return response_payload
 
-    except Exception as e:
+    except Exception as error:
         LOGGER.error(json.dumps({
             "service_name": SERVICE_NAME,
             "type": "Exception",
             "request_id": request_id,
-            "error": e
-        }), exc_info=e)
+            "error": error
+        }), exc_info=error)

@@ -5,12 +5,12 @@ experiment_name: employee-attrition-drift-pipeline
 description: Pipeline to measure data drift between a reference dataset and target dataset.
 
 inputs:
-  reference_data_dir:
+  reference_data:
     type: uri_folder
-    path: azureml://datastores/workspaceblobstore/paths/data/employee-attrition/processed
-  target_data_dir:
+    path: azureml:employee-attrition-curated@latest
+  target_data:
     type: uri_folder
-    path: azureml://datastores/workspaceblobstore/paths/data/employee-attrition/inference
+    path: azureml:employee-attrition-inference@latest
 
 settings:
   default_datastore: azureml:workspaceblobstore
@@ -22,7 +22,7 @@ jobs:
     type: command
     component: file:../components/drift.yml
     environment_variables:
-      APPLICATIONINSIGHTS_CONNECTION_STRING: "InstrumentationKey=7738a7b1-000f-4fd8-a9a4-36ec42434ad7"
+      APPLICATIONINSIGHTS_CONNECTION_STRING: ${INSTRUMENTATION_KEY} # example: "InstrumentationKey=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
     inputs:
-      reference_data_dir: ${{parent.inputs.reference_data_dir}}
-      target_data_dir: ${{parent.inputs.target_data_dir}}
+      reference_data: ${{parent.inputs.reference_data}}
+      target_data: ${{parent.inputs.target_data}}

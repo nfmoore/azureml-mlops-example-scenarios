@@ -1,0 +1,40 @@
+name: Create Data Asset
+
+description: Create Azure ML data asset if one does not exist.
+
+inputs:
+  data_file:
+    description: Local path to the YAML file containing the Azure ML data specification specification
+    required: true
+  azure_credentials:
+    description: JSON object for the service principal used to authenticate with Azure
+    required: true
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Create data asset
+      shell: bash
+      run: |
+        DATA_NAME=$(yq '.name' < ${{ inputs.data_file }})
+        DATA_VERSION=$(yq '.version' < ${{ inputs.data_file }})
+        echo $DATA_NAME $DATA_VERSION
+
+        DATA_EXISTS=$(az ml data list --query "[?name=='$DATA_NAME']" | wc -l)
+        echo $DATA_EXISTS 
+
+        if [[ $DATA_EXISTS -ne 1 ]]; then
+            DATA_VERSION_EXISTS=$(az ml data list --name $DATA_NAME --query "[?version=='$DATA_VERSION']" | wc -l)
+            echo $DATA_VERSION_EXISTS 
+
+            if [[ $DATA_VERSION_EXISTS -ne 1 ]]; then
+                  echo "Creating new data asset version"
+                  az ml data create --file ${{ inputs.data_file }}
+              else
+                  echo "data asset version exists"
+              fi
+        else
+            echo "Creating new data asset"
+            az ml data create --file ${{ inputs.data_file }}
+        fi

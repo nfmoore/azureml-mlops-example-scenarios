@@ -178,4 +178,4 @@ traces
 
 The following references might be useful:
 
-- [Use batch endpoints for batch scoring](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-use-batch-endpoint)
+- [Use batch endpoints for batch scoring](https://docs.microsoft.com/azure/machine-learning/how-to-use-batch-endpoint)

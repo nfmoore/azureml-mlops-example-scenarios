@@ -7,14 +7,15 @@ inputs:
   model_name:
     type: string
     default: employee-attrition
-  reference_data_dir:
+  reference_data:
     type: uri_folder
-  target_data_dir:
+  target_data:
     type: uri_folder
 code: ..
 environment: azureml:employee-attrition-drift@latest
 command: >-
   python src/drift.py 
   --model_name ${{inputs.model_name}} 
-  --reference_data_dir ${{inputs.reference_data_dir}}
-  --target_data_dir ${{inputs.target_data_dir}}
+  --reference_data ${{inputs.reference_data}}
+  --target_data ${{inputs.target_data}}
+is_deterministic: false

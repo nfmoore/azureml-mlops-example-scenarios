@@ -27,7 +27,8 @@ command: >-
   python src/train.py 
     --prepared_data_dir ${{inputs.prepared_data_dir}}
     --random_state ${{inputs.random_state}}
-    --model_output ${{outputs.model_output}}
     --n_estimators ${{inputs.n_estimators}}
     --max_depth ${{inputs.max_depth}}
     --criterion ${{inputs.criterion}}
+    --model_output ${{outputs.model_output}}
+is_deterministic: false

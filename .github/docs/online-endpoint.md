@@ -133,7 +133,7 @@ ENDPOINT_NAME=employee-attrition-oe
 az ml online-endpoint invoke --name $ENDPOINT_NAME --request-file core/deploy/online/sample.json
 ```
 
-The following resource available [here](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-deploy-managed-online-endpoints) provides more information about managed online endpoints.
+The following resource available [here](https://docs.microsoft.com/azure/machine-learning/how-to-deploy-managed-online-endpoints) provides more information about managed online endpoints.
 
 ### Data Drift Pipeline
 
@@ -208,7 +208,7 @@ To effectively monitor data drift and re-train models in online inference scenar
 
 In this example scenario a Logic App is used to query data from a Log Analytics workspace in Azure Monitor and send data to Azure Storage which can be consumed by the data drift pipeline for calculating data drift metrics and the model training pipeline for model retraining scenarios.
 
-First, to capture custom logs from the online managed endpoint diagnostic settings must be configured to collect logs from the online managed endpoint and send them to a Log Analytics workspace. The following resource available [here](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-monitor-online-endpoints#logs) can be used to learn how to configure this.
+First, to capture custom logs from the online managed endpoint diagnostic settings must be configured to collect logs from the online managed endpoint and send them to a Log Analytics workspace. The following resource available [here](https://docs.microsoft.com/azure/machine-learning/how-to-monitor-online-endpoints#logs) can be used to learn how to configure this.
 
 Once logs have been collected, to filter and parse inference data from custom logs the following query can be executed in Log Analytics:
 
@@ -223,12 +223,12 @@ AmlOnlineEndpointConsoleLog
 | evaluate bag_unpack(InputData)
 ```
 
-The following resource available [here](https://docs.microsoft.com/en-us/azure/azure-monitor/logs/logs-export-logic-app) provides more information about this approach.
+The following resource available [here](https://docs.microsoft.com/azure/azure-monitor/logs/logs-export-logic-app) provides more information about this approach.
 
 ## Related resources
 
 You might also find these references useful:
 
-- [Deploy and score a machine learning model by using an online endpoint](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-deploy-managed-online-endpoints)
-- [Monitor online endpoints](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-monitor-online-endpoints)
-- [Archive data from Log Analytics workspace to Azure storage using Logic App](https://docs.microsoft.com/en-us/azure/azure-monitor/logs/logs-export-logic-app)
+- [Deploy and score a machine learning model by using an online endpoint](https://docs.microsoft.com/azure/machine-learning/how-to-deploy-managed-online-endpoints)
+- [Monitor online endpoints](https://docs.microsoft.com/azure/machine-learning/how-to-monitor-online-endpoints)
+- [Archive data from Log Analytics workspace to Azure storage using Logic App](https://docs.microsoft.com/azure/azure-monitor/logs/logs-export-logic-app)

@@ -33,4 +33,4 @@ The solution consists of the following components:
 
 You might also find these references useful:
 
-- [Tutorial: Consume Azure Machine Learning models in Power BI](https://docs.microsoft.com/en-us/power-bi/connect-data/service-aml-integrate)
+- [Tutorial: Consume Azure Machine Learning models in Power BI](https://docs.microsoft.com/power-bi/connect-data/service-aml-integrate)

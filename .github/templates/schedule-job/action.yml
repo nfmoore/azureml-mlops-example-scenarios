@@ -1,0 +1,24 @@
+name: Create endpoint
+
+description: Create Azure ML endpoint if one does not exist.
+
+inputs:
+  schedule_file:
+    description: Local path to the YAML file containing the Azure ML schedule specification
+    required: true
+  log_analytics_workspace_name:
+    description: Name of the log analytics workspace
+    required: true
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Create and endable job schedule
+      shell: bash
+      run: |
+        SCHEDULE_NAME=$(yq '.name' < ${{ inputs.schedule_file }})
+        echo $SCHEDULE_NAME
+
+        az ml schedule create --file ${{ inputs.schedule_file }}
+        az ml schedule enable --name $SCHEDULE_NAME

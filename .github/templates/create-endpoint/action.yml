@@ -1,0 +1,45 @@
+name: Create endpoint
+
+description: Create Azure ML endpoint if one does not exist.
+
+inputs:
+  endpoint_type:
+    description: Type of the endpoint
+    required: true
+  endpoint_file:
+    description: Local path to the YAML file containing the Azure ML endpoint specification
+    required: true
+  endpoint_suffix:
+    description: Unique identifier to append to endpoint name
+    required: true
+  log_analytics_workspace_name:
+    description: Name of the log analytics workspace
+    required: true
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Create endpoint
+      shell: bash
+      run: |
+        ENDPOINT_NAME=$(yq '.name' < ${{ inputs.endpoint_file }})-${{ inputs.endpoint_suffix }}
+        ENDPOINT_EXISTS=$(az ml ${{ inputs.endpoint_type }}-endpoint list -o tsv --query "[?name=='$ENDPOINT_NAME'][name]" | wc -l)
+        echo $ENDPOINT_NAME $ENDPOINT_EXISTS
+
+        if [[ $ENDPOINT_EXISTS -ne 1 ]]; then
+            az ml ${{ inputs.endpoint_type }}-endpoint create --name $ENDPOINT_NAME --file ${{ inputs.endpoint_file }}
+
+            az ml ${{ inputs.endpoint_type }}-endpoint update --name $ENDPOINT_NAME \
+              --set tags.github_run_id=${{ github.run_id }} tags.github_workflow_url="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+            if [[ "${{ inputs.endpoint_type }}" == "online" ]]; then
+                echo "Configuring endpoint diagnostic settings"
+                ENDPOINT_RESOURCE_ID=$(az ml online-endpoint show --name $ENDPOINT_NAME | jq --raw-output '.id')
+                echo $ENDPOINT_RESOURCE_ID
+
+                az monitor diagnostic-settings create --resource $ENDPOINT_RESOURCE_ID --name azureml-online-endpoint-console-log-export --workspace ${{ inputs.log_analytics_workspace_name }} --logs '[{"category": "AmlOnlineEndpointConsoleLog","enabled": true}]'
+            fi
+        else
+            echo "Endpoint exists"
+        fi
