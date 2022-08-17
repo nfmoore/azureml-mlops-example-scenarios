@@ -14,7 +14,7 @@ Before implementing this example scenario the following are needed:
 
 ### 1.1. Deploy Azure Resources
 
-You will need to create an Azure Machine Learning workspace with associated resources for `Staging` and `Production` environments. To assist with this an ARM template has been created to automate the deployment of all necessary resources. Use the `Deploy to Azure` button below to automatically deploy these resources. You will need to do this twice to deploy 2 separate instances for `Staging` and `Production` respectively.
+You will need to create an Azure Machine Learning workspace with associated resources for `Staging` and `Production` environments. To assist with this an ARM template has been created to automate the deployment of all necessary resources. Use the `Deploy to Azure` button below to automatically deploy these resources. You will need to do this twice to deploy 2 separate instances for `Staging` and `Production` respectively. Note no settings need to be changed except the `Resource Instance` parameter (e.g. `001` and `002` respectivally).
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fnfmoore%2Fazureml-mlops-example-scenarios%2Fdevelopment%2Finfrastructure%2Fmain.json)
 
