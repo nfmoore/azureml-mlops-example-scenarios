@@ -1,4 +1,4 @@
-# imports
+"""Script to develop a machine learning model from input data"""
 from argparse import ArgumentParser, Namespace
 from distutils.dir_util import copy_tree
 from typing import Dict, Union
@@ -15,6 +15,7 @@ from constants import CATEGORICAL_FEATURES, NUMERIC_FEATURES, TARGET
 
 
 def main(args: Namespace) -> None:
+    """Develop an sklearn model and use mlflow to log metrics"""
     # enable auto logging
     mlflow.autolog()
 
@@ -31,18 +32,18 @@ def main(args: Namespace) -> None:
     df_test = pd.read_csv(f"{args.prepared_data_dir}/test.csv")
 
     # seperate features and target variables
-    X_train, y_train = df_train[CATEGORICAL_FEATURES +
+    x_train, y_train = df_train[CATEGORICAL_FEATURES +
                                 NUMERIC_FEATURES], df_train[TARGET]
-    X_test, y_test = df_test[CATEGORICAL_FEATURES +
+    x_test, y_test = df_test[CATEGORICAL_FEATURES +
                              NUMERIC_FEATURES], df_test[TARGET]
 
     # train model
     estimator = make_classifer_pipeline(params)
-    estimator = estimator.fit(X_train, y_train.values.ravel())
+    estimator = estimator.fit(x_train, y_train.values.ravel())
 
     # evaluate model performance
     metrics = mlflow.sklearn.eval_and_log_metrics(
-        estimator, X_test, y_test.values.ravel(), prefix="validation_")
+        estimator, x_test, y_test.values.ravel(), prefix="validation_")
     mlflow.log_metrics(metrics)
 
     # save models
@@ -54,6 +55,7 @@ def main(args: Namespace) -> None:
 
 
 def make_classifer_pipeline(params: Dict[str, Union[str,  int]]) -> Pipeline:
+    """Create sklearn pipeline to apply transforms and a final estimator"""
     # categorical features transformations
     categorical_transformer = Pipeline(steps=[
         ("imputer", SimpleImputer(strategy="constant", fill_value="missing")),
@@ -83,6 +85,7 @@ def make_classifer_pipeline(params: Dict[str, Union[str,  int]]) -> Pipeline:
 
 
 def parse_args() -> Namespace:
+    """Parse command line arguments"""
     # setup arg parser
     parser = ArgumentParser("train")
 
@@ -100,15 +103,9 @@ def parse_args() -> Namespace:
     # parse args
     args = parser.parse_args()
 
-    # return args
     return args
 
 
-# run script
 if __name__ == "__main__":
-    # parse args
-    args = parse_args()
-
-    # run main function
     with mlflow.start_run():
-        main(args)
+        main(parse_args())

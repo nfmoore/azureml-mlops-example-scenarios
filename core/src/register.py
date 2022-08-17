@@ -1,4 +1,4 @@
-# imports
+"""Script to register a machine learning model to mlflow"""
 from argparse import ArgumentParser, Namespace
 
 import mlflow
@@ -9,12 +9,13 @@ from constants import FEATURES
 
 
 def main(args: Namespace) -> None:
+    """Register mlflow model in model registry"""
     # load model
     model = mlflow.sklearn.load_model(f"{args.model_output}/model")
 
     # create model signature
-    df = pd.read_csv(f"{args.prepared_data_dir}/train.csv")
-    model_input = df[FEATURES].head()
+    df_train = pd.read_csv(f"{args.prepared_data_dir}/train.csv")
+    model_input = df_train[FEATURES].head()
     model_output = model.predict(model_input)
     model_signature = infer_signature(model_input, model_output)
 
@@ -28,6 +29,7 @@ def main(args: Namespace) -> None:
 
 
 def parse_args() -> Namespace:
+    """Parse command line arguments"""
     # setup arg parser
     parser = ArgumentParser("register")
 
@@ -44,9 +46,5 @@ def parse_args() -> Namespace:
 
 
 if __name__ == "__main__":
-    # parse args
-    args = parse_args()
-
-    # run main
     with mlflow.start_run():
-        main(args)
+        main(parse_args())

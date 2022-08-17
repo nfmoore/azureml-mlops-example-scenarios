@@ -1,4 +1,4 @@
-# imports
+"""Script to query log analytics for data drift metrics"""
 import os
 from argparse import ArgumentParser, Namespace
 from datetime import datetime, timedelta, timezone
@@ -9,6 +9,7 @@ from azure.monitor.query import LogsQueryClient, LogsQueryStatus
 
 
 def main(args: Namespace) -> None:
+    """Query log analytics workspace and write inference data to a datastore"""
     # setup log analytics client
     client_id = os.environ.get('DEFAULT_IDENTITY_CLIENT_ID')
     credential = ManagedIdentityCredential(client_id=client_id)
@@ -51,7 +52,7 @@ def query_workspace(
     start_time: datetime,
     end_time: datetime
 ) -> pd.DataFrame:
-
+    """Query log analytics workspace and return data"""
     # query log analytics workspace
     response = client.query_workspace(
         workspace_id=log_analytics_workspace_id,
@@ -70,12 +71,13 @@ def query_workspace(
 
     # convert data to pandas dataframe
     for table in data:
-        df = pd.DataFrame(data=table.rows, columns=table.columns)
+        df_export = pd.DataFrame(data=table.rows, columns=table.columns)
 
-    return df
+    return df_export
 
 
 def parse_args() -> Namespace:
+    """Parse command line arguments"""
     # setup arg parser
     parser = ArgumentParser("export")
 
@@ -93,8 +95,4 @@ def parse_args() -> Namespace:
 
 
 if __name__ == "__main__":
-    # parse args
-    args = parse_args()
-
-    # run main
-    main(args)
+    main(parse_args())

@@ -1,4 +1,4 @@
-# imports
+"""Script to run data quality tests"""
 from argparse import ArgumentParser, Namespace
 
 import mlflow
@@ -10,6 +10,7 @@ from constants import CATEGORICAL_FEATURES, TARGET
 
 
 def main(args: Namespace) -> None:
+    """Generate data quality report"""
     # read data
     df_train = pd.read_csv(f"{args.prepared_data_dir}/train.csv")
     df_test = pd.read_csv(f"{args.prepared_data_dir}/test.csv")
@@ -44,6 +45,7 @@ def main(args: Namespace) -> None:
 
 
 def parse_args() -> Namespace:
+    """Parse command line arguments"""
     # setup arg parser
     parser = ArgumentParser("data_quality")
 
@@ -56,11 +58,6 @@ def parse_args() -> Namespace:
     return args
 
 
-# run script
 if __name__ == "__main__":
-    # parse args
-    args = parse_args()
-
-    # run main function
     with mlflow.start_run():
-        main(args)
+        main(parse_args())
