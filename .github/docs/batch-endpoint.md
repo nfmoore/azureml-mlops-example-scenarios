@@ -90,13 +90,13 @@ Once the model has been developed and the model artifact has been registered in 
 To deploy the managed batch endpoint an endpoint must first be created. An endpoint defines the HTTPS endpoint that clients can call. An endpoint can be created by executing:
 
 ```bash
-az ml online-endpoint create -f core/deploy/batch/endpoint.yml
+az ml batch-endpoint create -f core/deploy/batch/endpoint.yml
 ```
 
 Next, a deployment must be created for the endpoint. A deployment is a set of computing resources hosting the model that does the actual scoring. A deployment can be created by executing:
 
 ```bash
-az ml online-deployment create -f core/deploy/online/deployment.yml
+az ml batch-deployment create -f core/deploy/batch/deployment.yml
 ```
 
 To evoke the batch endpoint several options exist including CLI, REST, or manually via the workspace UI.

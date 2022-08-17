@@ -51,7 +51,7 @@ The environments include:
 
 ## Code Walkthrough
 
-This section describes the main components of the example scenario that relate to implementing a batch scoring scenario with Azure Machine Learning managed batch endpoints. Each section will describe the key files and the role they play in the context of the overall solution.
+This section describes the main components of the example scenario that relate to implementing an online scoring scenario with Azure Machine Learning managed online endpoints. Each section will describe the key files and the role they play in the context of the overall solution.
 
 > **Note:**
 > For detailed instructions to deploy this example scenario to a personal Azure environment see the [Step-by-Step Setup](./step-by-step.md) section of this repository. This will result in a machine learning model being trainined, registered in both environments, deployed as both a managed batch endpoint and a managed online endpoint, and scheduled execution of the `Data Export` and `Data Drift` pipelines periodically.
