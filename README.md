@@ -28,7 +28,7 @@ All example scenarios will focus on classical machine learning problems. The `IB
 | [Batch Managed Endpoint](./.github/docs/batch-endpoint.md) | Batch | Consume a registered model as a batch managed endpoint within Azure Machine Learning for high-throughput scenarios that can be executed within a single Azure Machine Learning workspace. |
 | [Online Managed Endpoint](./.github/docs/online-endpoint.md) | Online | Consume a registered model as an online managed endpoint within Azure Machine Learning for low-latency scenarios. |
 
-> For detailed instructions to deploy example scenarios for batch managed endpoints and online managed endpoints to a personal Azure environment see the [Step-by-Step Setup](./step-by-step.md) section of this repository. This will result in a machine learning model being trainined, registered in both environments, deployed as both types of endpoints.
+> For detailed instructions to deploy example scenarios for batch managed endpoints and online managed endpoints to a personal Azure environment see the [Step-by-Step Setup](.github/docs/step-by-step.md) section of this repository. This will result in a machine learning model being trainined, registered in both environments, deployed as both types of endpoints.
 
 ### Native integrations between Azure services and deployments within Azure Machine Learning
 
