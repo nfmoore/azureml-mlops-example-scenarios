@@ -221,8 +221,8 @@ resource s_deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' =
       }
     ]
     scriptContent: '''
-      SOURCE_CURATED_DATA_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/workflows/core/data/curated/data.csv'
-      SOURCE_INFERENCE_DATA_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/workflows/core/data/inference/data.csv'
+      SOURCE_CURATED_DATA_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/development/core/data/curated/data.csv'
+      SOURCE_INFERENCE_DATA_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/development/core/data/inference/data.csv'
       DESTINATION_CURATED_DATA_PATH='./data/employee-attrition/curated/data.csv'
       DESTINATION_INFERENCE_DATA_PATH='./data/employee-attrition/inference/batch/data.csv'
 
