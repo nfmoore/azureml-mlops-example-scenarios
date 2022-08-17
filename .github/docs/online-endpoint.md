@@ -33,7 +33,7 @@ The end-to-end workflow operation consists of:
 1. Creating a machine learning model as an output from a pipeline job designed to develop a model artifact for the relevant use case.
 2. The model artifact is registered in the model registry and consumed by the online managed endpoint.
 3. When triggered, the online managed endpoint will consume data within a payload and send a response. This payload will be logged within Azure Monitor.
-4. Inference data collected from the request payload can be extracted by an Azure Logic App by querying Azure Monitor and writing the output to blob storage. These can be used as an input to calculating data drift metrics.
+4. Inference data collected from the request payload can be extracted by an Azure Machine Learning pipeline job by querying Azure Monitor and writing the output to blob storage. These can be used as an input to calculating data drift metrics.
 5. Data drift metrics will be calculated via a pipeline job and sent to Azure Monitor via Application Insights as custom metrics.
 6. Alerts can be triggered in Azure Monitor to retain and re-deploy models via triggering a pipeline job designed to develop a model artifact.
 
