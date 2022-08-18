@@ -125,6 +125,9 @@ az ml online-endpoint invoke --name $ENDPOINT_NAME --request-file core/deploy/on
 
 The following resource available [here](https://docs.microsoft.com/azure/machine-learning/how-to-deploy-managed-online-endpoints) provides more information about managed online endpoints.
 
+> **Tip:**
+> This example scenario can be extended by implementing a safe rollout which allows for gradually upgrading to a new version of the model in a new deployment from the currently running version in deployment. Learn more about implementing this concept [here](https://github.com/rsethur/saferollout)
+
 ### Data Drift Pipeline
 
 Data drift is one of the top reasons model accuracy degrades over time. For machine learning models, data drift is the change in model input data that leads to model performance degradation. Monitoring data drift helps detect these model performance issues.
@@ -244,3 +247,4 @@ You might also find these references useful:
 
 - [Deploy and score a machine learning model by using an online endpoint](https://docs.microsoft.com/azure/machine-learning/how-to-deploy-managed-online-endpoints)
 - [Monitor online endpoints](https://docs.microsoft.com/azure/machine-learning/how-to-monitor-online-endpoints)
+- [Safe rollout of ML models using Azure ML Managed Online Endpoints](https://github.com/rsethur/saferollout)
