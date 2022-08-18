@@ -80,7 +80,7 @@ To execute the workflow you can manually trigger the workflow in GitHub Actions 
 
 ![1](./images/sbs-6.png)
 
-Note that the `Train and Deploy Model` workflow depends on `Create Data Assets` and `Create Environments`
+Note that the `Train and Deploy Model` workflow depends on `Create Data Assets` and `Create Environments`.
 
 ![1](./images/sbs-7.png)
 
