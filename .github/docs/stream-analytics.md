@@ -57,10 +57,10 @@ The environments include:
 - **Staging:** used to test deployments before going to production in a production-like environment. Any integration tests are run in this environment.
 - **Production:** used for the final production environment.
 
-## Related resources
+## Related Resources
 
 You might also find these references useful:
 
-- [Integrate Azure Stream Analytics with Azure Machine Learning](https://docs.microsoft.com/en-us/azure/stream-analytics/machine-learning-udf)
-- [Continuous integration and deployment (CI/CD) for Azure Stream Analytics](https://docs.microsoft.com/en-us/azure/stream-analytics/cicd-overview)
+- [Integrate Azure Stream Analytics with Azure Machine Learning](https://docs.microsoft.com/azure/stream-analytics/machine-learning-udf)
+- [Continuous integration and deployment (CI/CD) for Azure Stream Analytics](https://docs.microsoft.com/azure/stream-analytics/cicd-overview)
 - [CI/CD for Azure Stream Analytics](https://github.com/Azure-Samples/modern-data-warehouse-dataops/tree/main/single_tech_samples/streamanalytics)

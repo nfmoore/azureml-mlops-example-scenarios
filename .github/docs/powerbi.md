@@ -29,8 +29,8 @@ The solution consists of the following components:
 - **Source control:** solution to track code.
 - **Automated workflows:** workflows to automate the build and deployment of different components used in the solution.
 
-## Related resources
+## Related Resources
 
 You might also find these references useful:
 
-- [Tutorial: Consume Azure Machine Learning models in Power BI](https://docs.microsoft.com/en-us/power-bi/connect-data/service-aml-integrate)
+- [Tutorial: Consume Azure Machine Learning models in Power BI](https://docs.microsoft.com/power-bi/connect-data/service-aml-integrate)

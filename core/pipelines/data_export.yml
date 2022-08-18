@@ -1,0 +1,27 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: employee-attrition-export-pipeline
+experiment_name: employee-attrition-export-pipeline
+description: Pipeline to export inference data from log analytics workspace and write to storage.
+
+outputs:
+  prepared_data_dir:
+    type: uri_folder
+    path: azureml://datastores/workspaceblobstore/paths/data
+
+settings:
+  default_datastore: azureml:workspaceblobstore
+  default_compute: azureml:cpu-cluster
+  continue_on_step_failure: false
+
+jobs:
+  data_export_step:
+    type: command
+    component: file:../components/export.yml
+    inputs:
+      model_name: ${MODEL_NAME}
+      model_version: ${MODEL_VERSION}
+      log_analytics_workspace_id: ${LOG_ANALYTICS_WORKSPACE_ID}
+      number_of_previous_days: 7
+    outputs:
+      prepared_data_dir: ${{parent.outputs.prepared_data_dir}}

@@ -1,0 +1,77 @@
+name: Create Data Assets
+
+on:
+  workflow_dispatch: # For demonstration purposes
+
+  # push: # Runs workflow when you push a commit or tag
+  #   branches:
+  #     - main
+
+  # schedule: # Runs workflow at a scheduled time.
+  #   - cron: "0 0 * * 0"
+
+jobs:
+  create-data-assets-staging:
+    name: Create Data Assets in Staging
+    runs-on: ubuntu-latest
+
+    environment:
+      name: Staging
+
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        uses: "./.github/templates/install-dependencies"
+        with:
+          workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
+          workspace_name: ${{ secrets.WORKSPACE_NAME }}
+          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Create curated data asset
+        uses: "./.github/templates/create-data-asset"
+        with:
+          data_file: ./core/data/curated.yml
+
+      - name: Create inference data asset
+        uses: "./.github/templates/create-data-asset"
+        with:
+          data_file: ./core/data/inference.yml
+
+  create-data-assets-production:
+    name: Create Data Assets in Production
+    runs-on: ubuntu-latest
+    needs: create-data-assets-staging
+
+    environment:
+      name: Production
+
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        uses: "./.github/templates/install-dependencies"
+        with:
+          workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
+          workspace_name: ${{ secrets.WORKSPACE_NAME }}
+          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Create curated data asset
+        uses: "./.github/templates/create-data-asset"
+        with:
+          data_file: ./core/data/curated.yml
+
+      - name: Create inference data asset
+        uses: "./.github/templates/create-data-asset"
+        with:
+          data_file: ./core/data/inference.yml

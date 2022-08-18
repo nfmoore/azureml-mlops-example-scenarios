@@ -27,9 +27,9 @@ The solution consists of:
 - **Source control:** solution to track code.
 - **Automated workflows:** workflows to automate the build and deployment of different components used in the solution.
 
-## Related resources
+## Related Resources
 
 You might also find these references useful:
 
 - [Tutorial: Machine learning model scoring wizard (preview) for dedicated SQL pools
-](https://docs.microsoft.com/en-us/azure/synapse-analytics/machine-learning/tutorial-sql-pool-model-scoring-wizard)
+](https://docs.microsoft.com/azure/synapse-analytics/machine-learning/tutorial-sql-pool-model-scoring-wizard)

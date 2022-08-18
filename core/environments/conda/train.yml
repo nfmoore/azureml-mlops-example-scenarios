@@ -12,6 +12,7 @@ dependencies:
       - azure-ai-ml
       - azureml-core~=1.42.0
       - azureml-mlflow~=1.42.0
+      - deepchecks~=0.8.2
       - ipykernel~=6.0
       - matplotlib~=3.5.0
       - numpy~=1.19.5

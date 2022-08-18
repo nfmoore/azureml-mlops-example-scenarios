@@ -22,3 +22,4 @@ command: >-
   --model_output ${{inputs.model_output}}
   --prepared_data_dir ${{inputs.prepared_data_dir}}
   --conda_env ${{inputs.conda_env}}
+is_deterministic: false

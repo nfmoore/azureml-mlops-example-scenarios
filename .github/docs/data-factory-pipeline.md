@@ -74,13 +74,13 @@ The environments include:
 > In this approach a new record can be added to the control table in the database which stores metadata for the pipeline.
 > For this an updated DACPAC or run scripts using SQLCMD can be used within the CI/CD pipeline.
 
-## Related resources
+## Related Resources
 
 You might also find these references useful:
 
-- [Use batch endpoints for batch scoring](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-use-batch-endpoint)
-- [Execute Azure Machine Learning pipelines in Azure Data Factory and Synapse Analytics](https://docs.microsoft.com/en-us/azure/data-factory/transform-data-machine-learning-service)
-- [Azure Data Factory and Azure Synapse Analytics connector overview](https://docs.microsoft.com/en-us/azure/data-factory/connector-overview)
-- [Build large-scale data copy pipelines with a metadata-driven approach in copy data tool](https://docs.microsoft.com/en-us/azure/data-factory/copy-data-tool-metadata-driven)
-- [Deploy a Data-tier Application](https://docs.microsoft.com/en-us/sql/relational-databases/data-tier-applications/deploy-a-data-tier-application)
+- [Use batch endpoints for batch scoring](https://docs.microsoft.com/azure/machine-learning/how-to-use-batch-endpoint)
+- [Execute Azure Machine Learning pipelines in Azure Data Factory and Synapse Analytics](https://docs.microsoft.com/azure/data-factory/transform-data-machine-learning-service)
+- [Azure Data Factory and Azure Synapse Analytics connector overview](https://docs.microsoft.com/azure/data-factory/connector-overview)
+- [Build large-scale data copy pipelines with a metadata-driven approach in copy data tool](https://docs.microsoft.com/azure/data-factory/copy-data-tool-metadata-driven)
+- [Deploy a Data-tier Application](https://docs.microsoft.com/sql/relational-databases/data-tier-applications/deploy-a-data-tier-application)
 - [CI/CD for Azure SQL Database](https://github.com/Azure-Samples/modern-data-warehouse-dataops/tree/main/single_tech_samples/azuresql)

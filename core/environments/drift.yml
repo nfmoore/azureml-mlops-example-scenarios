@@ -1,5 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
 name: employee-attrition-drift
+version: 1
 image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
 conda_file: conda/drift.yml
 description: Drift metrics environment for the employee attrition model.

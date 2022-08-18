@@ -1,0 +1,41 @@
+name: Install dependencies
+
+description: Install workflow dependencies
+
+inputs:
+  workspace_resource_group:
+    description: Name of the workspace resource group
+    required: true
+  workspace_name:
+    description: Name of the workspace
+    required: true
+  azure_credentials:
+    description: JSON object for the service principal used to authenticate with Azure
+    required: true
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{ inputs.azure_credentials }}
+
+    - name: Install Azure ML CLI v2
+      shell: bash
+      run: |
+        set -e # fail on error
+        az version
+        az extension add -n ml -y
+        az extension update -n ml
+
+    - name: Install yq
+      shell: bash
+      run: |
+        sudo snap install yq
+
+    - name: Set default Azure ML resource group and workspace
+      shell: bash
+      run: |
+        az configure --defaults group=${{ inputs.workspace_resource_group }} workspace=${{ inputs.workspace_name }}
