@@ -22,7 +22,7 @@ jobs:
     type: command
     component: file:../components/drift.yml
     environment_variables:
-      APPLICATIONINSIGHTS_CONNECTION_STRING: ${INSTRUMENTATION_KEY} # example: "InstrumentationKey=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      APPLICATIONINSIGHTS_CONNECTION_STRING: InstrumentationKey=${INSTRUMENTATION_KEY} # example: "InstrumentationKey=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
     inputs:
       reference_data: ${{parent.inputs.reference_data}}
       target_data: ${{parent.inputs.target_data}}
