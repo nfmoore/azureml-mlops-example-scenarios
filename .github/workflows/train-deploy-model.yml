@@ -129,7 +129,7 @@ jobs:
       - name: Add variables to data drift job specification
         shell: bash
         run: |
-          export INSTRUMENTATION_KEY=$(az resource show -g ${{ secrets.RESOURCE_GROUP }} -n ${{ secrets.APPLICATION_INSIGHTS_NAME }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
+          export INSTRUMENTATION_KEY=InstrumentationKey=$(az resource show -g ${{ secrets.RESOURCE_GROUP }} -n ${{ secrets.APPLICATION_INSIGHTS_NAME }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
 
           envsubst '$INSTRUMENTATION_KEY' < core/pipelines/data_drift.yml > core/pipelines/temp_data_drift.yml
           cp core/pipelines/temp_data_drift.yml core/pipelines/data_drift.yml
@@ -298,7 +298,7 @@ jobs:
       - name: Add variables to data drift job specification
         shell: bash
         run: |
-          export INSTRUMENTATION_KEY=$(az resource show -g ${{ secrets.RESOURCE_GROUP }} -n ${{ secrets.APPLICATION_INSIGHTS_NAME }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
+          export INSTRUMENTATION_KEY=InstrumentationKey=$(az resource show -g ${{ secrets.RESOURCE_GROUP }} -n ${{ secrets.APPLICATION_INSIGHTS_NAME }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
 
           envsubst '$INSTRUMENTATION_KEY' < core/pipelines/data_drift.yml > core/pipelines/temp_data_drift.yml
           cp core/pipelines/temp_data_drift.yml core/pipelines/data_drift.yml
