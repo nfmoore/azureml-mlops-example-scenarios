@@ -189,18 +189,12 @@
 		],
 		"parameters": {
 			"key_vault_name": {
-				"type": "securestring",
-				"defaultValue": {
-					"type": "SecureString",
-					"value": "**********"
-				}
+				"type": "string",
+				"defaultValue": "kvxwucor002"
 			},
 			"batch_endpoint_name": {
-				"type": "securestring",
-				"defaultValue": {
-					"type": "SecureString",
-					"value": "**********"
-				}
+				"type": "string",
+				"defaultValue": "employee-attrition-be-xwucor001"
 			},
 			"input_datastore": {
 				"type": "string",
@@ -223,18 +217,12 @@
 				"defaultValue": "main"
 			},
 			"azureml_workspace_name": {
-				"type": "securestring",
-				"defaultValue": {
-					"type": "SecureString",
-					"value": "**********"
-				}
+				"type": "string",
+				"defaultValue": "mlwxwucor001"
 			},
 			"azureml_workspace_rg": {
-				"type": "securestring",
-				"defaultValue": {
-					"type": "SecureString",
-					"value": "**********"
-				}
+				"type": "string",
+				"defaultValue": "azureml-workspace-poc-001-rg"
 			}
 		},
 		"variables": {
