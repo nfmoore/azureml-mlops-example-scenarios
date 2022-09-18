@@ -1,0 +1,84 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adfixwucor001"
+		},
+		"AzureKeyVault_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://@{linkedService().key_vault_name}.vault.azure.net/"
+		},
+		"AzureMLService001_properties_typeProperties_subscriptionId": {
+			"type": "string",
+			"defaultValue": "a326b683-d9a8-4ca6-adff-89d2a3eb1b0c"
+		},
+		"AzureMLService001_properties_typeProperties_resourceGroupName": {
+			"type": "string",
+			"defaultValue": "azureml-workspace-poc-001-rg"
+		},
+		"AzureMLService001_properties_typeProperties_mlWorkspaceName": {
+			"type": "string",
+			"defaultValue": "mlwxwucor001"
+		},
+		"default_properties_tenant_id_value": {
+			"type": "string",
+			"defaultValue": "16b3c013-d300-468d-ac64-7eda0820b6d3"
+		},
+		"default_properties_subscription_id_value": {
+			"type": "string",
+			"defaultValue": "a326b683-d9a8-4ca6-adff-89d2a3eb1b0c"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "adfixwucor001_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"default_properties_tenant_id_value": {
+						"value": "[parameters('default_properties_tenant_id_value')]"
+					},
+					"default_properties_subscription_id_value": {
+						"value": "[parameters('default_properties_subscription_id_value')]"
+					},
+					"AzureKeyVault_properties_typeProperties_baseUrl": {
+						"value": "[parameters('AzureKeyVault_properties_typeProperties_baseUrl')]"
+					},
+					"AzureMLService001_properties_typeProperties_subscriptionId": {
+						"value": "[parameters('AzureMLService001_properties_typeProperties_subscriptionId')]"
+					},
+					"AzureMLService001_properties_typeProperties_resourceGroupName": {
+						"value": "[parameters('AzureMLService001_properties_typeProperties_resourceGroupName')]"
+					},
+					"AzureMLService001_properties_typeProperties_mlWorkspaceName": {
+						"value": "[parameters('AzureMLService001_properties_typeProperties_mlWorkspaceName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
