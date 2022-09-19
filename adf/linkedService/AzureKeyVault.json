@@ -14,7 +14,7 @@
 		"annotations": [],
 		"type": "AzureKeyVault",
 		"typeProperties": {
-			"baseUrl": "https://kvxwucor002.vault.azure.net/"
+			"baseUrl": "https://@{linkedService().key_vault_name}.vault.azure.net/"
 		}
 	}
 }
