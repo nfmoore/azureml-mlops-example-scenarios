@@ -24,7 +24,7 @@ settings:
 jobs:
   prepare_step:
     type: command
-    component: file:../components/prepare.yml
+    component: ../components/prepare.yml
     inputs:
       curated_dataset: ${{parent.inputs.curated_dataset}}
     outputs:
@@ -32,13 +32,13 @@ jobs:
 
   data_quality_step:
     type: command
-    component: file:../components/data_quality.yml
+    component: ../components/data_quality.yml
     inputs:
       prepared_data_dir: ${{parent.jobs.prepare_step.outputs.prepared_data_dir}}
 
   sweep_step:
     type: sweep
-    trial: file:../components/train.yml
+    trial: ../components/train.yml
     inputs:
       prepared_data_dir: ${{parent.jobs.prepare_step.outputs.prepared_data_dir}}
       random_state: 42
@@ -67,7 +67,7 @@ jobs:
 
   register_step:
     type: command
-    component: file:../components/register.yml
+    component: ../components/register.yml
     inputs:
       model_name: employee-attrition
       model_output: ${{parent.jobs.sweep_step.outputs.model_output}}

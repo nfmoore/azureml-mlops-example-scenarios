@@ -11,7 +11,7 @@ from constants import CATEGORICAL_FEATURES, NUMERIC_FEATURES, TARGET
 
 def main(args: Namespace) -> None:
     # process data
-    df = pd.read_csv(args.curated_dataset)
+    df = pd.read_csv(f"{args.curated_dataset}/data.csv")
     df_train, df_test = prepare_data(df, args.random_state)
 
     df_train.to_csv(f"{args.prepared_data_dir}/train.csv", index=False)

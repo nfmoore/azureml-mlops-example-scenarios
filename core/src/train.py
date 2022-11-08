@@ -17,7 +17,7 @@ from constants import CATEGORICAL_FEATURES, NUMERIC_FEATURES, TARGET
 def main(args: Namespace) -> None:
     """Develop an sklearn model and use mlflow to log metrics"""
     # enable auto logging
-    mlflow.autolog()
+    # mlflow.autolog(log_models=False)
 
     # setup parameters
     params = {
@@ -39,7 +39,7 @@ def main(args: Namespace) -> None:
 
     # train model
     estimator = make_classifer_pipeline(params)
-    estimator = estimator.fit(x_train, y_train.values.ravel())
+    estimator.fit(x_train, y_train.values.ravel())
 
     # evaluate model performance
     metrics = mlflow.sklearn.eval_and_log_metrics(
