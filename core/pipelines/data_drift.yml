@@ -7,10 +7,10 @@ description: Pipeline to measure data drift between a reference dataset and targ
 inputs:
   reference_data:
     type: mltable
-    path: azureml:employee-attrition-curated-mltable@latest
+    path: azureml:employee-attrition-curated@latest
   target_data:
     type: mltable
-    path: azureml:employee-attrition-inference-mltable@latest
+    path: azureml:employee-attrition-inference@latest
 
 settings:
   default_datastore: azureml:workspaceblobstore
