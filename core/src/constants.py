@@ -43,38 +43,35 @@ FEATURES = CATEGORICAL_FEATURES + NUMERIC_FEATURES
 # define sample data for inference
 INPUT_SAMPLE = [
     {
-        "EmployeeNumber": 1,
-        "Gender": "Female", "Education":
-        "College",
+        "Gender": "Male",
+        "Education": "College",
         "EducationField": "Life Sciences",
-        "Department": "Sales", "JobRole": "Sales Executive",
-        "JobLevel": 2,
-        "PerformanceRating": "High",
-        "JobInvolvement": "High",
-        "JobSatisfaction": "High",
-        "RelationshipSatisfaction": "Low",
+        "Department": "Research & Development",
+        "JobRole": "Research Scientist",
+        "JobLevel": "L1",
+        "PerformanceRating": "Medium",
+        "JobInvolvement": "Medium",
+        "JobSatisfaction": "Medium",
+        "RelationshipSatisfaction": "Very High",
         "EnvironmentSatisfaction": "Medium",
-        "BusinessTravel": "Travel_Rarely",
+        "BusinessTravel": "Travel Rarely",
         "OverTime": "Yes",
-        "WorkLifeBalance": "Bad",
-        "MaritalStatus": "Single",
-        "StockOptionLevel": "L0",
-        "Age": 41,
-        "DailyRate": 1102,
+        "WorkLifeBalance": "Better",
+        "MaritalStatus": "Married",
+        "StockOptionLevel": "L1",
+        "Age": 34,
         "DistanceFromHome": 1,
-        "HourlyRate": 94,
-        "MonthlyIncome": 5993,
-        "MonthlyRate": 19479,
-        "NumCompaniesWorked": 8,
-        "PercentSalaryHike": 11,
-        "TotalWorkingYears": 8,
-        "TrainingTimesLastYear": 0,
+        "MonthlyIncome": 3622,
+        "NumCompaniesWorked": 1,
+        "PercentSalaryHike": 13,
+        "TotalWorkingYears": 6,
+        "TrainingTimesLastYear": 3,
         "YearsAtCompany": 6,
-        "YearsInCurrentRole": 4,
-        "YearsSinceLastPromotion": 0,
-        "YearsWithCurrManager": 5
+        "YearsInCurrentRole": 5,
+        "YearsSinceLastPromotion": 1,
+        "YearsWithCurrManager": 3
     }
 ]
 
 # define sample response for inference
-OUTPUT_SAMPLE = {"probability": [0.26883566156891225]}
+OUTPUT_SAMPLE = {"predictions": [0.3116883116883117]}
