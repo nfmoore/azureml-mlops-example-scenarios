@@ -45,6 +45,15 @@ param logAnalyticsWorkspaceLocation string = resourceGroup().location
 @description('Deployment Script Name')
 param deploymentScriptName string = 'ds${workloadIdentifier}${resourceInstance}'
 
+// @description('Azure ML Registry Name')
+// param azureMLRegistryName string = 'mlr${workloadIdentifier}'
+
+// @description('Azure ML Registry Primary Location')
+// param azureMLRegistryPrimaryLocation string = resourceGroup().location
+
+// @description('Deploy Azure ML Registry')
+// param deployAzureMLRegistry bool = true
+
 //********************************************************
 // Variables
 //********************************************************
@@ -184,6 +193,40 @@ resource r_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-
   }
 }
 
+// // Deploy Azure Machine Learning Registry
+// resource r_azureMLRegistry 'Microsoft.MachineLearningServices/registries@2022-10-01-preview' = {
+//   name: azureMLRegistryName
+//   location: azureMLRegistryPrimaryLocation
+//   identity: {
+//     type: 'SystemAssigned'
+//   }
+//   properties: {
+//     managedResourceGroup: {
+//       resourceId: 'string'
+//     }
+//     regionDetails: [
+//       {
+//         acrDetails: [
+//           {
+//             systemCreatedAcrAccount: {
+//               acrAccountSku: 'Premium'
+//             }
+//           }
+//         ]
+//         location: azureMLRegistryPrimaryLocation
+//         storageAccountDetails: [
+//           {
+//             systemCreatedStorageAccount: {
+//               storageAccountHnsEnabled: false
+//               storageAccountType: 'Standard_GRS'
+//             }
+//           }
+//         ]
+//       }
+//     ]
+//   }
+// }
+
 //********************************************************
 // RBAC Role Assignments
 //********************************************************
@@ -202,7 +245,7 @@ resource r_azureMlComputeClusterLogAnalyticsWorkspaceAssignment 'Microsoft.Autho
 // Deployment Scripts
 //********************************************************
 
-resource s_deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
+resource s_deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = if (deployAzureMLRegistry) {
   name: deploymentScriptName
   location: azureMLWorkspaceLocation
   kind: 'AzureCLI'
@@ -221,10 +264,10 @@ resource s_deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' =
       }
     ]
     scriptContent: '''
-      SOURCE_CURATED_DATA_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/main/core/data/curated/data.csv'
-      SOURCE_INFERENCE_DATA_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/main/core/data/inference/data.csv'
-      DESTINATION_CURATED_DATA_PATH='./data/employee-attrition/curated/data.csv'
-      DESTINATION_INFERENCE_DATA_PATH='./data/employee-attrition/inference/batch/data.csv'
+      SOURCE_CURATED_DATA_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/main/core/data/curated/'
+      SOURCE_INFERENCE_DATA_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/main/core/data/inference/'
+      DESTINATION_CURATED_DATA_PATH='./data/employee-attrition/curated/'
+      DESTINATION_INFERENCE_DATA_PATH='./data/employee-attrition/inference/batch/'
 
       curl -o $DESTINATION_CURATED_DATA_PATH $SOURCE_CURATED_DATA_PATH --create-dirs
       curl -o $DESTINATION_INFERENCE_DATA_PATH $SOURCE_INFERENCE_DATA_PATH --create-dirs
