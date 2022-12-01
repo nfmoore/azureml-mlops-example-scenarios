@@ -29,10 +29,10 @@ runs:
             echo $DATA_VERSION_EXISTS 
 
             if [[ $DATA_VERSION_EXISTS -ne 1 ]]; then
+                  echo "data asset version exists"
+              else
                   echo "Creating new data asset version"
                   az ml data create --file ${{ inputs.data_file }}
-              else
-                  echo "data asset version exists"
               fi
         else
             echo "Creating new data asset"
