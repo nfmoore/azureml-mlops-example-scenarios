@@ -2,5 +2,5 @@ $schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
 name: employee-attrition-curated
 version: 1
 description: Cruated employee attrition data for model training.
-type: uri_file
-path: azureml://datastores/workspaceblobstore/paths/data/employee-attrition/curated/data.csv
+type: mltable
+path: azureml://datastores/workspaceblobstore/paths/data/employee-attrition/curated/
