@@ -1,12 +1,12 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-display_name: employee-attrition-pipeline
-experiment_name: employee-attrition-pipeline
+display_name: employee-attrition-train-pipeline
+experiment_name: employee-attrition-train-pipeline
 description: Pipeline to build an MLFlow model to determine the likelihood of employee attrition.
 
 inputs:
   curated_dataset:
-    type: uri_folder
+    type: mltable
     path: azureml:employee-attrition-curated@latest
 
 outputs:

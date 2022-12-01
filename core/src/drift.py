@@ -4,22 +4,34 @@ import logging
 from argparse import ArgumentParser, Namespace
 from typing import Dict, Tuple
 
-import pandas as pd
+import mltable
+from constants import CATEGORICAL_FEATURES, FEATURES, NUMERIC_FEATURES
 from evidently.model_profile import Profile
 from evidently.model_profile.sections import (CatTargetDriftProfileSection,
                                               DataDriftProfileSection)
 from evidently.pipeline.column_mapping import ColumnMapping
 from opencensus.ext.azure.log_exporter import AzureLogHandler
 
-from constants import CATEGORICAL_FEATURES, FEATURES, NUMERIC_FEATURES
-
 
 def main(args: Namespace, log: logging.Logger) -> None:
     """Calculate data drift metrics and send to app insights"""
     try:
         # load datasets
-        reference_df = pd.read_csv(args.reference_data)
-        target_df = pd.read_csv(args.target_data)
+        reference_tbl = mltable.load(args.reference_data)
+        target_tbl = mltable.load(args.target_data)
+
+        reference_df = reference_tbl.to_pandas_dataframe()
+        target_df = target_tbl.to_pandas_dataframe()
+
+        # change data types of features
+        reference_df[CATEGORICAL_FEATURES] = reference_df[CATEGORICAL_FEATURES].astype(
+            "str")
+        reference_df[NUMERIC_FEATURES] = reference_df[NUMERIC_FEATURES].astype(
+            "float")
+        target_df[CATEGORICAL_FEATURES] = target_df[CATEGORICAL_FEATURES].astype(
+            "str")
+        target_df[NUMERIC_FEATURES] = target_df[NUMERIC_FEATURES].astype(
+            "float")
 
         # define column mapping for evidently
         column_mapping = ColumnMapping()
@@ -39,6 +51,7 @@ def main(args: Namespace, log: logging.Logger) -> None:
 
         # convert drift  profile to json
         data_drift_profile_json = json.loads(data_drift_profile.json())
+        print(data_drift_profile_json)
 
         # process data drift output
         overall_metrics, feature_metrics = process_data_drift_output(
