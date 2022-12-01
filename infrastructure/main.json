@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.7.4.23292",
-      "templateHash": "14569265318486552665"
+      "templateHash": "13633133407942113532"
     }
   },
   "parameters": {
@@ -98,27 +98,6 @@
       "defaultValue": "[format('ds{0}{1}', parameters('workloadIdentifier'), parameters('resourceInstance'))]",
       "metadata": {
         "description": "Deployment Script Name"
-      }
-    },
-    "azureMLRegistryName": {
-      "type": "string",
-      "defaultValue": "[format('mlr{0}', parameters('workloadIdentifier'))]",
-      "metadata": {
-        "description": "Azure ML Registry Name"
-      }
-    },
-    "azureMLRegistryPrimaryLocation": {
-      "type": "string",
-      "defaultValue": "[resourceGroup().location]",
-      "metadata": {
-        "description": "Azure ML Registry Primary Location"
-      }
-    },
-    "deployAzureMLRegistry": {
-      "type": "bool",
-      "defaultValue": true,
-      "metadata": {
-        "description": "Deploy Azure ML Registry"
       }
     }
   },
@@ -259,40 +238,6 @@
       }
     },
     {
-      "type": "Microsoft.MachineLearningServices/registries",
-      "apiVersion": "2022-10-01-preview",
-      "name": "[parameters('azureMLRegistryName')]",
-      "location": "[parameters('azureMLRegistryPrimaryLocation')]",
-      "identity": {
-        "type": "SystemAssigned"
-      },
-      "properties": {
-        "managedResourceGroup": {
-          "resourceId": "string"
-        },
-        "regionDetails": [
-          {
-            "acrDetails": [
-              {
-                "systemCreatedAcrAccount": {
-                  "acrAccountSku": "Premium"
-                }
-              }
-            ],
-            "location": "[parameters('azureMLRegistryPrimaryLocation')]",
-            "storageAccountDetails": [
-              {
-                "systemCreatedStorageAccount": {
-                  "storageAccountHnsEnabled": false,
-                  "storageAccountType": "Standard_GRS"
-                }
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2020-08-01-preview",
       "scope": "[format('Microsoft.OperationalInsights/workspaces/{0}', parameters('logAnalyticsWorkspaceName'))]",
@@ -308,7 +253,6 @@
       ]
     },
     {
-      "condition": "[parameters('deployAzureMLRegistry')]",
       "type": "Microsoft.Resources/deploymentScripts",
       "apiVersion": "2020-10-01",
       "name": "[parameters('deploymentScriptName')]",
@@ -328,7 +272,7 @@
             "secureValue": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('azureMLStorageAccountName')), '2021-02-01').keys[0].value]"
           }
         ],
-        "scriptContent": "      SOURCE_CURATED_DATA_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/main/core/data/curated/'\n      SOURCE_INFERENCE_DATA_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/main/core/data/inference/'\n      DESTINATION_CURATED_DATA_PATH='./data/employee-attrition/curated/'\n      DESTINATION_INFERENCE_DATA_PATH='./data/employee-attrition/inference/batch/'\n\n      curl -o $DESTINATION_CURATED_DATA_PATH $SOURCE_CURATED_DATA_PATH --create-dirs\n      curl -o $DESTINATION_INFERENCE_DATA_PATH $SOURCE_INFERENCE_DATA_PATH --create-dirs\n\n      CONTAINER_NAME=$(az storage container list --account-name $AZURE_STORAGE_ACCOUNT --account-key $AZURE_STORAGE_KEY --query \"[].name\" | grep \"azureml-blobstore-*\" | tr -d ',' | xargs)\n      az storage blob upload-batch --destination $CONTAINER_NAME --account-name $AZURE_STORAGE_ACCOUNT --account-key $AZURE_STORAGE_KEY --destination-path ./data --source ./data\n    "
+        "scriptContent": "      SOURCE_CURATED_DATA_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/main/core/data/curated/01.csv'\n      SOURCE_INFERENCE_DATA_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/main/core/data/inference/01.csv'\n      DESTINATION_CURATED_DATA_PATH='./data/employee-attrition/curated/01.csv'\n      DESTINATION_INFERENCE_DATA_PATH='./data/employee-attrition/inference/batch/01.csv'\n\n      SOURCE_CURATED_MLTABLE_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/main/core/data/curated/MLTable'\n      SOURCE_INFERENCE_MLTABLE_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/main/core/data/inference/MLTable'\n      DESTINATION_CURATED_MLTABLE_PATH='./data/employee-attrition/curated/MLTable'\n      DESTINATION_INFERENCE_MLTABLE_PATH='./data/employee-attrition/inference/batch/MLTable'\n\n      curl -o $DESTINATION_CURATED_DATA_PATH $SOURCE_CURATED_DATA_PATH --create-dirs\n      curl -o $DESTINATION_INFERENCE_DATA_PATH $SOURCE_INFERENCE_DATA_PATH --create-dirs\n\n      curl -o $DESTINATION_CURATED_MLTABLE_PATH $SOURCE_CURATED_MLTABLE_PATH --create-dirs\n      curl -o $DESTINATION_INFERENCE_MLTABLE_PATH $SOURCE_INFERENCE_MLTABLE_PATH --create-dirs\n\n      CONTAINER_NAME=$(az storage container list --account-name $AZURE_STORAGE_ACCOUNT --account-key $AZURE_STORAGE_KEY --query \"[].name\" | grep \"azureml-blobstore-*\" | tr -d ',' | xargs)\n      az storage blob upload-batch --destination $CONTAINER_NAME --account-name $AZURE_STORAGE_ACCOUNT --account-key $AZURE_STORAGE_KEY --destination-path ./data --source ./data\n    "
       },
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts', parameters('azureMLStorageAccountName'))]"
