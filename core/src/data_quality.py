@@ -3,10 +3,9 @@ from argparse import ArgumentParser, Namespace
 
 import mlflow
 import pandas as pd
+from constants import CATEGORICAL_FEATURES, TARGET
 from deepchecks.tabular import Dataset
 from deepchecks.tabular.suites import data_integrity, train_test_validation
-
-from constants import CATEGORICAL_FEATURES, TARGET
 
 
 def main(args: Namespace) -> None:
