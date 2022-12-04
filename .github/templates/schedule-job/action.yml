@@ -1,6 +1,6 @@
-name: Create endpoint
+name: Create schedule
 
-description: Create Azure ML endpoint if one does not exist.
+description: Create Azure ML schedule
 
 inputs:
   schedule_file:

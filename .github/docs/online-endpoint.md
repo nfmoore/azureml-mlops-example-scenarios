@@ -49,7 +49,7 @@ The environments include:
 - **Staging:** used to test deployments before going to production in a production-like environment. Any integration tests are run in this environment.
 - **Production:** used for the final production environment.
 
-## Code Walkthrough
+## Scenario Walkthrough
 
 This section describes the main components of the example scenario that relate to implementing an online scoring scenario with Azure Machine Learning managed online endpoints. Each section will describe the key files and the role they play in the context of the overall solution.
 

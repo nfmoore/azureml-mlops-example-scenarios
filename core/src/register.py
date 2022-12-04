@@ -3,9 +3,8 @@ from argparse import ArgumentParser, Namespace
 
 import mlflow
 import pandas as pd
-from mlflow.models.signature import infer_signature
-
 from constants import FEATURES
+from mlflow.models.signature import infer_signature
 
 
 def main(args: Namespace) -> None:

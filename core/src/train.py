@@ -5,19 +5,20 @@ from typing import Dict, Union
 
 import mlflow
 import pandas as pd
+from constants import CATEGORICAL_FEATURES, NUMERIC_FEATURES, TARGET
 from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.impute import SimpleImputer
+from sklearn.metrics import (accuracy_score, f1_score, precision_score,
+                             recall_score, roc_auc_score)
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder
-
-from constants import CATEGORICAL_FEATURES, NUMERIC_FEATURES, TARGET
 
 
 def main(args: Namespace) -> None:
     """Develop an sklearn model and use mlflow to log metrics"""
     # enable auto logging
-    # mlflow.autolog(log_models=False)
+    mlflow.sklearn.autolog()
 
     # setup parameters
     params = {
@@ -41,10 +42,21 @@ def main(args: Namespace) -> None:
     estimator = make_classifer_pipeline(params)
     estimator.fit(x_train, y_train.values.ravel())
 
-    # evaluate model performance
-    metrics = mlflow.sklearn.eval_and_log_metrics(
-        estimator, x_test, y_test.values.ravel(), prefix="validation_")
-    mlflow.log_metrics(metrics)
+    # calculate evaluation metrics
+    y_pred = estimator.predict(x_test)
+    validation_accuracy_score = accuracy_score(y_test.values.ravel(), y_pred)
+    validation_roc_auc_score = roc_auc_score(y_test.values.ravel(), y_pred)
+    validation_f1_score = f1_score(y_test.values.ravel(), y_pred)
+    validation_precision_score = precision_score(y_test.values.ravel(), y_pred)
+    validation_recall_score = recall_score(y_test.values.ravel(), y_pred)
+
+    # log evaluation metrics
+    mlflow.log_metric("validation_accuracy_score", validation_accuracy_score)
+    mlflow.log_metric("validation_roc_auc_score", validation_roc_auc_score)
+    mlflow.log_metric("validation_f1_score", validation_f1_score)
+    mlflow.log_metric("validation_precision_score",
+                      validation_precision_score)
+    mlflow.log_metric("validation_recall_score", validation_recall_score)
 
     # save models
     mlflow.sklearn.save_model(estimator, "model")

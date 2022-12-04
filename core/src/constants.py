@@ -4,41 +4,37 @@ TARGET = ["Attrition"]
 
 # define categorical feature columns
 CATEGORICAL_FEATURES = [
-    "BusinessTravel",
-    "Department",
-    "EducationField",
     "Gender",
+    "Education",
+    "EducationField",
+    "Department",
     "JobRole",
-    "MaritalStatus",
+    "JobLevel",
+    "PerformanceRating",
+    "JobInvolvement",
+    "JobSatisfaction",
+    "RelationshipSatisfaction",
+    "EnvironmentSatisfaction",
+    "BusinessTravel",
     "OverTime",
+    "WorkLifeBalance",
+    "MaritalStatus",
+    "StockOptionLevel"
 ]
 
 # define numeric feature columns
 NUMERIC_FEATURES = [
     "Age",
-    "DailyRate",
     "DistanceFromHome",
-    "Education",
-    "EmployeeNumber",
-    "EnvironmentSatisfaction",
-    "HourlyRate",
-    "JobInvolvement",
-    "JobLevel",
-    "JobSatisfaction",
     "MonthlyIncome",
-    "MonthlyRate",
     "NumCompaniesWorked",
     "PercentSalaryHike",
-    "PerformanceRating",
-    "RelationshipSatisfaction",
-    "StockOptionLevel",
     "TotalWorkingYears",
     "TrainingTimesLastYear",
-    "WorkLifeBalance",
     "YearsAtCompany",
     "YearsInCurrentRole",
     "YearsSinceLastPromotion",
-    "YearsWithCurrManager",
+    "YearsWithCurrManager"
 ]
 
 # define all features
@@ -47,39 +43,35 @@ FEATURES = CATEGORICAL_FEATURES + NUMERIC_FEATURES
 # define sample data for inference
 INPUT_SAMPLE = [
     {
-        "BusinessTravel": "Travel_Rarely",
-        "Department": "Research & Development",
-        "EducationField": "Medical",
         "Gender": "Male",
-        "JobRole": "Manager",
+        "Education": "College",
+        "EducationField": "Life Sciences",
+        "Department": "Research & Development",
+        "JobRole": "Research Scientist",
+        "JobLevel": "L1",
+        "PerformanceRating": "Medium",
+        "JobInvolvement": "Medium",
+        "JobSatisfaction": "Medium",
+        "RelationshipSatisfaction": "Very High",
+        "EnvironmentSatisfaction": "Medium",
+        "BusinessTravel": "Travel Rarely",
+        "OverTime": "Yes",
+        "WorkLifeBalance": "Better",
         "MaritalStatus": "Married",
-        "OverTime": "No",
-        "Age": 36,
-        "DailyRate": 989,
-        "DistanceFromHome": 8,
-        "Education": 1,
-        "EmployeeNumber": 253,
-        "EnvironmentSatisfaction": 4,
-        "HourlyRate": 46,
-        "JobInvolvement": 3,
-        "JobLevel": 5,
-        "JobSatisfaction": 3,
-        "MonthlyIncome": 19033,
-        "MonthlyRate": 6499,
+        "StockOptionLevel": "L1",
+        "Age": 34,
+        "DistanceFromHome": 1,
+        "MonthlyIncome": 3622,
         "NumCompaniesWorked": 1,
-        "PercentSalaryHike": 14,
-        "PerformanceRating": 3,
-        "RelationshipSatisfaction": 2,
-        "StockOptionLevel": 1,
-        "TotalWorkingYears": 14,
+        "PercentSalaryHike": 13,
+        "TotalWorkingYears": 6,
         "TrainingTimesLastYear": 3,
-        "WorkLifeBalance": 2,
-        "YearsAtCompany": 3,
-        "YearsInCurrentRole": 3,
-        "YearsSinceLastPromotion": 3,
-        "YearsWithCurrManager": 1
+        "YearsAtCompany": 6,
+        "YearsInCurrentRole": 5,
+        "YearsSinceLastPromotion": 1,
+        "YearsWithCurrManager": 3
     }
 ]
 
 # define sample response for inference
-OUTPUT_SAMPLE = {"probability": [0.26883566156891225]}
+OUTPUT_SAMPLE = {"predictions": [0.3116883116883117]}

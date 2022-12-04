@@ -3,15 +3,17 @@ from argparse import ArgumentParser, Namespace
 from typing import Tuple
 
 import mlflow
+import mltable
 import pandas as pd
-from sklearn.model_selection import train_test_split
-
 from constants import CATEGORICAL_FEATURES, NUMERIC_FEATURES, TARGET
+from sklearn.model_selection import train_test_split
 
 
 def main(args: Namespace) -> None:
+
     # process data
-    df = pd.read_csv(f"{args.curated_dataset}/data.csv")
+    tbl = mltable.load(args.curated_dataset)
+    df = tbl.to_pandas_dataframe()
     df_train, df_test = prepare_data(df, args.random_state)
 
     df_train.to_csv(f"{args.prepared_data_dir}/train.csv", index=False)

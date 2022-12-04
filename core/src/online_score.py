@@ -7,11 +7,10 @@ from typing import Dict, List
 
 import mlflow
 import pandas as pd
+from constants import INPUT_SAMPLE, OUTPUT_SAMPLE
 from inference_schema.parameter_types.standard_py_parameter_type import \
     StandardPythonParameterType
 from inference_schema.schema_decorators import input_schema, output_schema
-
-from constants import INPUT_SAMPLE, OUTPUT_SAMPLE
 
 # define global variables
 SERVICE_NAME = None

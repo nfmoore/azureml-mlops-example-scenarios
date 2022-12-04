@@ -6,10 +6,10 @@ description: Pipeline to measure data drift between a reference dataset and targ
 
 inputs:
   reference_data:
-    type: uri_folder
+    type: mltable
     path: azureml:employee-attrition-curated@latest
   target_data:
-    type: uri_folder
+    type: mltable
     path: azureml:employee-attrition-inference@latest
 
 settings:
