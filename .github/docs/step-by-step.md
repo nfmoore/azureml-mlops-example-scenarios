@@ -76,15 +76,22 @@ To execute the workflow you can manually trigger the workflow in GitHub Actions 
 1. `Code Quality`
 2. `Create Data Assets`
 3. `Create Environments`
-4. `Train and Deploy Model`
+4. `Train Model`
 
 ![1](./images/sbs-6.png)
 
-Note that the `Train and Deploy Model` workflow depends on `Create Data Assets` and `Create Environments`.
+Note that the `Train Model` workflow depends on `Create Data Assets` and `Create Environments`.
 
 ![1](./images/sbs-7.png)
 
-Manual approval is required to deploy the Docker container to the `Production` environment. Once the `End to End Testing` job is complete you will be prompted to review the deployment. Click the `Review Deployment` button to give approval and commence the `Upload Model to Production` job. This will need to be repeated for the `Deploy to Production` job. The approver(s) were specified in `1.3` above.
+Once the `Train Model` workflow completes the following workflows will be automatically executed:
+
+1. `Deploy Model for Batch Inference`
+2. `Deploy Model for Online Inference`
+
+![1](./images/sbs-8-1.png)
+
+Manual approval is required to deploy artifacts to the `Production` environment. When prompted, click the `Review Deployment` button to give approval and commence the `Upload Model to Production` job. This will need to be repeated for the `Deploy to Production` job accross both the `Deploy Model for Batch Inference` workflow and `Deploy Model for Online Inference` workflow. The approver(s) were specified in `1.3` above.
 
 ![1](./images/sbs-8.png)
 
