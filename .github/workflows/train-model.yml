@@ -46,11 +46,11 @@ jobs:
           az ml model update --name $MODEL_NAME --version $MODEL_VERSION \
             --set tags.github_run_id=${{ github.run_id }} tags.github_workflow_url="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
-          az ml model download --name $MODEL_NAME --version $MODEL_VERSION --download-path model-artifact
-          echo '{"model_name":"'"$MODEL_NAME"'","model_version":"'"$MODEL_VERSION"'"}' > model-artifact/model.json
+          az ml model download --name $MODEL_NAME --version $MODEL_VERSION --download-path artifacts
+          echo '{"model_name":"'"$MODEL_NAME"'","model_version":"'"$MODEL_VERSION"'"}' > artifacts/model.json
 
       - name: Upload model artifact
         uses: actions/upload-artifact@v3
         with:
-          name: model-artifact
-          path: model-artifact
+          name: artifacts
+          path: artifacts

@@ -148,7 +148,7 @@ jobs:
             });
 
             let matchArtifact = allArtifacts.data.artifacts.filter((artifact) => {
-              return artifact.name == "model-artifact"
+              return artifact.name == "artifacts"
             })[0];
 
             let download = await github.rest.actions.downloadArtifact({
@@ -159,10 +159,10 @@ jobs:
             });
 
             let fs = require('fs');
-            fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/model-artifact.zip`, Buffer.from(download.data));
+            fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/artifacts.zip`, Buffer.from(download.data));
 
       - name: Unzip model artifact
-        run: unzip model-artifact.zip
+        run: unzip artifacts.zip
 
       - name: Install dependencies
         uses: "./.github/templates/install-dependencies"
