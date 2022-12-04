@@ -185,7 +185,8 @@ In this example scenario, four workflows have been developed in the `.github/wor
 - **Code Quality:** implementing regular code scanning on select branches when code is pushed and on a schedule.
 - **Create Data Assets:** workflow intended to deploy new data assets to staging and production environments as they are created. Data assets are defined in specification files which trigger the workflow as changes are committed.
 - **Create Environments:** workflow intended to deploy new Azure Machine Learning environments to staging and production environments as they are created. Azure Machine Learning environments are defined in specification files which trigger the workflow as changes are committed.
-- **Train and Deploy Model:** a workflow that trains a model in a staging environment, creates endpoints and deployments referencing the model, runs end-to-end tests, copies model assets to the production environment, and recreates endpoints and deployments in the production environment. Triggering this workflow on a schedule can be used to implement a model retraining process.
+- **Train and Deploy Model:** a workflow that trains a model in a staging environment and registers a model artifact to the workflow. This workflow will automatically trigger the `Deploy Model for Batch Inference` workflow upon completion. Triggering this workflow on a schedule can be used to implement a model retraining process.
+- **Deploy Model for Batch Inference:** a workflow that creates endpoints and deployments referencing the model in the staging environment, copies model assets to the production environment, and recreates endpoints and deployments in the production environment.
 
 ## Related Resources
 
