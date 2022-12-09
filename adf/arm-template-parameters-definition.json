@@ -23,11 +23,9 @@
         }
     },
     "Microsoft.DataFactory/factories/pipelines": {
-        "*": {
-            "properties": {
-                "parameters": {
-                    "*": "="
-                }
+        "properties": {
+            "parameters": {
+                "*": "="
             }
         }
     },
