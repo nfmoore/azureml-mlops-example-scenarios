@@ -22,7 +22,7 @@
 					}
 				},
 				"linkedServiceName": {
-					"referenceName": "AzureMLService001",
+					"referenceName": "AzureMLService",
 					"type": "LinkedServiceReference"
 				}
 			}
