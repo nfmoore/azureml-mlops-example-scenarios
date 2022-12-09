@@ -23,9 +23,15 @@
         }
     },
     "Microsoft.DataFactory/factories/pipelines": {
-        "properties": {
-            "parameters": {
-                "*": "="
+        "*": {
+            "properties": {
+                "activities": [
+                    {
+                        "typeProperties": {
+                            "command": "="
+                        }
+                    }
+                ]
             }
         }
     },
