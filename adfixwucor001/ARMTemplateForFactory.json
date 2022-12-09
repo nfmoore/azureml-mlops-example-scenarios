@@ -623,7 +623,7 @@
 				"parameters": {
 					"key_vault_name": {
 						"type": "string",
-						"defaultValue": "kvxwucor002"
+						"defaultValue": "kvxwucor001"
 					}
 				},
 				"annotations": [],
