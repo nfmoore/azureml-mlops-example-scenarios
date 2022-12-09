@@ -23,22 +23,12 @@
         }
     },
     "Microsoft.DataFactory/factories/pipelines": {
-        "properties": {
-            "activities": [
-                {
-                    "typeProperties": {
-                        "waitTimeInSeconds": "-::int",
-                        "headers": "=::object",
-                        "activities": [
-                            {
-                                "typeProperties": {
-                                    "url": "-:-webUrl:string"
-                                }
-                            }
-                        ]
-                    }
+        "*": {
+            "properties": {
+                "parameters": {
+                        "*": "="                
                 }
-            ]
+            }
         }
     },
     "Microsoft.DataFactory/factories/integrationRuntimes": {
