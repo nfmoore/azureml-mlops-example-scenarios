@@ -4,7 +4,7 @@
 		"parameters": {
 			"key_vault_name": {
 				"type": "string",
-				"defaultValue": "kvxwucor001"
+				"defaultValue": "kvxwucor002"
 			}
 		},
 		"annotations": [],
