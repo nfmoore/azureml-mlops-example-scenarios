@@ -5,46 +5,6 @@
 		"factoryName": {
 			"value": "adfixwucor001"
 		},
-		"AzureML-ADF-Batch-Scoring_properties_0_typeProperties": {
-			"value": {
-				"Content-Type": "application/x-www-form-urlencoded"
-			}
-		},
-		"AzureML-ADF-Batch-Scoring_properties_1_typeProperties": {
-			"value": {}
-		},
-		"AzureML-ADF-Batch-Scoring_properties_2_typeProperties": {
-			"value": {}
-		},
-		"AzureML-ADF-Batch-Scoring_properties_3_typeProperties": {
-			"value": {
-				"Content-Type": "application/x-www-form-urlencoded"
-			}
-		},
-		"Call-AzureML-Batch-Managed-Endpoint_properties_1_typeProperties": {
-			"value": {
-				"Authorization": {
-					"value": "Bearer @{pipeline().parameters.scoring_token}",
-					"type": "Expression"
-				},
-				"azureml-model-deployment": {
-					"value": "@pipeline().parameters.deployment_name",
-					"type": "Expression"
-				}
-			}
-		},
-		"Call-AzureML-Batch-Managed-Endpoint_webUrl": {
-			"value": ""
-		},
-		"Call-AzureML-Batch-Managed-Endpoint_properties_3_typeProperties": {
-			"value": {
-				"Authorization": {
-					"value": "Bearer @{pipeline().parameters.access_token}",
-					"type": "Expression"
-				},
-				"Content-Type": "application/json"
-			}
-		},
 		"AzureKeyVault_properties_typeProperties_baseUrl": {
 			"value": "https://@{linkedService().key_vault_name}.vault.azure.net/"
 		},

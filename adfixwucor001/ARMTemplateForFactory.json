@@ -7,52 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adfixwucor001"
 		},
-		"AzureML-ADF-Batch-Scoring_properties_0_typeProperties": {
-			"type": "object",
-			"defaultValue": {
-				"Content-Type": "application/x-www-form-urlencoded"
-			}
-		},
-		"AzureML-ADF-Batch-Scoring_properties_1_typeProperties": {
-			"type": "object",
-			"defaultValue": {}
-		},
-		"AzureML-ADF-Batch-Scoring_properties_2_typeProperties": {
-			"type": "object",
-			"defaultValue": {}
-		},
-		"AzureML-ADF-Batch-Scoring_properties_3_typeProperties": {
-			"type": "object",
-			"defaultValue": {
-				"Content-Type": "application/x-www-form-urlencoded"
-			}
-		},
-		"Call-AzureML-Batch-Managed-Endpoint_properties_1_typeProperties": {
-			"type": "object",
-			"defaultValue": {
-				"Authorization": {
-					"value": "Bearer @{pipeline().parameters.scoring_token}",
-					"type": "Expression"
-				},
-				"azureml-model-deployment": {
-					"value": "@pipeline().parameters.deployment_name",
-					"type": "Expression"
-				}
-			}
-		},
-		"Call-AzureML-Batch-Managed-Endpoint_webUrl": {
-			"type": "string"
-		},
-		"Call-AzureML-Batch-Managed-Endpoint_properties_3_typeProperties": {
-			"type": "object",
-			"defaultValue": {
-				"Authorization": {
-					"value": "Bearer @{pipeline().parameters.access_token}",
-					"type": "Expression"
-				},
-				"Content-Type": "application/json"
-			}
-		},
 		"AzureKeyVault_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://@{linkedService().key_vault_name}.vault.azure.net/"
@@ -174,7 +128,9 @@
 								"type": "Expression"
 							},
 							"method": "POST",
-							"headers": "[parameters('AzureML-ADF-Batch-Scoring_properties_0_typeProperties')]",
+							"headers": {
+								"Content-Type": "application/x-www-form-urlencoded"
+							},
 							"body": {
 								"value": "grant_type=client_credentials&scope=https://management.azure.com/.default&client_id=@{activity('Get client id').output.value}&client_secret=@{activity('Get client secret').output.value}",
 								"type": "Expression"
@@ -199,7 +155,7 @@
 								"type": "Expression"
 							},
 							"method": "GET",
-							"headers": "[parameters('AzureML-ADF-Batch-Scoring_properties_1_typeProperties')]",
+							"headers": {},
 							"authentication": {
 								"type": "MSI",
 								"resource": "https://vault.azure.net"
@@ -224,7 +180,7 @@
 								"type": "Expression"
 							},
 							"method": "GET",
-							"headers": "[parameters('AzureML-ADF-Batch-Scoring_properties_2_typeProperties')]",
+							"headers": {},
 							"authentication": {
 								"type": "MSI",
 								"resource": "https://vault.azure.net"
@@ -262,7 +218,9 @@
 								"type": "Expression"
 							},
 							"method": "POST",
-							"headers": "[parameters('AzureML-ADF-Batch-Scoring_properties_3_typeProperties')]",
+							"headers": {
+								"Content-Type": "application/x-www-form-urlencoded"
+							},
 							"body": {
 								"value": "grant_type=client_credentials&scope=https://ml.azure.com/.default&client_id=@{activity('Get client id').output.value}&client_secret=@{activity('Get client secret').output.value}",
 								"type": "Expression"
@@ -453,7 +411,16 @@
 								"type": "Expression"
 							},
 							"method": "POST",
-							"headers": "[parameters('Call-AzureML-Batch-Managed-Endpoint_properties_1_typeProperties')]",
+							"headers": {
+								"Authorization": {
+									"value": "Bearer @{pipeline().parameters.scoring_token}",
+									"type": "Expression"
+								},
+								"azureml-model-deployment": {
+									"value": "@pipeline().parameters.deployment_name",
+									"type": "Expression"
+								}
+							},
 							"body": {
 								"value": "{\n    properties: {\n        \"InputData\":\n        {\n            \"mnistInput\": {\n                \"JobInputType\": \"UriFile\",\n                \"Uri\": \"@{pipeline().parameters.input_dataset_uri}\"\n            }\n        },\n        \"OutputData\":\n        {\n            \"score\": {\n                \"JobOutputType\": \"UriFile\",\n                \"Uri\": \"@{pipeline().parameters.output_dataset_uri}\"\n            }\n        }\n    }\n}",
 								"type": "Expression"
@@ -508,7 +475,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"url": {
-											"value": "[parameters('Call-AzureML-Batch-Managed-Endpoint_webUrl')]",
+											"value": "https://management.azure.com/@{pipeline().parameters.azureml_resource_id}/jobs/@{variables('job_id')}?api-version=2022-05-01",
 											"type": "Expression"
 										},
 										"method": "GET",
@@ -562,7 +529,13 @@
 								"type": "Expression"
 							},
 							"method": "GET",
-							"headers": "[parameters('Call-AzureML-Batch-Managed-Endpoint_properties_3_typeProperties')]"
+							"headers": {
+								"Authorization": {
+									"value": "Bearer @{pipeline().parameters.access_token}",
+									"type": "Expression"
+								},
+								"Content-Type": "application/json"
+							}
 						}
 					},
 					{
