@@ -17,6 +17,10 @@
 			"azureml_workspace_name": {
 				"type": "string",
 				"value": "mlwxwucor001"
+			},
+			"azureml_workspace_rg": {
+				"type": "string",
+				"value": "azureml-workspace-poc-001-rg"
 			}
 		},
 		"globalConfigurations": {
