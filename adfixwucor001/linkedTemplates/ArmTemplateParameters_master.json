@@ -6,7 +6,7 @@
 			"value": "adfixwucor001"
 		},
 		"AzureKeyVault_properties_typeProperties_baseUrl": {
-			"value": "https://kvxwucor002.vault.azure.net/"
+			"value": ""
 		},
 		"AzureMLWorkspace_properties_typeProperties_subscriptionId": {
 			"value": ""
