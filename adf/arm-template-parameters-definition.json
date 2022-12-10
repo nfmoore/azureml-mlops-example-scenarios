@@ -3,7 +3,7 @@
         "properties": {
             "globalParameters": {
                 "*": {
-                    "value": "="
+                    "value": "-"
                 }
             },
             "globalConfigurations": {
@@ -22,9 +22,7 @@
             "userAssignedIdentities": "="
         }
     },
-    "Microsoft.DataFactory/factories/pipelines": {
-
-    },
+    "Microsoft.DataFactory/factories/pipelines": {},
     "Microsoft.DataFactory/factories/integrationRuntimes": {
         "properties": {
             "typeProperties": {
@@ -163,7 +161,7 @@
     "Microsoft.DataFactory/factories/globalparameters": {
         "properties": {
             "*": {
-                "value": "="
+                "value": "-"
             }
         }
     }
