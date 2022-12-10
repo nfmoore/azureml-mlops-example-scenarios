@@ -9,7 +9,7 @@
 		},
 		"AzureKeyVault_properties_typeProperties_baseUrl": {
 			"type": "string",
-			"defaultValue": "https://@{linkedService().key_vault_name}.vault.azure.net/"
+			"defaultValue": "https://kvxwucor002.vault.azure.net/"
 		},
 		"AzureMLWorkspace_properties_typeProperties_subscriptionId": {
 			"type": "string",
