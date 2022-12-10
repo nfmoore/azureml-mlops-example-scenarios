@@ -190,7 +190,7 @@
 		"parameters": {
 			"batch_endpoint_name": {
 				"type": "string",
-				"defaultValue": "employee-attrition-be-xwucor001"
+				"defaultValue": "employee-attrition-be-god5xz001"
 			},
 			"input_datastore": {
 				"type": "string",
@@ -202,7 +202,7 @@
 			},
 			"input_file_path": {
 				"type": "string",
-				"defaultValue": "data/employee-attrition/inference/batch/data.csv"
+				"defaultValue": "data/employee-attrition/inference/batch/01.csv"
 			},
 			"output_dir_path": {
 				"type": "string",
