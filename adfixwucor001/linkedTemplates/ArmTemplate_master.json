@@ -11,29 +11,41 @@
 			"type": "string",
 			"defaultValue": "https://@{linkedService().key_vault_name}.vault.azure.net/"
 		},
-		"AzureMLService_properties_typeProperties_subscriptionId": {
+		"AzureMLWorkspace_properties_typeProperties_subscriptionId": {
 			"type": "string",
 			"defaultValue": "a326b683-d9a8-4ca6-adff-89d2a3eb1b0c"
 		},
-		"AzureMLService_properties_typeProperties_resourceGroupName": {
+		"AzureMLWorkspace_properties_typeProperties_resourceGroupName": {
 			"type": "string",
 			"defaultValue": "azureml-workspace-poc-001-rg"
 		},
-		"AzureMLService_properties_typeProperties_mlWorkspaceName": {
+		"AzureMLWorkspace_properties_typeProperties_mlWorkspaceName": {
 			"type": "string",
 			"defaultValue": "mlwxwucor001"
 		},
-		"AzureMLService001_properties_typeProperties_subscriptionId": {
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_batch_endpoint_name": {
 			"type": "string",
-			"defaultValue": "a326b683-d9a8-4ca6-adff-89d2a3eb1b0c"
+			"defaultValue": "employee-attrition-be-xwucor001"
 		},
-		"AzureMLService001_properties_typeProperties_resourceGroupName": {
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_datastore": {
 			"type": "string",
-			"defaultValue": "azureml-workspace-poc-001-rg"
+			"defaultValue": "azureml://datastores/workspaceblobstore/paths"
 		},
-		"AzureMLService001_properties_typeProperties_mlWorkspaceName": {
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_datastore": {
 			"type": "string",
-			"defaultValue": "mlwxwucor001"
+			"defaultValue": "azureml://datastores/workspaceblobstore/paths"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_file_path": {
+			"type": "string",
+			"defaultValue": "data/employee-attrition/inference/batch/data.csv"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_dir_path": {
+			"type": "string",
+			"defaultValue": "outputs/adf"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_deployment_name": {
+			"type": "string",
+			"defaultValue": "main"
 		},
 		"containerUri": {
 			"type": "string",
@@ -65,23 +77,32 @@
 					"AzureKeyVault_properties_typeProperties_baseUrl": {
 						"value": "[parameters('AzureKeyVault_properties_typeProperties_baseUrl')]"
 					},
-					"AzureMLService_properties_typeProperties_subscriptionId": {
-						"value": "[parameters('AzureMLService_properties_typeProperties_subscriptionId')]"
+					"AzureMLWorkspace_properties_typeProperties_subscriptionId": {
+						"value": "[parameters('AzureMLWorkspace_properties_typeProperties_subscriptionId')]"
 					},
-					"AzureMLService_properties_typeProperties_resourceGroupName": {
-						"value": "[parameters('AzureMLService_properties_typeProperties_resourceGroupName')]"
+					"AzureMLWorkspace_properties_typeProperties_resourceGroupName": {
+						"value": "[parameters('AzureMLWorkspace_properties_typeProperties_resourceGroupName')]"
 					},
-					"AzureMLService_properties_typeProperties_mlWorkspaceName": {
-						"value": "[parameters('AzureMLService_properties_typeProperties_mlWorkspaceName')]"
+					"AzureMLWorkspace_properties_typeProperties_mlWorkspaceName": {
+						"value": "[parameters('AzureMLWorkspace_properties_typeProperties_mlWorkspaceName')]"
 					},
-					"AzureMLService001_properties_typeProperties_subscriptionId": {
-						"value": "[parameters('AzureMLService001_properties_typeProperties_subscriptionId')]"
+					"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_batch_endpoint_name": {
+						"value": "[parameters('azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_batch_endpoint_name')]"
 					},
-					"AzureMLService001_properties_typeProperties_resourceGroupName": {
-						"value": "[parameters('AzureMLService001_properties_typeProperties_resourceGroupName')]"
+					"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_datastore": {
+						"value": "[parameters('azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_datastore')]"
 					},
-					"AzureMLService001_properties_typeProperties_mlWorkspaceName": {
-						"value": "[parameters('AzureMLService001_properties_typeProperties_mlWorkspaceName')]"
+					"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_datastore": {
+						"value": "[parameters('azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_datastore')]"
+					},
+					"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_file_path": {
+						"value": "[parameters('azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_file_path')]"
+					},
+					"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_dir_path": {
+						"value": "[parameters('azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_dir_path')]"
+					},
+					"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_deployment_name": {
+						"value": "[parameters('azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_deployment_name')]"
 					}
 				}
 			},

@@ -11,29 +11,41 @@
 			"type": "string",
 			"defaultValue": "https://@{linkedService().key_vault_name}.vault.azure.net/"
 		},
-		"AzureMLService_properties_typeProperties_subscriptionId": {
+		"AzureMLWorkspace_properties_typeProperties_subscriptionId": {
 			"type": "string",
 			"defaultValue": "a326b683-d9a8-4ca6-adff-89d2a3eb1b0c"
 		},
-		"AzureMLService_properties_typeProperties_resourceGroupName": {
+		"AzureMLWorkspace_properties_typeProperties_resourceGroupName": {
 			"type": "string",
 			"defaultValue": "azureml-workspace-poc-001-rg"
 		},
-		"AzureMLService_properties_typeProperties_mlWorkspaceName": {
+		"AzureMLWorkspace_properties_typeProperties_mlWorkspaceName": {
 			"type": "string",
 			"defaultValue": "mlwxwucor001"
 		},
-		"AzureMLService001_properties_typeProperties_subscriptionId": {
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_batch_endpoint_name": {
 			"type": "string",
-			"defaultValue": "a326b683-d9a8-4ca6-adff-89d2a3eb1b0c"
+			"defaultValue": "employee-attrition-be-xwucor001"
 		},
-		"AzureMLService001_properties_typeProperties_resourceGroupName": {
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_datastore": {
 			"type": "string",
-			"defaultValue": "azureml-workspace-poc-001-rg"
+			"defaultValue": "azureml://datastores/workspaceblobstore/paths"
 		},
-		"AzureMLService001_properties_typeProperties_mlWorkspaceName": {
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_datastore": {
 			"type": "string",
-			"defaultValue": "mlwxwucor001"
+			"defaultValue": "azureml://datastores/workspaceblobstore/paths"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_file_path": {
+			"type": "string",
+			"defaultValue": "data/employee-attrition/inference/batch/data.csv"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_dir_path": {
+			"type": "string",
+			"defaultValue": "outputs/adf"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_deployment_name": {
+			"type": "string",
+			"defaultValue": "main"
 		}
 	},
 	"variables": {
@@ -41,7 +53,7 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/Call-AzureML-Batch-Managed-Endpoint')]",
+			"name": "[concat(parameters('factoryName'), '/azureml_adf_call_endpoint')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -319,90 +331,23 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureMLService')]",
+			"name": "[concat(parameters('factoryName'), '/AzureMLWorkspace')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
 				"type": "AzureMLService",
 				"typeProperties": {
-					"subscriptionId": "[parameters('AzureMLService_properties_typeProperties_subscriptionId')]",
-					"resourceGroupName": "[parameters('AzureMLService_properties_typeProperties_resourceGroupName')]",
-					"mlWorkspaceName": "[parameters('AzureMLService_properties_typeProperties_mlWorkspaceName')]",
+					"subscriptionId": "[parameters('AzureMLWorkspace_properties_typeProperties_subscriptionId')]",
+					"resourceGroupName": "[parameters('AzureMLWorkspace_properties_typeProperties_resourceGroupName')]",
+					"mlWorkspaceName": "[parameters('AzureMLWorkspace_properties_typeProperties_mlWorkspaceName')]",
 					"authentication": "MSI"
 				}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureMLService001')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureMLService",
-				"typeProperties": {
-					"subscriptionId": "[parameters('AzureMLService001_properties_typeProperties_subscriptionId')]",
-					"resourceGroupName": "[parameters('AzureMLService001_properties_typeProperties_resourceGroupName')]",
-					"mlWorkspaceName": "[parameters('AzureMLService001_properties_typeProperties_mlWorkspaceName')]",
-					"authentication": "MSI"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureML Pipeline Execute')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Machine learning execute pipeline",
-						"type": "AzureMLExecutePipeline",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"experimentName": "adf-experiment",
-							"mlPipelineId": {
-								"value": "@pipeline().parameters.azureml_pipeline_id",
-								"type": "Expression"
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "AzureMLService",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"parameters": {
-					"azureml_pipeline_id": {
-						"type": "string",
-						"defaultValue": "049e8bd7-c948-4402-a646-f1f9fd4787e8"
-					}
-				},
-				"folder": {
-					"name": "Batch scoring with Azure ML and ADF/Native"
-				},
-				"annotations": [],
-				"lastPublishTime": "2022-09-03T03:56:56Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureMLService')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureML-ADF-Batch-Scoring')]",
+			"name": "[concat(parameters('factoryName'), '/azureml_adf_batch_scoring')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -461,7 +406,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"url": {
-								"value": "https://@{pipeline().parameters.key_vault_name}.vault.azure.net/secrets/client-id?api-version=7.0",
+								"value": "https://@{pipeline().globalParameters.key_vault_name}.vault.azure.net/secrets/client-id?api-version=7.0",
 								"type": "Expression"
 							},
 							"method": "GET",
@@ -486,7 +431,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"url": {
-								"value": "https://@{pipeline().parameters.key_vault_name}.vault.azure.net/secrets/client-secret?api-version=7.0",
+								"value": "https://@{pipeline().globalParameters.key_vault_name}.vault.azure.net/secrets/client-secret?api-version=7.0",
 								"type": "Expression"
 							},
 							"method": "GET",
@@ -557,7 +502,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "Call-AzureML-Batch-Managed-Endpoint",
+								"referenceName": "azureml_adf_call_endpoint",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -583,7 +528,7 @@
 									"type": "Expression"
 								},
 								"azureml_resource_id": {
-									"value": "subscriptions/@{pipeline().globalParameters.subscription_id}/resourceGroups/@{pipeline().parameters.azureml_workspace_rg}/providers/Microsoft.MachineLearningServices/workspaces/@{pipeline().parameters.azureml_workspace_name}",
+									"value": "subscriptions/@{pipeline().globalParameters.subscription_id}/resourceGroups/@{pipeline().globalParameters.azureml_workspace_rg}/providers/Microsoft.MachineLearningServices/workspaces/@{pipeline().globalParameters.azureml_workspace_name}",
 									"type": "Expression"
 								},
 								"batch_endpoint_name": {
@@ -599,10 +544,6 @@
 					"cancelAfter": {}
 				},
 				"parameters": {
-					"key_vault_name": {
-						"type": "string",
-						"defaultValue": "kvxwucor002"
-					},
 					"batch_endpoint_name": {
 						"type": "string",
 						"defaultValue": "employee-attrition-be-xwucor001"
@@ -626,14 +567,6 @@
 					"deployment_name": {
 						"type": "string",
 						"defaultValue": "main"
-					},
-					"azureml_workspace_name": {
-						"type": "string",
-						"defaultValue": "mlwxwucor001"
-					},
-					"azureml_workspace_rg": {
-						"type": "string",
-						"defaultValue": "azureml-workspace-poc-001-rg"
 					}
 				},
 				"variables": {
@@ -667,7 +600,100 @@
 				"lastPublishTime": "2022-09-02T04:13:13Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Call-AzureML-Batch-Managed-Endpoint')]"
+				"[concat(variables('factoryId'), '/pipelines/azureml_adf_call_endpoint')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/azureml_pipeline_execute')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Machine learning execute pipeline",
+						"type": "AzureMLExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"experimentName": "adf-experiment",
+							"mlPipelineId": {
+								"value": "@pipeline().parameters.azureml_pipeline_id",
+								"type": "Expression"
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "AzureMLWorkspace",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"azureml_pipeline_id": {
+						"type": "string",
+						"defaultValue": "049e8bd7-c948-4402-a646-f1f9fd4787e8"
+					}
+				},
+				"folder": {
+					"name": "Batch scoring with Azure ML and ADF/Native"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-09-03T03:56:56Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureMLWorkspace')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/azureml_adf_batch_scoring_trigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "azureml_adf_batch_scoring",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"batch_endpoint_name": "[parameters('azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_batch_endpoint_name')]",
+							"input_datastore": "[parameters('azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_datastore')]",
+							"output_datastore": "[parameters('azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_datastore')]",
+							"input_file_path": "[parameters('azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_file_path')]",
+							"output_dir_path": "[parameters('azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_dir_path')]",
+							"deployment_name": "[parameters('azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_deployment_name')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Month",
+						"interval": 16,
+						"startTime": "2022-12-10T12:00:00Z",
+						"timeZone": "UTC",
+						"schedule": {
+							"monthDays": [
+								1
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/azureml_adf_batch_scoring')]"
 			]
 		}
 	]
