@@ -7,6 +7,21 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adfixwucor001"
 		},
+		"default_properties_tenant_id_value": {
+			"type": "string"
+		},
+		"default_properties_subscription_id_value": {
+			"type": "string"
+		},
+		"default_properties_key_vault_name_value": {
+			"type": "string"
+		},
+		"default_properties_azureml_workspace_name_value": {
+			"type": "string"
+		},
+		"default_properties_azureml_workspace_rg_value": {
+			"type": "string"
+		},
 		"AzureKeyVault_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://@{linkedService().key_vault_name}.vault.azure.net/"
@@ -52,6 +67,34 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/default')]",
+			"type": "Microsoft.DataFactory/factories/globalparameters",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"tenant_id": {
+					"type": "string",
+					"value": "[parameters('default_properties_tenant_id_value')]"
+				},
+				"subscription_id": {
+					"type": "string",
+					"value": "[parameters('default_properties_subscription_id_value')]"
+				},
+				"key_vault_name": {
+					"type": "string",
+					"value": "[parameters('default_properties_key_vault_name_value')]"
+				},
+				"azureml_workspace_name": {
+					"type": "string",
+					"value": "[parameters('default_properties_azureml_workspace_name_value')]"
+				},
+				"azureml_workspace_rg": {
+					"type": "string",
+					"value": "[parameters('default_properties_azureml_workspace_rg_value')]"
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/azureml_adf_call_endpoint')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",

@@ -35,6 +35,21 @@
 		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_deployment_name": {
 			"value": "main"
 		},
+		"default_properties_tenant_id_value": {
+			"value": ""
+		},
+		"default_properties_subscription_id_value": {
+			"value": ""
+		},
+		"default_properties_key_vault_name_value": {
+			"value": ""
+		},
+		"default_properties_azureml_workspace_name_value": {
+			"value": ""
+		},
+		"default_properties_azureml_workspace_rg_value": {
+			"value": ""
+		},
 		"containerUri": {
 			"value": ""
 		},

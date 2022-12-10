@@ -47,6 +47,21 @@
 			"type": "string",
 			"defaultValue": "main"
 		},
+		"default_properties_tenant_id_value": {
+			"type": "string"
+		},
+		"default_properties_subscription_id_value": {
+			"type": "string"
+		},
+		"default_properties_key_vault_name_value": {
+			"type": "string"
+		},
+		"default_properties_azureml_workspace_name_value": {
+			"type": "string"
+		},
+		"default_properties_azureml_workspace_rg_value": {
+			"type": "string"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -73,6 +88,21 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"default_properties_tenant_id_value": {
+						"value": "[parameters('default_properties_tenant_id_value')]"
+					},
+					"default_properties_subscription_id_value": {
+						"value": "[parameters('default_properties_subscription_id_value')]"
+					},
+					"default_properties_key_vault_name_value": {
+						"value": "[parameters('default_properties_key_vault_name_value')]"
+					},
+					"default_properties_azureml_workspace_name_value": {
+						"value": "[parameters('default_properties_azureml_workspace_name_value')]"
+					},
+					"default_properties_azureml_workspace_rg_value": {
+						"value": "[parameters('default_properties_azureml_workspace_rg_value')]"
 					},
 					"AzureKeyVault_properties_typeProperties_baseUrl": {
 						"value": "[parameters('AzureKeyVault_properties_typeProperties_baseUrl')]"
