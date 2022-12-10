@@ -13,7 +13,7 @@
 					"batch_endpoint_name": "employee-attrition-be-xwucor001",
 					"input_datastore": "azureml://datastores/workspaceblobstore/paths",
 					"output_datastore": "azureml://datastores/workspaceblobstore/paths",
-					"input_file_path": "data/employee-attrition/inference/batch/data.csv",
+					"input_file_path": "data/employee-attrition/inference/batch/01.csv",
 					"output_dir_path": "outputs/adf",
 					"deployment_name": "main"
 				}
