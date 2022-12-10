@@ -97,14 +97,14 @@
                     "clusterSshUserName": "=",
                     "hostSubscriptionId": "=",
                     "clusterResourceGroup": "=",
-                    "subscriptionId": "=",
-                    "resourceGroupName": "=",
+                    "subscriptionId": "-",
+                    "resourceGroupName": "-",
                     "tenant": "=",
                     "dataLakeStoreUri": "=",
                     "baseUrl": "=",
                     "database": "=",
                     "serviceEndpoint": "=",
-                    "batchUri": "=",
+                    "batchUri": "-",
                     "poolName": "=",
                     "databaseName": "=",
                     "systemNumber": "=",
@@ -117,7 +117,7 @@
                     "sasToken": "|",
                     "connectionString": "|:-connectionString:secureString",
                     "hostKeyFingerprint": "=",
-                    "mlWorkspaceName": "="
+                    "mlWorkspaceName": "-"
                 }
             }
         },
