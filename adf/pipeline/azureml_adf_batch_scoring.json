@@ -1,5 +1,5 @@
 {
-	"name": "AzureML-ADF-Batch-Scoring",
+	"name": "azureml_adf_batch_scoring",
 	"properties": {
 		"activities": [
 			{
@@ -150,7 +150,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "Call-AzureML-Batch-Managed-Endpoint",
+						"referenceName": "azureml_adf_call_endpoint",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,

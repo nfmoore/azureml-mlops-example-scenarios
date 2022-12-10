@@ -1,5 +1,5 @@
 {
-	"name": "Call-AzureML-Batch-Managed-Endpoint",
+	"name": "azureml_adf_call_endpoint",
 	"properties": {
 		"activities": [
 			{

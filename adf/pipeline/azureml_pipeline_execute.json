@@ -1,5 +1,5 @@
 {
-	"name": "AzureML Pipeline Execute",
+	"name": "azureml_pipeline_execute",
 	"properties": {
 		"activities": [
 			{
