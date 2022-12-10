@@ -23,17 +23,7 @@
         }
     },
     "Microsoft.DataFactory/factories/pipelines": {
-        "*": {
-            "properties": {
-                "activities": [
-                    {
-                        "typeProperties": {
-                            "command": "="
-                        }
-                    }
-                ]
-            }
-        }
+
     },
     "Microsoft.DataFactory/factories/integrationRuntimes": {
         "properties": {
