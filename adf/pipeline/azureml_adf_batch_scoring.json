@@ -56,7 +56,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"url": {
-						"value": "https://@{pipeline().parameters.key_vault_name}.vault.azure.net/secrets/client-id?api-version=7.0",
+						"value": "https://@{pipeline().globalParameters.key_vault_name}.vault.azure.net/secrets/client-id?api-version=7.0",
 						"type": "Expression"
 					},
 					"method": "GET",
@@ -80,7 +80,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"url": {
-						"value": "https://@{pipeline().parameters.key_vault_name}.vault.azure.net/secrets/client-secret?api-version=7.0",
+						"value": "https://@{pipeline().globalParameters.key_vault_name}.vault.azure.net/secrets/client-secret?api-version=7.0",
 						"type": "Expression"
 					},
 					"method": "GET",
@@ -176,7 +176,7 @@
 							"type": "Expression"
 						},
 						"azureml_resource_id": {
-							"value": "subscriptions/@{pipeline().globalParameters.subscription_id}/resourceGroups/@{pipeline().parameters.azureml_workspace_rg}/providers/Microsoft.MachineLearningServices/workspaces/@{pipeline().parameters.azureml_workspace_name}",
+							"value": "subscriptions/@{pipeline().globalParameters.subscription_id}/resourceGroups/@{pipeline().globalParameters.azureml_workspace_rg}/providers/Microsoft.MachineLearningServices/workspaces/@{pipeline().globalParameters.azureml_workspace_name}",
 							"type": "Expression"
 						},
 						"batch_endpoint_name": {
@@ -188,10 +188,6 @@
 			}
 		],
 		"parameters": {
-			"key_vault_name": {
-				"type": "string",
-				"defaultValue": "kvxwucor002"
-			},
 			"batch_endpoint_name": {
 				"type": "string",
 				"defaultValue": "employee-attrition-be-xwucor001"
@@ -215,14 +211,6 @@
 			"deployment_name": {
 				"type": "string",
 				"defaultValue": "main"
-			},
-			"azureml_workspace_name": {
-				"type": "string",
-				"defaultValue": "mlwxwucor001"
-			},
-			"azureml_workspace_rg": {
-				"type": "string",
-				"defaultValue": "azureml-workspace-poc-001-rg"
 			}
 		},
 		"variables": {
