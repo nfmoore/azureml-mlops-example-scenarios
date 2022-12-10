@@ -13,6 +13,10 @@
 			"key_vault_name": {
 				"type": "string",
 				"value": "kvxwucor002"
+			},
+			"azureml_workspace_name": {
+				"type": "string",
+				"value": "mlwxwucor001"
 			}
 		},
 		"globalConfigurations": {
