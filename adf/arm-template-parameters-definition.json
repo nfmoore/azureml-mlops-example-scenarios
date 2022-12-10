@@ -63,14 +63,14 @@
             "pipelines": [
                 {
                     "parameters": {
-                        "*": "="
+                        "*": "-"
                     }
                 },
                 "pipelineReference.referenceName"
             ],
             "pipeline": {
                 "parameters": {
-                    "*": "="
+                    "*": "-"
                 }
             },
             "typeProperties": {
