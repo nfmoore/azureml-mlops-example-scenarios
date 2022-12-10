@@ -1,16 +1,10 @@
 {
 	"name": "AzureKeyVault",
 	"properties": {
-		"parameters": {
-			"key_vault_name": {
-				"type": "string",
-				"defaultValue": "kvxwucor002"
-			}
-		},
 		"annotations": [],
 		"type": "AzureKeyVault",
 		"typeProperties": {
-			"baseUrl": "https://@{linkedService().key_vault_name}.vault.azure.net/"
+			"baseUrl": "https://kvxwucor002.vault.azure.net/"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/linkedservices"
