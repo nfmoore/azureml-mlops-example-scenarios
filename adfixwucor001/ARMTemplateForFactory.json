@@ -12,16 +12,13 @@
 			"defaultValue": "https://kvxwucor002.vault.azure.net/"
 		},
 		"AzureMLWorkspace_properties_typeProperties_subscriptionId": {
-			"type": "string",
-			"defaultValue": "a326b683-d9a8-4ca6-adff-89d2a3eb1b0c"
+			"type": "string"
 		},
 		"AzureMLWorkspace_properties_typeProperties_resourceGroupName": {
-			"type": "string",
-			"defaultValue": "azureml-workspace-poc-001-rg"
+			"type": "string"
 		},
 		"AzureMLWorkspace_properties_typeProperties_mlWorkspaceName": {
-			"type": "string",
-			"defaultValue": "mlwxwucor001"
+			"type": "string"
 		},
 		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_batch_endpoint_name": {
 			"type": "string",
