@@ -1,0 +1,37 @@
+{
+	"name": "azureml_adf_batch_scoring_trigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "azureml_adf_batch_scoring",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"batch_endpoint_name": "employee-attrition-be-xwucor001",
+					"input_datastore": "azureml://datastores/workspaceblobstore/paths",
+					"output_datastore": "azureml://datastores/workspaceblobstore/paths",
+					"input_file_path": "data/employee-attrition/inference/batch/data.csv",
+					"output_dir_path": "outputs/adf",
+					"deployment_name": "main"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Month",
+				"interval": 16,
+				"startTime": "2022-12-10T12:00:00Z",
+				"timeZone": "UTC",
+				"schedule": {
+					"monthDays": [
+						1
+					]
+				}
+			}
+		}
+	}
+}
