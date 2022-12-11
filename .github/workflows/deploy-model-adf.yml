@@ -1,0 +1,41 @@
+name: Deploy to Azure Data Factory
+
+on:
+  workflow_dispatch: # For demonstration purposes
+
+  # push: # Runs workflow when you push a commit or tag
+  #   branches:
+  #     - adf_publish
+
+jobs:
+  create-environments-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+
+    environment:
+      name: Staging
+
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          ref: adf_publish
+
+      - name: Azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          enable-AzPSSession: true 
+
+      - name: Deploy resources
+        uses: Azure/data-factory-deploy-action@v1.2.0
+        with:
+          resourceGroupName: ${{ secrets.RESOURCE_GROUP }}
+          dataFactoryName: ${{ secrets.DATA_FACTORY_NAME }}
+          armTemplateFile: ${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateForFactory.json
+          armTemplateParametersFile: ${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateParametersForFactory.json
+          additionalParameters: 'AzureKeyVault_properties_typeProperties_baseUrl=https://${{ secrets.KEY_VAULT_NAME }}.vault.azure.net/ AzureMLService001_properties_typeProperties_resourceGroupName=${{ secrets.RESOURCE_GROUP }} AzureMLService001_properties_typeProperties_mlWorkspaceName=${{ secrets.WORKSPACE_NAME }}'
