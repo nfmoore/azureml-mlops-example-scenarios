@@ -8,6 +8,13 @@ param workloadIdentifier string = substring(uniqueString(resourceGroup().id), 0,
 @description('Resource Instance')
 param resourceInstance string = '001'
 
+@description('Service Principal Client Id')
+param servicePrincipalClientId string
+
+@secure()
+@description('Service Principal Secret')
+param servicePrincipalSecret string
+
 //********************************************************
 // Resource Config Parameters
 //********************************************************
@@ -30,11 +37,11 @@ param azureMLContainerRegistryName string = 'cr${workloadIdentifier}${resourceIn
 @description('Azure Machine Learning Compute Cluster Name')
 param azureMlComputeClusterName string = 'cpu-cluster'
 
-@description('Key Vault Name')
-param keyVaultName string = 'kv${workloadIdentifier}${resourceInstance}'
+@description('Azure Machine Learning Key Vault Name')
+param azuremlKeyVaultName string = 'kvmlw${workloadIdentifier}${resourceInstance}'
 
-@description('Key Vault Location')
-param keyVaultLocation string = resourceGroup().location
+@description('Azure Machine Learning Key Vault Location')
+param azuremlKeyVaultLocation string = resourceGroup().location
 
 @description('Log Analytics Workspace Name')
 param logAnalyticsWorkspaceName string = 'law${workloadIdentifier}${resourceInstance}'
@@ -45,14 +52,41 @@ param logAnalyticsWorkspaceLocation string = resourceGroup().location
 @description('Deployment Script Name')
 param deploymentScriptName string = 'ds${workloadIdentifier}${resourceInstance}'
 
-// @description('Azure ML Registry Name')
-// param azureMLRegistryName string = 'mlr${workloadIdentifier}'
+@description('Azure ML Registry Name')
+param azureMLRegistryName string = 'mlr${workloadIdentifier}'
 
-// @description('Azure ML Registry Primary Location')
-// param azureMLRegistryPrimaryLocation string = resourceGroup().location
+@description('Azure ML Registry Primary Location')
+param azureMLRegistryPrimaryLocation string = resourceGroup().location
 
-// @description('Deploy Azure ML Registry')
-// param deployAzureMLRegistry bool = true
+@description('Deploy Azure ML Registry')
+param deployAzureMLRegistry bool = true
+
+@description('Azure Data Factory Name')
+param dataFactoryName string = 'adf${workloadIdentifier}${resourceInstance}'
+
+@description('Azure Data Factory Location')
+param dataFactoryLocation string = resourceGroup().location
+
+@description('Azure Data Factory Location')
+param addRepositoryConfiguration bool = false // only add for development environment
+
+@description('Azure Data Factory Repository Name')
+param dataFactoryRepositoryName string = ''
+
+@description('Repository Account Name')
+param repositoryAccountName string = ''
+
+@description('Azure Data Factory Collaboration Branch')
+param collaborationBranch string = 'main'
+
+@description('Azure Data Factory Root Folder')
+param rootFolder string = 'adf'
+
+@description('Azure Data Factory Key Vault Name')
+param dataFactoryKeyVaultName string = 'kvadf${workloadIdentifier}${resourceInstance}'
+
+@description('Azure Data Factory Key Vault Location')
+param dataFactoryKeyVaultLocation string = resourceGroup().location
 
 //********************************************************
 // Variables
@@ -71,9 +105,9 @@ var azureRbacLogAnalyticsReaderRoleId = '73c42c96-874c-492b-b04d-ab87d138a893' /
 // }
 
 // Azure ML Key Vault
-resource r_keyVault 'Microsoft.KeyVault/vaults@2021-10-01' = {
-  name: keyVaultName
-  location: keyVaultLocation
+resource r_azuremlKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' = {
+  name: azuremlKeyVaultName
+  location: azuremlKeyVaultLocation
   properties: {
     createMode: 'default'
     enabledForDeployment: false
@@ -151,7 +185,7 @@ resource r_azureMlWorkspace 'Microsoft.MachineLearningServices/workspaces@2021-0
   }
   properties: {
     friendlyName: azureMLWorkspaceName
-    keyVault: r_keyVault.id
+    keyVault: r_azuremlKeyVault.id
     storageAccount: r_azureMlStorageAccount.id
     applicationInsights: r_azureMlAppInsights.id
     containerRegistry: r_azureMlContainerRegistry.id
@@ -193,39 +227,110 @@ resource r_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-
   }
 }
 
-// // Deploy Azure Machine Learning Registry
-// resource r_azureMLRegistry 'Microsoft.MachineLearningServices/registries@2022-10-01-preview' = if (deployAzureMLRegistry) {
-//   name: azureMLRegistryName
-//   location: azureMLRegistryPrimaryLocation
-//   identity: {
-//     type: 'SystemAssigned'
-//   }
-//   properties: {
-//     managedResourceGroup: {
-//       resourceId: 'string'
-//     }
-//     regionDetails: [
-//       {
-//         acrDetails: [
-//           {
-//             systemCreatedAcrAccount: {
-//               acrAccountSku: 'Premium'
-//             }
-//           }
-//         ]
-//         location: azureMLRegistryPrimaryLocation
-//         storageAccountDetails: [
-//           {
-//             systemCreatedStorageAccount: {
-//               storageAccountHnsEnabled: false
-//               storageAccountType: 'Standard_GRS'
-//             }
-//           }
-//         ]
-//       }
-//     ]
-//   }
-// }
+// Deploy Azure Machine Learning Registry
+resource r_azureMLRegistry 'Microsoft.MachineLearningServices/registries@2022-10-01-preview' = if (deployAzureMLRegistry) {
+  name: azureMLRegistryName
+  location: azureMLRegistryPrimaryLocation
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    managedResourceGroup: {
+      resourceId: 'string'
+    }
+    regionDetails: [
+      {
+        acrDetails: [
+          {
+            systemCreatedAcrAccount: {
+              acrAccountSku: 'Premium'
+            }
+          }
+        ]
+        location: azureMLRegistryPrimaryLocation
+        storageAccountDetails: [
+          {
+            systemCreatedStorageAccount: {
+              storageAccountHnsEnabled: false
+              storageAccountType: 'Standard_GRS'
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+
+// Azure Data Factory
+resource r_dataFactoryName 'Microsoft.DataFactory/factories@2018-06-01' = {
+  name: dataFactoryName
+  location: dataFactoryLocation
+  properties: {
+    repoConfiguration: addRepositoryConfiguration ? {
+      accountName: repositoryAccountName
+      repositoryName: dataFactoryRepositoryName
+      collaborationBranch: collaborationBranch
+      rootFolder: rootFolder
+      type: 'FactoryGitHubConfiguration'
+    } : {}
+  }
+  identity: {
+    type: 'SystemAssigned'
+  }
+}
+
+// Azure Data Factory Key Vault
+resource r_dataFactoryKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' = {
+  name: dataFactoryKeyVaultName
+  location: dataFactoryKeyVaultLocation
+  properties: {
+    createMode: 'default'
+    enabledForDeployment: false
+    enabledForDiskEncryption: false
+    enabledForTemplateDeployment: false
+    enableSoftDelete: true
+    enableRbacAuthorization: true
+    enablePurgeProtection: true
+    networkAcls: {
+      bypass: 'AzureServices'
+      defaultAction: 'Deny'
+    }
+    sku: {
+      family: 'A'
+      name: 'standard'
+    }
+    softDeleteRetentionInDays: 7
+    tenantId: subscription().tenantId
+    accessPolicies: [
+      {
+        objectId: r_dataFactoryName.identity.principalId
+        tenantId: subscription().tenantId
+        permissions: {
+          secrets: [
+            'get'
+            'list'
+          ]
+        }
+      }
+    ]
+  }
+}
+
+resource r_dataFactoryKeyVaultSecret_clientId 'Microsoft.KeyVault/vaults/secrets@2021-11-01-preview' = {
+  parent: r_dataFactoryKeyVault
+  name: 'client-id'
+  properties: {
+    value: servicePrincipalClientId
+  }
+}
+
+resource r_dataFactoryKeyVaultSecret_clientSecret 'Microsoft.KeyVault/vaults/secrets@2021-11-01-preview' = {
+  parent: r_dataFactoryKeyVault
+  name: 'client-secret'
+  properties: {
+    value: servicePrincipalSecret
+  }
+}
 
 //********************************************************
 // RBAC Role Assignments
@@ -264,6 +369,8 @@ resource s_deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' =
       }
     ]
     scriptContent: '''
+      # Upload data to data store
+
       SOURCE_CURATED_DATA_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/main/core/data/curated/01.csv'
       SOURCE_INFERENCE_DATA_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/main/core/data/inference/01.csv'
       DESTINATION_CURATED_DATA_PATH='./data/employee-attrition/curated/01.csv'
@@ -282,7 +389,8 @@ resource s_deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' =
 
       CONTAINER_NAME=$(az storage container list --account-name $AZURE_STORAGE_ACCOUNT --account-key $AZURE_STORAGE_KEY --query "[].name" | grep "azureml-blobstore-*" | tr -d ',' | xargs)
       az storage blob upload-batch --destination $CONTAINER_NAME --account-name $AZURE_STORAGE_ACCOUNT --account-key $AZURE_STORAGE_KEY --destination-path ./data --source ./data
-    '''
+
+      '''
   }
 }
 
