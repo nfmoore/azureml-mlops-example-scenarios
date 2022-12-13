@@ -589,7 +589,7 @@
 					},
 					"output_dir_path": {
 						"type": "string",
-						"defaultValue": "outputs/adf"
+						"defaultValue": "output/adf"
 					},
 					"deployment_name": {
 						"type": "string",
