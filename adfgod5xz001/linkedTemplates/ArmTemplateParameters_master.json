@@ -18,22 +18,22 @@
 			"value": ""
 		},
 		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_batch_endpoint_name": {
-			"value": ""
+			"value": "employee-attrition-be-xwucor001"
 		},
 		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_datastore": {
-			"value": ""
+			"value": "azureml://datastores/workspaceblobstore/paths"
 		},
 		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_datastore": {
-			"value": ""
+			"value": "azureml://datastores/workspaceblobstore/paths"
 		},
 		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_file_path": {
-			"value": ""
+			"value": "data/employee-attrition/inference/batch/01.csv"
 		},
 		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_dir_path": {
-			"value": ""
+			"value": "outputs/adf"
 		},
 		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_deployment_name": {
-			"value": ""
+			"value": "main"
 		},
 		"default_properties_tenant_id_value": {
 			"value": ""
