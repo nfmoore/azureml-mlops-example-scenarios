@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.13.1.58284",
-      "templateHash": "16872177369968364622"
+      "templateHash": "3799152419006368078"
     }
   },
   "parameters": {
@@ -391,7 +391,7 @@
         "enabledForDiskEncryption": false,
         "enabledForTemplateDeployment": false,
         "enableSoftDelete": true,
-        "enableRbacAuthorization": true,
+        "enableRbacAuthorization": false,
         "enablePurgeProtection": true,
         "networkAcls": {
           "bypass": "AzureServices",

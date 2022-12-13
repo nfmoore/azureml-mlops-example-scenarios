@@ -262,7 +262,7 @@ resource r_azureMLRegistry 'Microsoft.MachineLearningServices/registries@2022-10
 }
 
 // Azure Data Factory
-resource r_dataFactoryName 'Microsoft.DataFactory/factories@2018-06-01' = {
+resource r_dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
   name: dataFactoryName
   location: dataFactoryLocation
   properties: {
@@ -289,7 +289,7 @@ resource r_dataFactoryKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' = {
     enabledForDiskEncryption: false
     enabledForTemplateDeployment: false
     enableSoftDelete: true
-    enableRbacAuthorization: true
+    enableRbacAuthorization: false
     enablePurgeProtection: true
     networkAcls: {
       bypass: 'AzureServices'
@@ -303,7 +303,7 @@ resource r_dataFactoryKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' = {
     tenantId: subscription().tenantId
     accessPolicies: [
       {
-        objectId: r_dataFactoryName.identity.principalId
+        objectId: r_dataFactory.identity.principalId
         tenantId: subscription().tenantId
         permissions: {
           secrets: [
