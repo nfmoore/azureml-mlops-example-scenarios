@@ -4,6 +4,7 @@ from typing import Tuple
 
 import mlflow
 import mltable
+import numpy as np
 import pandas as pd
 from constants import CATEGORICAL_FEATURES, NUMERIC_FEATURES, TARGET
 from sklearn.model_selection import train_test_split
@@ -21,12 +22,10 @@ def main(args: Namespace) -> None:
 
 
 def prepare_data(df: pd.DataFrame, random_state: int) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    # change data types of features
-    df[TARGET] = df[TARGET].replace(
-        {"Yes": 1, "No": 0}).astype("str")
-    df[CATEGORICAL_FEATURES] = df[CATEGORICAL_FEATURES].astype(
-        "str")
+    # change data types of target and features
+    df[TARGET] = df[TARGET].replace({"True": 1, "False": 0})
     df[NUMERIC_FEATURES] = df[NUMERIC_FEATURES].astype("float")
+    df[CATEGORICAL_FEATURES] = df[CATEGORICAL_FEATURES].astype("str")
 
     # split into train and test datasets
     df_train, df_test = train_test_split(

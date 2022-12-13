@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
-name: employee-attrition-inference
+name: employee-attrition-inference-batch
 version: 1
-description: Processed employee attrition data from model inferencing.
+description: Processed employee attrition data from batch model inferencing.
 type: mltable
 path: azureml://datastores/workspaceblobstore/paths/data/employee-attrition/inference/batch/

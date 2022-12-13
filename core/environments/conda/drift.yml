@@ -9,8 +9,8 @@ dependencies:
   - pip=20.1.1
   - pip:
       - azure-monitor-query~=1.0.3
-      - azure-identity~=1.10.0
-      - evidently==0.1.54.dev0
-      - mltable~=0.1.0b4
-      - opencensus-ext-azure~=1.1.5
-      - pandas~=1.5.0
+      - azure-identity~=1.12.0
+      - evidently~=0.2.1
+      - mltable~=1.0.0
+      - opencensus-ext-azure~=1.1.7
+      - pandas~=1.5.2

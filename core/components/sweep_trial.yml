@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 type: command
-name: train_component
-display_name: Train Model
+name: sweep_component
+display_name: train_model
 version: 1
 inputs:
   prepared_data_dir:
