@@ -1,4 +1,4 @@
-name: Build Azure Data Factory Files
+name: Build Azure Data Factory
 
 on:
   workflow_dispatch: # For demonstration purposes
@@ -63,18 +63,11 @@ jobs:
           }
           '''
 
-              # "azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_batch_endpoint_name": { "value": "'$BATCH_ENDPOINT_NAME}'" },
-              # "azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_datastore": { "value": "'${INPUT_DATASTORE_NAME}'" },
-              # "azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_datastore": { "value": "'${OUTPUT_DATASTORE_NAME}'" },
-              # "azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_file_path": { "value": "'${INPUT_DATASTORE_PATH}'" },
-              # "azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_dir_path": { "value": "'${OUTPUT_DATASTORE_PATH}'" },
-              # "azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_deployment_name": { "value": "'${BATCH_DEPLOYMENT_NAME}'" },
-
           mkdir -p artifacts
-          jq --argjson a "$PARAMETER_VALUES" '.parameters += $a' ${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateParametersForFactory.json > artifacts/parameters.${{ secrets.RESOURCE_INSTANCE }}.json
-          cp ${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateForFactory.json artifacts/template.${{ secrets.RESOURCE_INSTANCE }}.json
+          jq --argjson a "$PARAMETER_VALUES" '.parameters += $a' ${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateParametersForFactory.json > artifacts/ARMTemplateParametersForFactory${{ secrets.RESOURCE_INSTANCE }}.json
+          cp ${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateForFactory.json artifacts/ARMTemplateForFactory${{ secrets.RESOURCE_INSTANCE }}.json
 
-      - name: Upload model artifact
+      - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: artifacts
@@ -136,10 +129,10 @@ jobs:
           '''
 
           mkdir -p artifacts
-          jq --argjson a "$PARAMETER_VALUES" '.parameters += $a' ${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateParametersForFactory.json > artifacts/parameters.${{ secrets.RESOURCE_INSTANCE }}.json
-          cp ${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateForFactory.json artifacts/template.${{ secrets.RESOURCE_INSTANCE }}.json
+          jq --argjson a "$PARAMETER_VALUES" '.parameters += $a' ${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateParametersForFactory.json > artifacts/ARMTemplateParametersForFactory${{ secrets.RESOURCE_INSTANCE }}.json
+          cp ${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateForFactory.json artifacts/ARMTemplateForFactory${{ secrets.RESOURCE_INSTANCE }}.json
 
-      - name: Upload model artifact
+      - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: artifacts

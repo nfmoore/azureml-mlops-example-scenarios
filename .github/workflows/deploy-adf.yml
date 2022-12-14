@@ -1,9 +1,9 @@
-name: Deploy Azure Data Factory Template
+name: Deploy to Azure Data Factory
 
 on:
   workflow_run:
     workflows:
-      - Build Azure Data Factory Template and Parameter Files
+      - Build Azure Data Factory
     types:
       - completed
 
@@ -22,35 +22,11 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
+
+      - name: Download artifacts
+        uses: "./.github/templates/download-workflow-artifact"
         with:
-          ref: ${{ github.event.workflow_run.head_branch }}
-
-      - name: Download model artifact
-        uses: actions/github-script@v6
-        with:
-          script: |
-            let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
-               owner: context.repo.owner,
-               repo: context.repo.repo,
-               run_id: context.payload.workflow_run.id,
-            });
-
-            let matchArtifact = allArtifacts.data.artifacts.filter((artifact) => {
-              return artifact.name == "artifacts"
-            })[0];
-
-            let download = await github.rest.actions.downloadArtifact({
-               owner: context.repo.owner,
-               repo: context.repo.repo,
-               artifact_id: matchArtifact.id,
-               archive_format: 'zip',
-            });
-
-            let fs = require('fs');
-            fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/artifacts.zip`, Buffer.from(download.data));
-
-      - name: Unzip model artifact
-        run: unzip artifacts.zip
+          artifact_name: artifacts
 
       - name: Azure login
         uses: azure/login@v1
@@ -58,17 +34,18 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           enable-AzPSSession: true 
 
-      - name: Deploy resources
+      - name: Deploy template
         uses: Azure/data-factory-deploy-action@v1.2.0
         with:
           resourceGroupName: ${{ secrets.RESOURCE_GROUP }}
           dataFactoryName: adf${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
-          armTemplateFile: artifacts/template.${{ secrets.RESOURCE_INSTANCE }}.json
-          armTemplateParametersFile: artifacts/parameters.${{ secrets.RESOURCE_INSTANCE }}.json
+          armTemplateFile: ARMTemplateForFactory${{ secrets.RESOURCE_INSTANCE }}.json
+          armTemplateParametersFile: ARMTemplateParametersForFactory${{ secrets.RESOURCE_INSTANCE }}.json
 
   deploy-production:
     name: Deploy Templates to Production
     runs-on: ubuntu-latest
+    needs: deploy-staging
 
     environment:
       name: Production
@@ -80,35 +57,11 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
+
+      - name: Download artifacts
+        uses: "./.github/templates/download-workflow-artifact"
         with:
-          ref: ${{ github.event.workflow_run.head_branch }}
-
-      - name: Download model artifact
-        uses: actions/github-script@v6
-        with:
-          script: |
-            let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
-               owner: context.repo.owner,
-               repo: context.repo.repo,
-               run_id: context.payload.workflow_run.id,
-            });
-
-            let matchArtifact = allArtifacts.data.artifacts.filter((artifact) => {
-              return artifact.name == "artifacts"
-            })[0];
-
-            let download = await github.rest.actions.downloadArtifact({
-               owner: context.repo.owner,
-               repo: context.repo.repo,
-               artifact_id: matchArtifact.id,
-               archive_format: 'zip',
-            });
-
-            let fs = require('fs');
-            fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/artifacts.zip`, Buffer.from(download.data));
-
-      - name: Unzip model artifact
-        run: unzip artifacts.zip
+          artifact_name: artifacts
 
       - name: Azure login
         uses: azure/login@v1
@@ -116,10 +69,10 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           enable-AzPSSession: true 
 
-      - name: Deploy resources
+      - name: Deploy template
         uses: Azure/data-factory-deploy-action@v1.2.0
         with:
           resourceGroupName: ${{ secrets.RESOURCE_GROUP }}
           dataFactoryName: adf${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
-          armTemplateFile: artifacts/template.${{ secrets.RESOURCE_INSTANCE }}.json
-          armTemplateParametersFile: artifacts/parameters.${{ secrets.RESOURCE_INSTANCE }}.json
+          armTemplateFile: ARMTemplateForFactory${{ secrets.RESOURCE_INSTANCE }}.json
+          armTemplateParametersFile: ARMTemplateParametersForFactory${{ secrets.RESOURCE_INSTANCE }}.json
