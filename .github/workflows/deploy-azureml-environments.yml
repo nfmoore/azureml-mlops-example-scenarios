@@ -1,4 +1,4 @@
-name: Deploy Environments
+name: Build Environments
 
 on:
   workflow_dispatch: # For demonstration purposes
@@ -8,8 +8,8 @@ on:
   #     - main
 
 jobs:
-  deploy-environments-staging:
-    name: Deploy Environments in Staging
+  register-environments-staging:
+    name: Register Environments in Staging
     runs-on: ubuntu-latest
 
     environment:
@@ -30,25 +30,25 @@ jobs:
           workspace_name: ${{ secrets.WORKSPACE_NAME }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Deploy training environment
+      - name: Register training environment
         uses: "./.github/templates/create-environment"
         with:
           environment_file: ./core/environments/train.yml
 
-      - name: Deploy scoring environment
+      - name: Register scoring environment
         uses: "./.github/templates/create-environment"
         with:
           environment_file: ./core/environments/score.yml
 
-      - name: Deploy drift environment
+      - name: Register drift environment
         uses: "./.github/templates/create-environment"
         with:
           environment_file: ./core/environments/drift.yml
 
-  deploy-environments-production:
-    name: Deploy Environments in Production
+  register-environments-production:
+    name: Register Environments in Production
     runs-on: ubuntu-latest
-    needs: deploy-environments-staging
+    needs: register-environments-staging
 
     environment:
       name: Production
@@ -68,17 +68,17 @@ jobs:
           workspace_name: ${{ secrets.WORKSPACE_NAME }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Deploy training environment
+      - name: Register training environment
         uses: "./.github/templates/create-environment"
         with:
           environment_file: ./core/environments/train.yml
 
-      - name: Deploy scoring environment
+      - name: Register scoring environment
         uses: "./.github/templates/create-environment"
         with:
           environment_file: ./core/environments/score.yml
 
-      - name: Deploy drift environment
+      - name: Register drift environment
         uses: "./.github/templates/create-environment"
         with:
           environment_file: ./core/environments/drift.yml

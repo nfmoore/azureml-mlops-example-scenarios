@@ -1,4 +1,4 @@
-name: Deploy Data Assets
+name: Build Data Assets
 
 on:
   workflow_dispatch: # For demonstration purposes
@@ -11,8 +11,8 @@ on:
   #   - cron: "0 0 * * 0"
 
 jobs:
-  deploy-data-assets-staging:
-    name: Deploy Data Assets in Staging
+  register-data-assets-staging:
+    name: Register Data Assets in Staging
     runs-on: ubuntu-latest
 
     environment:
@@ -33,7 +33,7 @@ jobs:
           workspace_name: ${{ secrets.WORKSPACE_NAME }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Deploy curated data asset
+      - name: Register curated data asset
         uses: "./.github/templates/create-data-asset"
         with:
           data_file: ./core/data/curated.yml
@@ -43,10 +43,10 @@ jobs:
         with:
           data_file: ./core/data/inference.yml
 
-  deploy-data-assets-production:
-    name: Deploy Data Assets in Production
+  register-data-assets-production:
+    name: Register Data Assets in Production
     runs-on: ubuntu-latest
-    needs: deploy-data-assets-staging
+    needs: register-data-assets-staging
 
     environment:
       name: Production
@@ -66,12 +66,12 @@ jobs:
           workspace_name: ${{ secrets.WORKSPACE_NAME }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Deploy curated data asset
+      - name: Register curated data asset
         uses: "./.github/templates/create-data-asset"
         with:
           data_file: ./core/data/curated.yml
 
-      - name: Deploy inference data asset
+      - name: Register inference data asset
         uses: "./.github/templates/create-data-asset"
         with:
           data_file: ./core/data/inference.yml
