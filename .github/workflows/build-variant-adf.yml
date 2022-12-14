@@ -1,4 +1,4 @@
-name: Build Azure Data Factory Template and Parameter Files
+name: Build Azure Data Factory Files
 
 on:
   workflow_dispatch: # For demonstration purposes
@@ -9,7 +9,7 @@ on:
 
 jobs:
   create-templates-staging:
-    name: Deploy to Staging
+    name: Create Templates for Staging  
     runs-on: ubuntu-latest
 
     environment:
@@ -41,11 +41,12 @@ jobs:
           KEY_VAULT_NAME="adfkv${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}"
           WORKSPACE_NAME="mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}"
           BATCH_ENDPOINT_NAME="employee-attrition-be-${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}"
-          INPUT_DATASTORE_NAME=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_datastore.value' ARMTemplateParametersForFactory.json --raw-output)
-          OUTPUT_DATASTORE_NAME=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_datastore.value' ARMTemplateParametersForFactory.json --raw-output)
-          INPUT_DATASTORE_PATH=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_file_path.value' ARMTemplateParametersForFactory.json --raw-output)
-          OUTPUT_DATASTORE_PATH=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_dir_path.value' ARMTemplateParametersForFactory.json --raw-output)
-          BATCH_DEPLOYMENT_NAME=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_deployment_name.value' ARMTemplateParametersForFactory.json --raw-output)
+          ADF_PARAMETERS_FILE=${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateParametersForFactory.json
+          INPUT_DATASTORE_NAME=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_datastore.value' $ADF_PARAMETERS_FILE --raw-output)
+          OUTPUT_DATASTORE_NAME=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_datastore.value' $ADF_PARAMETERS_FILE --raw-output)
+          INPUT_DATASTORE_PATH=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_file_path.value' $ADF_PARAMETERS_FILE --raw-output)
+          OUTPUT_DATASTORE_PATH=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_dir_path.value' $ADF_PARAMETERS_FILE --raw-output)
+          BATCH_DEPLOYMENT_NAME=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_deployment_name.value' $ADF_PARAMETERS_FILE --raw-output)
 
           PARAMETER_VALUES='''
           {
@@ -69,6 +70,7 @@ jobs:
               # "azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_dir_path": { "value": "'${OUTPUT_DATASTORE_PATH}'" },
               # "azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_deployment_name": { "value": "'${BATCH_DEPLOYMENT_NAME}'" },
 
+          mkdir -p artifacts
           jq --argjson a "$PARAMETER_VALUES" '.parameters += $a' ${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateParametersForFactory.json > artifacts/parameters.${{ secrets.RESOURCE_INSTANCE }}.json
           cp ${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateForFactory.json artifacts/template.${{ secrets.RESOURCE_INSTANCE }}.json
 
@@ -79,7 +81,7 @@ jobs:
           path: artifacts
 
   create-templates-production:
-    name: Deploy to Production
+    name: Create Templates for Production
     runs-on: ubuntu-latest
 
     environment:
@@ -111,11 +113,12 @@ jobs:
           KEY_VAULT_NAME="adfkv${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}"
           WORKSPACE_NAME="mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}"
           BATCH_ENDPOINT_NAME="employee-attrition-be-${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}"
-          INPUT_DATASTORE_NAME=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_datastore.value' ARMTemplateParametersForFactory.json --raw-output)
-          OUTPUT_DATASTORE_NAME=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_datastore.value' ARMTemplateParametersForFactory.json --raw-output)
-          INPUT_DATASTORE_PATH=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_file_path.value' ARMTemplateParametersForFactory.json --raw-output)
-          OUTPUT_DATASTORE_PATH=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_dir_path.value' ARMTemplateParametersForFactory.json --raw-output)
-          BATCH_DEPLOYMENT_NAME=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_deployment_name.value' ARMTemplateParametersForFactory.json --raw-output)
+          ADF_PARAMETERS_FILE=${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateParametersForFactory.json
+          INPUT_DATASTORE_NAME=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_datastore.value' $ADF_PARAMETERS_FILE --raw-output)
+          OUTPUT_DATASTORE_NAME=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_datastore.value' $ADF_PARAMETERS_FILE --raw-output)
+          INPUT_DATASTORE_PATH=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_file_path.value' $ADF_PARAMETERS_FILE --raw-output)
+          OUTPUT_DATASTORE_PATH=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_dir_path.value' $ADF_PARAMETERS_FILE --raw-output)
+          BATCH_DEPLOYMENT_NAME=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_deployment_name.value' $ADF_PARAMETERS_FILE --raw-output)
 
           PARAMETER_VALUES='''
           {
@@ -132,6 +135,7 @@ jobs:
           }
           '''
 
+          mkdir -p artifacts
           jq --argjson a "$PARAMETER_VALUES" '.parameters += $a' ${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateParametersForFactory.json > artifacts/parameters.${{ secrets.RESOURCE_INSTANCE }}.json
           cp ${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateForFactory.json artifacts/template.${{ secrets.RESOURCE_INSTANCE }}.json
 
