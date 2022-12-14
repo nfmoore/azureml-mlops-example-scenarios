@@ -1,4 +1,4 @@
-name: Deploy Model for Online Inference
+name: Deploy Model to Online Endpoint
 
 on:
   workflow_run:

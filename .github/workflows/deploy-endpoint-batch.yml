@@ -1,4 +1,4 @@
-name: Deploy Model for Batch Inference
+name: Deploy Model to Batch Endpoint
 
 on:
   workflow_run:
