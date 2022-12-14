@@ -1,0 +1,125 @@
+name: Deploy Azure Data Factory Template
+
+on:
+  workflow_run:
+    workflows:
+      - Build Azure Data Factory Template and Parameter Files
+    types:
+      - completed
+
+jobs:
+  deploy-staging:
+    name: Deploy Templates to Staging
+    runs-on: ubuntu-latest
+
+    environment:
+      name: Staging
+
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+
+      - name: Download model artifact
+        uses: actions/github-script@v6
+        with:
+          script: |
+            let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               run_id: context.payload.workflow_run.id,
+            });
+
+            let matchArtifact = allArtifacts.data.artifacts.filter((artifact) => {
+              return artifact.name == "artifacts"
+            })[0];
+
+            let download = await github.rest.actions.downloadArtifact({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               artifact_id: matchArtifact.id,
+               archive_format: 'zip',
+            });
+
+            let fs = require('fs');
+            fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/artifacts.zip`, Buffer.from(download.data));
+
+      - name: Unzip model artifact
+        run: unzip artifacts.zip
+
+      - name: Azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          enable-AzPSSession: true 
+
+      - name: Deploy resources
+        uses: Azure/data-factory-deploy-action@v1.2.0
+        with:
+          resourceGroupName: ${{ secrets.RESOURCE_GROUP }}
+          dataFactoryName: adf${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
+          armTemplateFile: artifacts/template.${{ secrets.RESOURCE_INSTANCE }}.json
+          armTemplateParametersFile: artifacts/parameters.${{ secrets.RESOURCE_INSTANCE }}.json
+
+  deploy-production:
+    name: Deploy Templates to Production
+    runs-on: ubuntu-latest
+
+    environment:
+      name: Production
+
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+
+      - name: Download model artifact
+        uses: actions/github-script@v6
+        with:
+          script: |
+            let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               run_id: context.payload.workflow_run.id,
+            });
+
+            let matchArtifact = allArtifacts.data.artifacts.filter((artifact) => {
+              return artifact.name == "artifacts"
+            })[0];
+
+            let download = await github.rest.actions.downloadArtifact({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               artifact_id: matchArtifact.id,
+               archive_format: 'zip',
+            });
+
+            let fs = require('fs');
+            fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/artifacts.zip`, Buffer.from(download.data));
+
+      - name: Unzip model artifact
+        run: unzip artifacts.zip
+
+      - name: Azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          enable-AzPSSession: true 
+
+      - name: Deploy resources
+        uses: Azure/data-factory-deploy-action@v1.2.0
+        with:
+          resourceGroupName: ${{ secrets.RESOURCE_GROUP }}
+          dataFactoryName: adf${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
+          armTemplateFile: artifacts/template.${{ secrets.RESOURCE_INSTANCE }}.json
+          armTemplateParametersFile: artifacts/parameters.${{ secrets.RESOURCE_INSTANCE }}.json

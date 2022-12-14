@@ -1,4 +1,4 @@
-name: Create Environments
+name: Deploy Data Assets
 
 on:
   workflow_dispatch: # For demonstration purposes
@@ -7,9 +7,12 @@ on:
   #   branches:
   #     - main
 
+  # schedule: # Runs workflow at a scheduled time.
+  #   - cron: "0 0 * * 0"
+
 jobs:
-  create-environments-staging:
-    name: Create Environments in Staging
+  deploy-data-assets-staging:
+    name: Deploy Data Assets in Staging
     runs-on: ubuntu-latest
 
     environment:
@@ -30,25 +33,20 @@ jobs:
           workspace_name: ${{ secrets.WORKSPACE_NAME }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Create training environment
-        uses: "./.github/templates/create-environment"
+      - name: Deploy curated data asset
+        uses: "./.github/templates/create-data-asset"
         with:
-          environment_file: ./core/environments/train.yml
+          data_file: ./core/data/curated.yml
 
-      - name: Create scoring environment
-        uses: "./.github/templates/create-environment"
+      - name: Create inference data asset
+        uses: "./.github/templates/create-data-asset"
         with:
-          environment_file: ./core/environments/score.yml
+          data_file: ./core/data/inference.yml
 
-      - name: Create drift environment
-        uses: "./.github/templates/create-environment"
-        with:
-          environment_file: ./core/environments/drift.yml
-
-  create-environments-production:
-    name: Create Environments in Production
+  deploy-data-assets-production:
+    name: Deploy Data Assets in Production
     runs-on: ubuntu-latest
-    needs: create-environments-staging
+    needs: deploy-data-assets-staging
 
     environment:
       name: Production
@@ -68,17 +66,12 @@ jobs:
           workspace_name: ${{ secrets.WORKSPACE_NAME }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Create training environment
-        uses: "./.github/templates/create-environment"
+      - name: Deploy curated data asset
+        uses: "./.github/templates/create-data-asset"
         with:
-          environment_file: ./core/environments/train.yml
+          data_file: ./core/data/curated.yml
 
-      - name: Create scoring environment
-        uses: "./.github/templates/create-environment"
+      - name: Deploy inference data asset
+        uses: "./.github/templates/create-data-asset"
         with:
-          environment_file: ./core/environments/score.yml
-
-      - name: Create drift environment
-        uses: "./.github/templates/create-environment"
-        with:
-          environment_file: ./core/environments/drift.yml
+          data_file: ./core/data/inference.yml
