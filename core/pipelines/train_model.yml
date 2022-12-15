@@ -20,6 +20,7 @@ settings:
   default_datastore: azureml:workspaceblobstore
   default_compute: azureml:cpu-cluster
   continue_on_step_failure: false
+  is_deterministic: false
 
 jobs:
   prepare_step:
@@ -36,7 +37,7 @@ jobs:
       --curated_dataset ${{inputs.curated_dataset}} 
       --prepared_data_dir ${{outputs.prepared_data_dir}}
       --random_state ${{inputs.random_state}}
-      
+
   data_quality_step:
     type: command
     inputs:
