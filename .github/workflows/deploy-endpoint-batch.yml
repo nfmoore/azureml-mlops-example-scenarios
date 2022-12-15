@@ -3,7 +3,7 @@ name: Deploy Model to Batch Endpoint
 on:
   workflow_run:
     workflows:
-      - Train Model
+      - Build Model
     types:
       - completed
 

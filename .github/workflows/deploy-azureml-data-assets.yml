@@ -38,10 +38,15 @@ jobs:
         with:
           data_file: ./core/data/curated.yml
 
-      - name: Create inference data asset
+      - name: Create batch inference data asset
         uses: "./.github/templates/create-data-asset"
         with:
-          data_file: ./core/data/inference.yml
+          data_file: ./core/data/inference-batch.yml
+
+      - name: Create online inference data asset
+        uses: "./.github/templates/create-data-asset"
+        with:
+          data_file: ./core/data/inference-online.yml
 
   register-data-assets-production:
     name: Register Data Assets in Production
@@ -71,7 +76,12 @@ jobs:
         with:
           data_file: ./core/data/curated.yml
 
-      - name: Register inference data asset
+      - name: Create batch inference data asset
         uses: "./.github/templates/create-data-asset"
         with:
-          data_file: ./core/data/inference.yml
+          data_file: ./core/data/inference-batch.yml
+
+      - name: Create online inference data asset
+        uses: "./.github/templates/create-data-asset"
+        with:
+          data_file: ./core/data/inference-online.yml
