@@ -8,12 +8,9 @@ on:
   #     - adf_publish
 
 jobs:
-  create-templates-staging:
-    name: Create Templates for Staging  
+  publish-artifacts:
+    name: Publish Templates
     runs-on: ubuntu-latest
-
-    environment:
-      name: Staging
 
     defaults:
       run:
@@ -29,108 +26,12 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-          enable-AzPSSession: true 
 
       - name: Create template and parameter files for staging
         run: |
-          # set variable values for environment
-          TENANT_ID=$(az account show --query 'tenantId' | xargs)
-          SUBSCRIPTION_ID=$(az account show --query 'id' | xargs)
-          RESOURCE_GROUP_NAME="${{ secrets.RESOURCE_GROUP }}"
-          FACTORY_NAME="adf${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}"
-          KEY_VAULT_NAME="adfkv${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}"
-          WORKSPACE_NAME="mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}"
-          BATCH_ENDPOINT_NAME="employee-attrition-be-${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}"
-          ADF_PARAMETERS_FILE=${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateParametersForFactory.json
-          INPUT_DATASTORE_NAME=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_datastore.value' $ADF_PARAMETERS_FILE --raw-output)
-          OUTPUT_DATASTORE_NAME=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_datastore.value' $ADF_PARAMETERS_FILE --raw-output)
-          INPUT_DATASTORE_PATH=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_file_path.value' $ADF_PARAMETERS_FILE --raw-output)
-          OUTPUT_DATASTORE_PATH=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_dir_path.value' $ADF_PARAMETERS_FILE --raw-output)
-          BATCH_DEPLOYMENT_NAME=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_deployment_name.value' $ADF_PARAMETERS_FILE --raw-output)
-
-          PARAMETER_VALUES='''
-          {
-              "factoryName": { "value": "'${FACTORY_NAME}'" },
-              "AzureKeyVault_properties_typeProperties_baseUrl": { "value": "https://'${KEY_VAULT_NAME}'.vault.azure.net/" },
-              "AzureMLWorkspace_properties_typeProperties_subscriptionId": { "value": "'${SUBSCRIPTION_ID}'" },
-              "AzureMLWorkspace_properties_typeProperties_resourceGroupName": { "value": "'${RESOURCE_GROUP_NAME}'" },
-              "AzureMLWorkspace_properties_typeProperties_mlWorkspaceName": { "value": "'${WORKSPACE_NAME}'" },
-              "default_properties_tenant_id_value": { "value": "'${TENANT_ID}'" },
-              "default_properties_subscription_id_value": { "value": "'${SUBSCRIPTION_ID}'" },
-              "default_properties_key_vault_name_value": { "value": "'${KEY_VAULT_NAME}'" },
-              "default_properties_azureml_workspace_name_value": { "value": "'${WORKSPACE_NAME}'" },
-              "default_properties_azureml_workspace_rg_value": { "value": "'${RESOURCE_GROUP_NAME}'" }
-          }
-          '''
-
           mkdir -p artifacts
-          jq --argjson a "$PARAMETER_VALUES" '.parameters += $a' ${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateParametersForFactory.json > artifacts/ARMTemplateParametersForFactory${{ secrets.RESOURCE_INSTANCE }}.json
-          cp ${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateForFactory.json artifacts/ARMTemplateForFactory${{ secrets.RESOURCE_INSTANCE }}.json
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: artifacts
-          path: artifacts
-
-  create-templates-production:
-    name: Create Templates for Production
-    runs-on: ubuntu-latest
-
-    environment:
-      name: Production
-
-    defaults:
-      run:
-        shell: bash -l {0}
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
-        with:
-          ref: adf_publish
-
-      - name: Azure login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-          enable-AzPSSession: true 
-
-      - name: Create template and parameter files for production
-        run: |
-          # set variable values for environment
-          TENANT_ID=$(az account show --query 'tenantId' | xargs)
-          SUBSCRIPTION_ID=$(az account show --query 'id' | xargs)
-          RESOURCE_GROUP_NAME="${{ secrets.RESOURCE_GROUP }}"
-          FACTORY_NAME="adf${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}"
-          KEY_VAULT_NAME="adfkv${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}"
-          WORKSPACE_NAME="mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}"
-          BATCH_ENDPOINT_NAME="employee-attrition-be-${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}"
-          ADF_PARAMETERS_FILE=${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateParametersForFactory.json
-          INPUT_DATASTORE_NAME=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_datastore.value' $ADF_PARAMETERS_FILE --raw-output)
-          OUTPUT_DATASTORE_NAME=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_datastore.value' $ADF_PARAMETERS_FILE --raw-output)
-          INPUT_DATASTORE_PATH=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_file_path.value' $ADF_PARAMETERS_FILE --raw-output)
-          OUTPUT_DATASTORE_PATH=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_dir_path.value' $ADF_PARAMETERS_FILE --raw-output)
-          BATCH_DEPLOYMENT_NAME=$(jq '.parameters.azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_deployment_name.value' $ADF_PARAMETERS_FILE --raw-output)
-
-          PARAMETER_VALUES='''
-          {
-              "factoryName": { "value": "'${FACTORY_NAME}'" },
-              "AzureKeyVault_properties_typeProperties_baseUrl": { "value": "https://'${KEY_VAULT_NAME}'.vault.azure.net/" },
-              "AzureMLWorkspace_properties_typeProperties_subscriptionId": { "value": "'${SUBSCRIPTION_ID}'" },
-              "AzureMLWorkspace_properties_typeProperties_resourceGroupName": { "value": "'${RESOURCE_GROUP_NAME}'" },
-              "AzureMLWorkspace_properties_typeProperties_mlWorkspaceName": { "value": "'${WORKSPACE_NAME}'" },
-              "default_properties_tenant_id_value": { "value": "'${TENANT_ID}'" },
-              "default_properties_subscription_id_value": { "value": "'${SUBSCRIPTION_ID}'" },
-              "default_properties_key_vault_name_value": { "value": "'${KEY_VAULT_NAME}'" },
-              "default_properties_azureml_workspace_name_value": { "value": "'${WORKSPACE_NAME}'" },
-              "default_properties_azureml_workspace_rg_value": { "value": "'${RESOURCE_GROUP_NAME}'" }
-          }
-          '''
-
-          mkdir -p artifacts
-          jq --argjson a "$PARAMETER_VALUES" '.parameters += $a' ${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateParametersForFactory.json > artifacts/ARMTemplateParametersForFactory${{ secrets.RESOURCE_INSTANCE }}.json
-          cp ${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateForFactory.json artifacts/ARMTemplateForFactory${{ secrets.RESOURCE_INSTANCE }}.json
+          cp ${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateParametersForFactory.json artifacts/ARMTemplateParametersForFactory.json
+          cp ${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateForFactory.json artifacts/ARMTemplateForFactory.json
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3

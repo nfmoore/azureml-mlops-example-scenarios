@@ -39,8 +39,9 @@ jobs:
         with:
           resourceGroupName: ${{ secrets.RESOURCE_GROUP }}
           dataFactoryName: adf${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
-          armTemplateFile: ARMTemplateForFactory${{ secrets.RESOURCE_INSTANCE }}.json
-          armTemplateParametersFile: ARMTemplateParametersForFactory${{ secrets.RESOURCE_INSTANCE }}.json
+          armTemplateFile: ARMTemplateForFactory.json
+          armTemplateParametersFile: ARMTemplateParametersForFactory.json
+          additionalParameters: 'factoryName="adf${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}" AzureKeyVault_properties_typeProperties_baseUrl="https://adfkv${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}.vault.azure.net/" AzureMLWorkspace_properties_typeProperties_subscriptionId="${{ secrets.SUBSCRIPTION_ID }}" AzureMLWorkspace_properties_typeProperties_resourceGroupName="${{ secrets.RESOURCE_GROUP }}" AzureMLWorkspace_properties_typeProperties_mlWorkspaceName="mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}" default_properties_tenant_id_value="${{ secrets.TENANT_ID }}" default_properties_subscription_id_value="${{ secrets.SUBSCRIPTION_ID }}" default_properties_key_vault_name_value="adfkv${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}" default_properties_azureml_workspace_name_value="mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}" default_properties_azureml_workspace_rg_value="${{ secrets.RESOURCE_GROUP }}" azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_batch_endpoint_name="employee-attrition-be-${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}"'
 
   deploy-production:
     name: Deploy Templates to Production
@@ -74,5 +75,6 @@ jobs:
         with:
           resourceGroupName: ${{ secrets.RESOURCE_GROUP }}
           dataFactoryName: adf${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
-          armTemplateFile: ARMTemplateForFactory${{ secrets.RESOURCE_INSTANCE }}.json
-          armTemplateParametersFile: ARMTemplateParametersForFactory${{ secrets.RESOURCE_INSTANCE }}.json
+          armTemplateFile: ARMTemplateForFactory.json
+          armTemplateParametersFile: ARMTemplateParametersForFactory.json
+          additionalParameters: 'factoryName="adf${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}" AzureKeyVault_properties_typeProperties_baseUrl="https://adfkv${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}.vault.azure.net/" AzureMLWorkspace_properties_typeProperties_subscriptionId="${{ secrets.SUBSCRIPTION_ID }}" AzureMLWorkspace_properties_typeProperties_resourceGroupName="${{ secrets.RESOURCE_GROUP }}" AzureMLWorkspace_properties_typeProperties_mlWorkspaceName="mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}" default_properties_tenant_id_value="${{ secrets.TENANT_ID }}" default_properties_subscription_id_value="${{ secrets.SUBSCRIPTION_ID }}" default_properties_key_vault_name_value="adfkv${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}" default_properties_azureml_workspace_name_value="mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}" default_properties_azureml_workspace_rg_value="${{ secrets.RESOURCE_GROUP }}" azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_batch_endpoint_name="employee-attrition-be-${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}"'

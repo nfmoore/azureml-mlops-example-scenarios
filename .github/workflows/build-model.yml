@@ -30,7 +30,7 @@ jobs:
         uses: "./.github/templates/install-dependencies"
         with:
           workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
-          workspace_name: ${{ secrets.WORKSPACE_NAME }}
+          workspace_name: mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Run pipeline job to train model
