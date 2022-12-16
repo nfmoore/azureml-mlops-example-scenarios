@@ -52,14 +52,14 @@ param logAnalyticsWorkspaceLocation string = resourceGroup().location
 @description('Deployment Script Name')
 param deploymentScriptName string = 'ds${workloadIdentifier}${resourceInstance}'
 
-@description('Azure ML Registry Name')
-param azureMLRegistryName string = 'mlr${workloadIdentifier}'
+// @description('Azure ML Registry Name')
+// param azureMLRegistryName string = 'mlr${workloadIdentifier}'
 
-@description('Azure ML Registry Primary Location')
-param azureMLRegistryPrimaryLocation string = resourceGroup().location
+// @description('Azure ML Registry Primary Location')
+// param azureMLRegistryPrimaryLocation string = resourceGroup().location
 
-@description('Deploy Azure ML Registry')
-param deployAzureMLRegistry bool = true
+// @description('Deploy Azure ML Registry')
+// param deployAzureMLRegistry bool = true
 
 @description('Azure Data Factory Name')
 param dataFactoryName string = 'adf${workloadIdentifier}${resourceInstance}'
@@ -228,38 +228,38 @@ resource r_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-
 }
 
 // Deploy Azure Machine Learning Registry
-resource r_azureMLRegistry 'Microsoft.MachineLearningServices/registries@2022-10-01-preview' = if (deployAzureMLRegistry) {
-  name: azureMLRegistryName
-  location: azureMLRegistryPrimaryLocation
-  identity: {
-    type: 'SystemAssigned'
-  }
-  properties: {
-    managedResourceGroup: {
-      resourceId: 'string'
-    }
-    regionDetails: [
-      {
-        acrDetails: [
-          {
-            systemCreatedAcrAccount: {
-              acrAccountSku: 'Premium'
-            }
-          }
-        ]
-        location: azureMLRegistryPrimaryLocation
-        storageAccountDetails: [
-          {
-            systemCreatedStorageAccount: {
-              storageAccountHnsEnabled: false
-              storageAccountType: 'Standard_GRS'
-            }
-          }
-        ]
-      }
-    ]
-  }
-}
+// resource r_azureMLRegistry 'Microsoft.MachineLearningServices/registries@2022-10-01-preview' = if (deployAzureMLRegistry) {
+//   name: azureMLRegistryName
+//   location: azureMLRegistryPrimaryLocation
+//   identity: {
+//     type: 'SystemAssigned'
+//   }
+//   properties: {
+//     managedResourceGroup: {
+//       resourceId: 'string'
+//     }
+//     regionDetails: [
+//       {
+//         acrDetails: [
+//           {
+//             systemCreatedAcrAccount: {
+//               acrAccountSku: 'Premium'
+//             }
+//           }
+//         ]
+//         location: azureMLRegistryPrimaryLocation
+//         storageAccountDetails: [
+//           {
+//             systemCreatedStorageAccount: {
+//               storageAccountHnsEnabled: false
+//               storageAccountType: 'Standard_GRS'
+//             }
+//           }
+//         ]
+//       }
+//     ]
+//   }
+// }
 
 // Azure Data Factory
 resource r_dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
