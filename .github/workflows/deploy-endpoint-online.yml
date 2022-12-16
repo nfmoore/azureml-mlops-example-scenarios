@@ -1,9 +1,9 @@
-name: Deploy Model for Online Inference
+name: Deploy Model to Online Endpoint
 
 on:
   workflow_run:
     workflows:
-      - Train Model
+      - Build Model
     types:
       - completed
 
@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.workflow_run.head_branch }}
 
@@ -29,7 +29,7 @@ jobs:
         uses: "./.github/templates/install-dependencies"
         with:
           workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
-          workspace_name: ${{ secrets.WORKSPACE_NAME }}
+          workspace_name: mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Create online endpoint
@@ -37,8 +37,8 @@ jobs:
         with:
           endpoint_type: online
           endpoint_file: core/deploy/online/endpoint.yml
-          endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
-          log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
+          endpoint_suffix: ${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
+          log_analytics_workspace_name: law${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
 
       - name: Create online deployment
         uses: "./.github/templates/create-deployment"
@@ -46,14 +46,14 @@ jobs:
           deployment_type: online
           deployment_file: core/deploy/online/deployment.yml
           endpoint_file: core/deploy/online/endpoint.yml
-          endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
+          endpoint_suffix: ${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
 
       - name: Add variables to data export job specification
         shell: bash
         run: |
           export MODEL_NAME=$(yq '.jobs.register_step.inputs.model_name' < core/pipelines/train_model.yml)
           export MODEL_VERSION=$(az ml model list --name $MODEL_NAME --query "[0].version" | bc -l)
-          export LOG_ANALYTICS_WORKSPACE_ID=$(az monitor log-analytics workspace show --workspace-name ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }} | jq --raw-output '.customerId')
+          export LOG_ANALYTICS_WORKSPACE_ID=$(az monitor log-analytics workspace show --workspace-name law${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }} | jq --raw-output '.customerId')
 
           envsubst '$MODEL_NAME:$MODEL_VERSION:$LOG_ANALYTICS_WORKSPACE_ID' < core/pipelines/data_export.yml > core/pipelines/temp_data_export.yml
           cp core/pipelines/temp_data_export.yml core/pipelines/data_export.yml
@@ -62,12 +62,12 @@ jobs:
         uses: "./.github/templates/schedule-job"
         with:
           schedule_file: core/schedules/data_export.yml
-          log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
+          log_analytics_workspace_name: law${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
 
       - name: Add variables to data drift job specification
         shell: bash
         run: |
-          export INSTRUMENTATION_KEY=$(az resource show -g ${{ secrets.RESOURCE_GROUP }} -n ${{ secrets.APPLICATION_INSIGHTS_NAME }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
+          export INSTRUMENTATION_KEY=$(az resource show -g ${{ secrets.RESOURCE_GROUP }} -n appi${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
 
           envsubst '$INSTRUMENTATION_KEY' < core/pipelines/data_drift.yml > core/pipelines/temp_data_drift.yml
           cp core/pipelines/temp_data_drift.yml core/pipelines/data_drift.yml
@@ -76,7 +76,7 @@ jobs:
         uses: "./.github/templates/schedule-job"
         with:
           schedule_file: core/schedules/data_drift.yml
-          log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
+          log_analytics_workspace_name: law${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
 
   end-to-end-testing:
     name: End to End Testing
@@ -92,7 +92,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.workflow_run.head_branch }}
 
@@ -100,12 +100,12 @@ jobs:
         uses: "./.github/templates/install-dependencies"
         with:
           workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
-          workspace_name: ${{ secrets.WORKSPACE_NAME }}
+          workspace_name: mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Invoke online endpoint
         run: |
-          ENDPOINT_NAME=$(yq '.name' < core/deploy/online/endpoint.yml)-${{ secrets.ENDPOINT_SUFFIX }}
+          ENDPOINT_NAME=$(yq '.name' < core/deploy/online/endpoint.yml)-${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
           DEPLOYMENT_NAME=$(yq '.name' < core/deploy/online/deployment.yml)
           echo $ENDPOINT_NAME $DEPLOYMENT_NAME
 
@@ -113,7 +113,7 @@ jobs:
 
       - name: Send all traffic to deployment
         run: |
-          ENDPOINT_NAME=$(yq '.name' < core/deploy/online/endpoint.yml)-${{ secrets.ENDPOINT_SUFFIX }}
+          ENDPOINT_NAME=$(yq '.name' < core/deploy/online/endpoint.yml)-${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
           DEPLOYMENT_NAME=$(yq '.name' < core/deploy/online/deployment.yml)
           echo $ENDPOINT_NAME $DEPLOYMENT_NAME
 
@@ -133,42 +133,20 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.workflow_run.head_branch }}
 
-      - name: Download model artifact
-        uses: actions/github-script@v6
+      - name: Download artifacts
+        uses: "./.github/templates/download-workflow-artifact"
         with:
-          script: |
-            let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
-               owner: context.repo.owner,
-               repo: context.repo.repo,
-               run_id: context.payload.workflow_run.id,
-            });
-
-            let matchArtifact = allArtifacts.data.artifacts.filter((artifact) => {
-              return artifact.name == "artifacts"
-            })[0];
-
-            let download = await github.rest.actions.downloadArtifact({
-               owner: context.repo.owner,
-               repo: context.repo.repo,
-               artifact_id: matchArtifact.id,
-               archive_format: 'zip',
-            });
-
-            let fs = require('fs');
-            fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/artifacts.zip`, Buffer.from(download.data));
-
-      - name: Unzip model artifact
-        run: unzip artifacts.zip
+          artifact_name: artifacts
 
       - name: Install dependencies
         uses: "./.github/templates/install-dependencies"
         with:
           workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
-          workspace_name: ${{ secrets.WORKSPACE_NAME }}
+          workspace_name: mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Upload and tag model
@@ -194,7 +172,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.workflow_run.head_branch }}
 
@@ -202,7 +180,7 @@ jobs:
         uses: "./.github/templates/install-dependencies"
         with:
           workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
-          workspace_name: ${{ secrets.WORKSPACE_NAME }}
+          workspace_name: mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Create online endpoint
@@ -210,8 +188,8 @@ jobs:
         with:
           endpoint_type: online
           endpoint_file: core/deploy/online/endpoint.yml
-          endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
-          log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
+          endpoint_suffix: ${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
+          log_analytics_workspace_name: law${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
 
       - name: Create online deployment
         uses: "./.github/templates/create-deployment"
@@ -219,11 +197,11 @@ jobs:
           deployment_type: online
           deployment_file: core/deploy/online/deployment.yml
           endpoint_file: core/deploy/online/endpoint.yml
-          endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
+          endpoint_suffix: ${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
 
       - name: Send all traffic to deployment
         run: |
-          ENDPOINT_NAME=$(yq '.name' < core/deploy/online/endpoint.yml)-${{ secrets.ENDPOINT_SUFFIX }}
+          ENDPOINT_NAME=$(yq '.name' < core/deploy/online/endpoint.yml)-${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
           DEPLOYMENT_NAME=$(yq '.name' < core/deploy/online/deployment.yml)
           echo $ENDPOINT_NAME $DEPLOYMENT_NAME
 
@@ -234,7 +212,7 @@ jobs:
         run: |
           export MODEL_NAME=$(yq '.jobs.register_step.inputs.model_name' < core/pipelines/train_model.yml)
           export MODEL_VERSION=$(az ml model list --name $MODEL_NAME --query "[0].version" | bc -l)
-          export LOG_ANALYTICS_WORKSPACE_ID=$(az monitor log-analytics workspace show --workspace-name ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }} | jq --raw-output '.customerId')
+          export LOG_ANALYTICS_WORKSPACE_ID=$(az monitor log-analytics workspace show --workspace-name law${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }} | jq --raw-output '.customerId')
 
           envsubst '$MODEL_NAME:$MODEL_VERSION:$LOG_ANALYTICS_WORKSPACE_ID' < core/pipelines/data_export.yml > core/pipelines/temp_data_export.yml
           cp core/pipelines/temp_data_export.yml core/pipelines/data_export.yml
@@ -243,12 +221,12 @@ jobs:
         uses: "./.github/templates/schedule-job"
         with:
           schedule_file: core/schedules/data_export.yml
-          log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
+          log_analytics_workspace_name: law${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
 
       - name: Add variables to data drift job specification
         shell: bash
         run: |
-          export INSTRUMENTATION_KEY=$(az resource show -g ${{ secrets.RESOURCE_GROUP }} -n ${{ secrets.APPLICATION_INSIGHTS_NAME }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
+          export INSTRUMENTATION_KEY=$(az resource show -g ${{ secrets.RESOURCE_GROUP }} -n appi${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
 
           envsubst '$INSTRUMENTATION_KEY' < core/pipelines/data_drift.yml > core/pipelines/temp_data_drift.yml
           cp core/pipelines/temp_data_drift.yml core/pipelines/data_drift.yml
@@ -257,4 +235,4 @@ jobs:
         uses: "./.github/templates/schedule-job"
         with:
           schedule_file: core/schedules/data_drift.yml
-          log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
+          log_analytics_workspace_name: law${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}

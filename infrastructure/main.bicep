@@ -52,14 +52,14 @@ param logAnalyticsWorkspaceLocation string = resourceGroup().location
 @description('Deployment Script Name')
 param deploymentScriptName string = 'ds${workloadIdentifier}${resourceInstance}'
 
-@description('Azure ML Registry Name')
-param azureMLRegistryName string = 'mlr${workloadIdentifier}'
+// @description('Azure ML Registry Name')
+// param azureMLRegistryName string = 'mlr${workloadIdentifier}'
 
-@description('Azure ML Registry Primary Location')
-param azureMLRegistryPrimaryLocation string = resourceGroup().location
+// @description('Azure ML Registry Primary Location')
+// param azureMLRegistryPrimaryLocation string = resourceGroup().location
 
-@description('Deploy Azure ML Registry')
-param deployAzureMLRegistry bool = true
+// @description('Deploy Azure ML Registry')
+// param deployAzureMLRegistry bool = true
 
 @description('Azure Data Factory Name')
 param dataFactoryName string = 'adf${workloadIdentifier}${resourceInstance}'
@@ -228,38 +228,38 @@ resource r_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-
 }
 
 // Deploy Azure Machine Learning Registry
-resource r_azureMLRegistry 'Microsoft.MachineLearningServices/registries@2022-10-01-preview' = if (deployAzureMLRegistry) {
-  name: azureMLRegistryName
-  location: azureMLRegistryPrimaryLocation
-  identity: {
-    type: 'SystemAssigned'
-  }
-  properties: {
-    managedResourceGroup: {
-      resourceId: 'string'
-    }
-    regionDetails: [
-      {
-        acrDetails: [
-          {
-            systemCreatedAcrAccount: {
-              acrAccountSku: 'Premium'
-            }
-          }
-        ]
-        location: azureMLRegistryPrimaryLocation
-        storageAccountDetails: [
-          {
-            systemCreatedStorageAccount: {
-              storageAccountHnsEnabled: false
-              storageAccountType: 'Standard_GRS'
-            }
-          }
-        ]
-      }
-    ]
-  }
-}
+// resource r_azureMLRegistry 'Microsoft.MachineLearningServices/registries@2022-10-01-preview' = if (deployAzureMLRegistry) {
+//   name: azureMLRegistryName
+//   location: azureMLRegistryPrimaryLocation
+//   identity: {
+//     type: 'SystemAssigned'
+//   }
+//   properties: {
+//     managedResourceGroup: {
+//       resourceId: 'string'
+//     }
+//     regionDetails: [
+//       {
+//         acrDetails: [
+//           {
+//             systemCreatedAcrAccount: {
+//               acrAccountSku: 'Premium'
+//             }
+//           }
+//         ]
+//         location: azureMLRegistryPrimaryLocation
+//         storageAccountDetails: [
+//           {
+//             systemCreatedStorageAccount: {
+//               storageAccountHnsEnabled: false
+//               storageAccountType: 'Standard_GRS'
+//             }
+//           }
+//         ]
+//       }
+//     ]
+//   }
+// }
 
 // Azure Data Factory
 resource r_dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
@@ -372,20 +372,23 @@ resource s_deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' =
       # Upload data to data store
 
       SOURCE_CURATED_DATA_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/main/core/data/curated/01.csv'
-      SOURCE_INFERENCE_DATA_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/main/core/data/inference/01.csv'
+      SOURCE_BATCH_INFERENCE_DATA_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/main/core/data/inference/batch/01.csv'
       DESTINATION_CURATED_DATA_PATH='./data/employee-attrition/curated/01.csv'
-      DESTINATION_INFERENCE_DATA_PATH='./data/employee-attrition/inference/batch/01.csv'
+      DESTINATION_BATCH_INFERENCE_DATA_PATH='./data/employee-attrition/inference/batch/01.csv'
 
       SOURCE_CURATED_MLTABLE_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/main/core/data/curated/MLTable'
-      SOURCE_INFERENCE_MLTABLE_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/main/core/data/inference/MLTable'
+      SOURCE_BATCH_INFERENCE_MLTABLE_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/main/core/data/inference/batch/MLTable'
+      SOURCE_ONLINE_INFERENCE_MLTABLE_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/main/core/data/inference/online/MLTable'
       DESTINATION_CURATED_MLTABLE_PATH='./data/employee-attrition/curated/MLTable'
-      DESTINATION_INFERENCE_MLTABLE_PATH='./data/employee-attrition/inference/batch/MLTable'
+      DESTINATION_BATCH_INFERENCE_MLTABLE_PATH='./data/employee-attrition/inference/batch/MLTable'
+      DESTINATION_ONLINE_INFERENCE_MLTABLE_PATH='./data/employee-attrition/inference/online/MLTable'
 
       curl -o $DESTINATION_CURATED_DATA_PATH $SOURCE_CURATED_DATA_PATH --create-dirs
-      curl -o $DESTINATION_INFERENCE_DATA_PATH $SOURCE_INFERENCE_DATA_PATH --create-dirs
+      curl -o $DESTINATION_BATCH_INFERENCE_DATA_PATH $SOURCE_BATCH_INFERENCE_DATA_PATH --create-dirs
 
       curl -o $DESTINATION_CURATED_MLTABLE_PATH $SOURCE_CURATED_MLTABLE_PATH --create-dirs
-      curl -o $DESTINATION_INFERENCE_MLTABLE_PATH $SOURCE_INFERENCE_MLTABLE_PATH --create-dirs
+      curl -o $DESTINATION_BATCH_INFERENCE_MLTABLE_PATH $SOURCE_BATCH_INFERENCE_MLTABLE_PATH --create-dirs
+      curl -o $DESTINATION_ONLINE_INFERENCE_MLTABLE_PATH $SOURCE_ONLINE_INFERENCE_MLTABLE_PATH --create-dirs
 
       CONTAINER_NAME=$(az storage container list --account-name $AZURE_STORAGE_ACCOUNT --account-key $AZURE_STORAGE_KEY --query "[].name" | grep "azureml-blobstore-*" | tr -d ',' | xargs)
       az storage blob upload-batch --destination $CONTAINER_NAME --account-name $AZURE_STORAGE_ACCOUNT --account-key $AZURE_STORAGE_KEY --destination-path ./data --source ./data
