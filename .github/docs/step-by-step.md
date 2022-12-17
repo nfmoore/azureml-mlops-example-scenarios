@@ -109,6 +109,7 @@ To execute the workflow you can manually trigger the workflow in GitHub Actions 
 4. `Build Model`
 5. `Build Azure Data Factory`
 
+
 ![1](./images/sbs-6.png)
 
 Note that the `Train Model` workflow depends on `Create Data Assets` and `Create Environments`.
