@@ -27,6 +27,17 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: "Set development adf name"
+        run: |
+          DEVELOPMENT_DATA_FACTORY_NAME=$(find . -type d -name "adf*")
+          echo "DEVELOPMENT_DATA_FACTORY_NAME=$DEVELOPMENT_DATA_FACTORY_NAME" >> $GITHUB_ENV
+      
+      - name: Create template and parameter files for staging
+        run: |
+          mkdir -p artifacts
+          cp ${{ env.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateParametersForFactory.json artifacts/ARMTemplateParametersForFactory.json
+          cp ${{ env.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateForFactory.json artifacts/ARMTemplateForFactory.json
+
       - name: Create template and parameter files for staging
         run: |
           mkdir -p artifacts
