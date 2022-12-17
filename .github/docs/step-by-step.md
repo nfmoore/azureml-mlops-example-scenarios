@@ -16,6 +16,8 @@ Before implementing this example scenario the following are needed:
 
 You will need to create a resource group for resources associated with `Staging` and `Production` environments. The same or separate resource groups can be used. Once these have been created a service principal must be created with a `contributor` role assigned to each resource group.
 
+![1](./images/01.png)
+
 The following command can be used to create this service principal.
 
 ```bash
@@ -36,17 +38,19 @@ The command should output a JSON object similar to this:
  }
 ```
 
-Store this JSON object, the `clientId` and `clientSecret` as they will be used in subsequent steps.
+![1](./images/02.png)
 
 > Tip: Use the [Azure Cloud Shell](https://learn.microsoft.com/azure/cloud-shell/overview)
 
-Then an Azure Machine Learning workspace with associated resources for `Staging` and `Production` environments will need to be created. To assist with this an ARM template has been created to automate the deployment of all necessary resources. Use the `Deploy to Azure` button below to automatically deploy these resources. You will need to do this twice to deploy 2 separate instances for `Staging` and `Production` respectively. Note no settings need to be changed except the `Resource Instance` parameter (e.g. `001` and `002` respectively).
+Store this JSON object, the `clientId` and `clientSecret` as they will be used in subsequent steps.
 
-In the custom deployment, you will need to add the `clientId` and `clientSecret` for the service principal created earlier. In the `Instance details` section of the custom, deployment add the `clientId` value in the `servicePrincipalClientId` field and the `clientSecret` value in the `servicePrincipalSecret` field.
+Next an Azure Machine Learning workspace with associated resources for `Staging` and `Production` environments will need to be created. To assist with this an ARM template has been created to automate the deployment of all necessary resources. Use the `Deploy to Azure` button below to automatically deploy these resources. You will need to do this twice to deploy 2 separate instances for `Staging` and `Production` respectively. Note no settings need to be changed except the `Resource Instance` parameter (e.g. `001` and `002` respectively).
+
+In the custom deployment you will need to add the `clientId` and `clientSecret` for the service principal created earlier. In the `Instance details` section of the custom, deployment add the `clientId` value in the `servicePrincipalClientId` field and the `clientSecret` value in the `servicePrincipalSecret` field.
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fnfmoore%2Fazureml-mlops-example-scenarios%2Fmain%2Finfrastructure%2Fmain.json)
 
-![1](./images/sbs-1.png)
+![1](./images/03.png)
 
 Note that the above deployment will also upload the required data sets and MLTable file specifications found in the `core/data/curated/`, `core/data/inference/batch/`, and `core/data/inference/online/` directories to the default blob datastore `workspaceblobstore`. These will be used as part of this example scenario.
 
@@ -60,11 +64,11 @@ GitHub Environments are used to describe the `Staging` and `Production` deployme
 
 To set up these environments, from the GitHub repository you created in `1.1` click the `Settings` tab in the menu bar. On the new page select `Environments` from the sidebar. Click the `New Environment` button and create an environment with the `Name` of `Staging`. Repeat this to create a second environment with the `Name` of `Production`.
 
-![1](./images/sbs-2.png)
+![1](./images/04.png)
 
 Next, you will configure GitHub Action secrets. These are encrypted environment variables used within GitHub Actions Workflows. Click the `Settings` tab in the menu bar of your GitHub repository and on the new page then select `Secrets` from the sidebar. Click the `New Repository Secret` button to create a new secret and then the `Add Secret` button to create the secret.
 
-![1](./images/sbs-3.png)
+![1](./images/05.png)
 
 You need to create the following secrets in each environment:
 
@@ -77,11 +81,11 @@ You need to create the following secrets in each environment:
 
 Click the `Add Secret` button and create the above secret with associated values from your deployments from `1.1` in both the `Staging` and `Production` environments.
 
-![1](./images/sbs-4.png)
+![1](./images/06.png)
 
 After creating the above secrets for the `Production` environment, you can enable `Required Viewers` before deploying to this environment. This will allow you to specify people or teams that may approve workflow runs when they access this environment. To enable `Required Viewers`, under the `Environment Protection Rules` section, click the checkbox next to `Required Viewers` and search for your GitHub username and select it from the dropdown and click the `Save Protection Rules` button.
 
-![1](./images/sbs-5.png)
+![1](./images/07.png)
 
 ## 2. Execute Workflows
 
@@ -109,12 +113,19 @@ To execute the workflow you can manually trigger the workflow in GitHub Actions 
 4. `Build Model`
 5. `Build Azure Data Factory`
 
+![1](./images/08.png)
 
-![1](./images/sbs-6.png)
+Manual approval is required to deploy artifacts to the `Production` environment. When prompted, click the `Review Deployment` button to give approval.
+
+![1](./images/09.png)
+
+![1](./images/10.png)
 
 Note that the `Train Model` workflow depends on `Create Data Assets` and `Create Environments`.
 
-![1](./images/sbs-7.png)
+![1](./images/11.png)
+
+![1](./images/12.png)
 
 Once the `Train Model` workflow completes the following workflows will be automatically executed:
 
@@ -123,7 +134,7 @@ Once the `Train Model` workflow completes the following workflows will be automa
 
 Once the `Build Azure Data Factory` workflow completes the `Deploy to Azure Data Factory` workflow will be automatically executed.
 
-![1](./images/sbs-8-1.png)
+![1](./images/13.png)
 
 > **Note:**
 >
@@ -133,11 +144,17 @@ Once the `Build Azure Data Factory` workflow completes the `Deploy to Azure Data
 
 Manual approval is required to deploy artifacts to the `Production` environment. When prompted, click the `Review Deployment` button to give approval and commence the `Upload Model to Production` job. This will need to be repeated for the `Deploy to Production` job across both the `Deploy Model for Batch Inference` workflow and `Deploy Model for Online Inference` workflow. The approver(s) were specified in `1.3` above.
 
-![1](./images/sbs-8.png)
+![1](./images/14.png)
+
+![1](./images/16.png)
 
 Once the workflow has finished executing all artifacts will have been deployed to both `Staging` and `Production` environments.
 
-![1](./images/sbs-9.png)
+![1](./images/15.png)
+
+![1](./images/17.png)
+
+![1](./images/18.png)
 
 ### Next Steps
 
@@ -145,17 +162,19 @@ From the `Endpoints` sidebar button in the Azure Machine Learning workspace, you
 
 From the `Real-time endpoints` tab, online managed endpoints can be viewed. Different deployments can be tested under the `Test` tab. You can also interact with online managed endpoints using the CLI, SDK, and REST API.
 
-![1](./images/sbs-10.png)
+![1](./images/19.png)
 
 To test batch managed endpoints select the relevant endpoint under the `Batch endpoints` tab and select `Create job`. You will need to configure the job settings, data source, and output location.
 
-![1](./images/sbs-11.png)
+![1](./images/20.png)
 
 The `employee-attrition-inference-batch` data asset can be used for illustrative purposes.
 
-![1](./images/sbs-12.png)
+![1](./images/22.png)
 
-Azure Monitor can be used to monitor metrics collected from the deployments as discussed in the [Batch Managed Endpoint](./.github/docs/batch-endpoint.md) and [Online Managed Endpoint](./.github/docs/online-endpoint.md) sections of the documentation.
+Monitoring can be performend from the managed online endpoint or Azure Monitor can be used to monitor metrics collected from the deployments as discussed in the [Batch Managed Endpoint](./.github/docs/batch-endpoint.md) and [Online Managed Endpoint](./.github/docs/online-endpoint.md) sections of the documentation.
+
+![1](./images/21.png)
 
 ## Related Resources
 
