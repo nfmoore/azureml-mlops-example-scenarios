@@ -89,7 +89,7 @@ After creating the above secrets for the `Production` environment, you can enabl
 ## 2. Execute Workflows
 
 > **Note:**
-> The `Train and Deploy Model` workflows will deploy both a managed batch endpoint and a managed online endpoint and enable scheduled execution of the `Data Export` and `Data Drift` pipelines periodically.
+> The `Deploy Model to Online Endpoint` and `Deploy Model to Batch Endpoint` workflows will enable scheduled execution of the `Data Export` and `Data Drift` pipelines periodically.
 
 From your GitHub repository select `Actions` from the menu. From here you will be able to view the GitHub Action implementing the CI/CD pipeline for this example scenario. By default, the workflow in this example scenario is triggered manually within GitHub.
 
@@ -126,6 +126,12 @@ Once the `Train Model` workflow completes the following workflows will be automa
 Once the `Build Azure Data Factory` workflow completes the `Deploy to Azure Data Factory` workflow will be automatically executed.
 
 ![1](./images/sbs-8-1.png)
+
+> **Note:**
+>
+> If you do not want to deploy a model to an online or batch managed endpoint as part of this proof-of-concept you can cancel the `Deploy Model for Online Inference` or `Deploy Model for Batch Inference` workflow respectively.
+>
+>If you do not want to highlight Azure Data Factory integration as part of this proof-of-concept you do not need to run the `Build Azure Data Factory` workflow
 
 Manual approval is required to deploy artifacts to the `Production` environment. When prompted, click the `Review Deployment` button to give approval and commence the `Upload Model to Production` job. This will need to be repeated for the `Deploy to Production` job across both the `Deploy Model for Batch Inference` workflow and `Deploy Model for Online Inference` workflow. The approver(s) were specified in `1.3` above.
 
