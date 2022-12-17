@@ -1,6 +1,6 @@
 # Example Scenarios: MLOps with Azure Machine Learning
 
-## Overview
+## :books: Overview
 
 MLOps is a set of repeatable, automated, and collaborative workflows with best practices that empower teams of ML professionals to quickly and easily get their machine learning models deployed into production.
 
@@ -10,7 +10,7 @@ These example scenarios provided an end-to-end approach for MLOps in Azure based
 
 > **Note:** the [Azure MLOps (v2) Solution Accelerator](https://github.com/Azure/mlops-v2) is intended to serve as the starting point for MLOps implementation in Azure.
 
-## Getting Started
+## :computer: Getting Started
 
 This repository contains several example scenarios for productionising models using Azure Machine Learning. Two approaches are considered:
 
@@ -49,6 +49,6 @@ Detailed instructions for deploying this proof-of-concept are outlined in the [S
 | [Power BI](./.github/docs/powerbi.md) | Online | Consume a registered model deployed as an online managed endpoint within a Power BI report |
 | [Azure Stream Analytics](./.github/docs/stream-analytics.md) | Streaming | Consume a registered model deployed as an online managed endpoint within an Azure Stream Analytics User Defined Function for processing high-volume data streams. |
 
-## License
+## :balance_scale: License
 
 Details on licensing for the project can be found in the [LICENSE](./LICENSE) file.
