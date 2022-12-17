@@ -121,13 +121,13 @@ Manual approval is required to deploy artifacts to the `Production` environment.
 
 ![1](./images/10.png)
 
-Note that the `Train Model` workflow depends on `Create Data Assets` and `Create Environments`.
+Note that the `Build Model` workflow depends on `Deploy Data Assets` and `Deploy Environments` workflows.
 
 ![1](./images/11.png)
 
 ![1](./images/12.png)
 
-Once the `Train Model` workflow completes the following workflows will be automatically executed:
+Once the `Build Model` workflow completes the following workflows will be automatically executed:
 
 1. `Deploy Model for Batch Inference`
 2. `Deploy Model for Online Inference`
