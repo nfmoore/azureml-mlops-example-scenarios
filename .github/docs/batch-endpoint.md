@@ -47,6 +47,9 @@ The environments include:
 - **Staging:** used to test deployments before going to production in a production-like environment. Any integration tests are run in this environment.
 - **Production:** used for the final production environment.
 
+> **Note:**
+> An [Azure Machine Learning registry (preview)](https://learn.microsoft.com/azure/machine-learning/how-to-share-models-pipelines-across-workspaces-with-registries?tabs=cli) can be used to share models, components and environments between workspaces in staging and production from a single location. This approach has not been used in this solution.
+
 ## Scenario Walkthrough
 
 This section describes the main components of the example scenario that relate to implementing a batch scoring scenario with Azure Machine Learning managed batch endpoints. Each section will describe the key files and the role they play in the context of the overall solution.
@@ -56,7 +59,7 @@ This section describes the main components of the example scenario that relate t
 
 ### Data Assets
 
-A reference to data assets stored within a datastore needs to be created. Two data assets will be created in this example scenario - one for training a model referencing `core/data/curated/data.csv` and another for model inference referencing `core/data/inference/data.csv`. Azure Machine Learning datasets enable:
+A reference to data assets stored within a datastore needs to be created. Two data assets will be created in this example scenario - one for training a model referencing `core/data/curated/01.csv` and another for model inference referencing `core/data/inference/batch/01.csv`. Azure Machine Learning datasets enable:
 
 - Keep a single copy of data in storage referenced by datasets.
 - Seamlessly access data during model training without worrying about connection strings or data paths.
@@ -71,6 +74,12 @@ To register the environment for the model training pipeline in the Azure Machine
 
 ```bash
 az ml environment create -f core/environments/train.yml
+```
+
+To register the curated data for the model training pipeline in the Azure Machine Learning workspace execute:
+
+```bash
+az ml data create -f core/data/curated.yml
 ```
 
 The model training pipeline is defined in `core/pipelines/train_model.yml`. It orchestrates the model development process by executing data preprocessing, data quality reporting, model training with hyperparameter tuning, and model registration logic encapsulated in different scripts. These are found in the `core/src` directory. This pipeline can be used to train an initial model and subsequent model version (i.e. retraining).
@@ -97,6 +106,12 @@ Next, a deployment must be created for the endpoint. A deployment is a set of co
 
 ```bash
 az ml batch-deployment create -f core/deploy/batch/deployment.yml
+```
+
+To register the inference data for batch inference in the Azure Machine Learning workspace execute:
+
+```bash
+az ml data create -f core/data/inference-batch.yml
 ```
 
 To evoke the batch endpoint several options exist including CLI, REST, or manually via the workspace UI.
