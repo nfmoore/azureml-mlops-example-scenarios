@@ -55,7 +55,7 @@ INPUT_SAMPLE = [
         "RelationshipSatisfaction": "Very High",
         "EnvironmentSatisfaction": "Medium",
         "BusinessTravel": "Travel Rarely",
-        "OverTime": "Yes",
+        "OverTime": "Frequently",
         "WorkLifeBalance": "Better",
         "MaritalStatus": "Married",
         "StockOptionLevel": "L1",
@@ -74,4 +74,8 @@ INPUT_SAMPLE = [
 ]
 
 # define sample response for inference
-OUTPUT_SAMPLE = {"predictions": [0.3116883116883117]}
+OUTPUT_SAMPLE = {
+    "predictions": [
+        0.3364485981308411
+    ]
+}

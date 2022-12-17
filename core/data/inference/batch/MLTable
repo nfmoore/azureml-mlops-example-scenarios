@@ -69,6 +69,3 @@ transformations:
         column_type: string   
       - columns: "StockOptionLevel"
         column_type: string   
-      - columns: "Attrition"
-        column_type: string
-

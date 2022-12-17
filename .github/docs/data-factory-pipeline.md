@@ -69,7 +69,9 @@ The environments include:
 - **Production:** used for the final production environment.
 
 > **Note:**
->
+> An [Azure Machine Learning registry (preview)](https://learn.microsoft.com/azure/machine-learning/how-to-share-models-pipelines-across-workspaces-with-registries?tabs=cli) can be used to share models, components and environments between workspaces in staging and production from a single location. This approach has not been used in this solution.
+
+> **Note:**
 > In a metadata-driven approach re-deploying the Azure Data Factory pipelines is not necessary if a separate use-case adopts logic captured in an existing Azure Data Factory pipeline.
 > In this approach a new record can be added to the control table in the database which stores metadata for the pipeline.
 > For this an updated DACPAC or run scripts using SQLCMD can be used within the CI/CD pipeline.
@@ -87,7 +89,9 @@ Azure Data Factory is the primary service within Azure for orchestrating data mo
 
 A common pattern for implementing batch inference scenarios within the Azure ecosystem consists of using Azure Machine Learning and Azure Data Factory. This pattern is characterized by loading data from one or more systems into an Azure Machine Learning datastore, performing inference using a managed batch endpoint, then writing the output to a different target that is not natively supported by Azure Machine Learning.
 
-The `Machine Learning Execute Pipeline` activity provides native integration between Azure Machine Learning and Azure Data Factory. This activity lets you call a pre-defined Azure Machine Learning endpoint as part of your Azure Data Factory pipeline. This component is very useful in many use cases but in some circumstances, it can create limitations. This example scenario will outline a custom approach to developing an Azure Data Factory which integrates with a managed batch endpoint within Azure Machine Learning. The aims of this approach are:
+The `Machine Learning Execute Pipeline` activity provides native integration between Azure Machine Learning and Azure Data Factory. This activity lets you call a pre-defined Azure Machine Learning endpoint as part of your Azure Data Factory pipeline. This component is useful for many use cases but in some circumstances it can create limitations.
+
+This example scenario will outline a custom approach to developing an Azure Data Factory which integrates with a managed batch endpoint within Azure Machine Learning. The aims of this approach are:
 
 1. Greater decoupling between the Azure Data Factory pipeline and the Azure Machine Learning managed batch endpoint by removing the requirement to hard-code the Azure Machine Learning Pipeline ID. This will simplify deployment workflows and enable greater agility.
 2. Greater control over data movement by allowing input and output datastore URIs to be defined. This will enable specific files within an Azure Machine Learning datastore (e.g. a Storage account) to be referenced as either inputs or outputs to the managed batch endpoint.

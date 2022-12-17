@@ -1,0 +1,51 @@
+name: Build Azure Data Factory
+
+on:
+  workflow_dispatch: # For demonstration purposes
+
+  # push: # Runs workflow when you push a commit or tag
+  #   branches:
+  #     - adf_publish
+
+jobs:
+  publish-artifacts:
+    name: Publish Templates
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          ref: adf_publish
+
+      - name: Azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: "Set development adf name"
+        run: |
+          DEVELOPMENT_DATA_FACTORY_NAME=$(find . -type d -name "adf*")
+          echo "DEVELOPMENT_DATA_FACTORY_NAME=$DEVELOPMENT_DATA_FACTORY_NAME" >> $GITHUB_ENV
+      
+      - name: Create template and parameter files for staging
+        run: |
+          mkdir -p artifacts
+          cp ${{ env.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateParametersForFactory.json artifacts/ARMTemplateParametersForFactory.json
+          cp ${{ env.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateForFactory.json artifacts/ARMTemplateForFactory.json
+
+      - name: Create template and parameter files for staging
+        run: |
+          mkdir -p artifacts
+          cp ${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateParametersForFactory.json artifacts/ARMTemplateParametersForFactory.json
+          cp ${{ secrets.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateForFactory.json artifacts/ARMTemplateForFactory.json
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: artifacts

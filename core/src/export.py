@@ -33,13 +33,15 @@ def main(args: Namespace) -> None:
     # query log analytics workspace
     df_export = query_workspace(
         client, args.log_analytics_workspace_id, log_analytics_query, start_time, end_time)
+    df_export["TimeGenerated"] = df_export["TimeGenerated"].dt.strftime(
+        "%Y-%m-%d %H:%M:%S")
 
     # define file name and path
     file_name = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
     file_path = f"{args.prepared_data_dir}/employee-attrition/inference/online"
 
     # create directories if they do not exist
-    os.makedirs(file_path, exist_ok=False)
+    os.makedirs(file_path, exist_ok=True)
 
     # write data to datastore
     df_export.to_csv(f"{file_path}/{file_name}.csv", index=False)

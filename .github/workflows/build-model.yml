@@ -1,4 +1,4 @@
-name: Train Model
+name: Build Model
 
 on:
   workflow_dispatch: # For demonstration purposes
@@ -24,13 +24,13 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install dependencies
         uses: "./.github/templates/install-dependencies"
         with:
           workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
-          workspace_name: ${{ secrets.WORKSPACE_NAME }}
+          workspace_name: mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Run pipeline job to train model

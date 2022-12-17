@@ -7,8 +7,11 @@ transformations:
       delimiter: ","
       encoding: "ascii"
       header: all_files_same_headers
-  - drop_columns: ["EmployeeNumber", "HourlyRate", "DailyRate", "MonthlyRate"]
   - convert_column_types:
+      - columns: TimeGenerated
+        column_type:
+          datetime:
+            formats: ['%Y-%m-%d, %H:%M:%S']
       - columns: "Age"
         column_type: int
       - columns: "DistanceFromHome"
@@ -69,6 +72,3 @@ transformations:
         column_type: string   
       - columns: "StockOptionLevel"
         column_type: string   
-      - columns: "Attrition"
-        column_type: string
-

@@ -1,9 +1,9 @@
-name: Deploy Model for Batch Inference
+name: Deploy Model to Batch Endpoint
 
 on:
   workflow_run:
     workflows:
-      - Train Model
+      - Build Model
     types:
       - completed
 
@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.workflow_run.head_branch }}
 
@@ -29,7 +29,7 @@ jobs:
         uses: "./.github/templates/install-dependencies"
         with:
           workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
-          workspace_name: ${{ secrets.WORKSPACE_NAME }}
+          workspace_name: mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Create batch endpoint
@@ -37,8 +37,8 @@ jobs:
         with:
           endpoint_type: batch
           endpoint_file: core/deploy/batch/endpoint.yml
-          endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
-          log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
+          endpoint_suffix: ${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
+          log_analytics_workspace_name: law${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
 
       - name: Create batch deployment
         uses: "./.github/templates/create-deployment"
@@ -46,7 +46,7 @@ jobs:
           deployment_type: batch
           deployment_file: core/deploy/batch/deployment.yml
           endpoint_file: core/deploy/batch/endpoint.yml
-          endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
+          endpoint_suffix: ${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
 
       - name: Add variables to data drift job specification
         shell: bash
@@ -60,7 +60,7 @@ jobs:
         uses: "./.github/templates/schedule-job"
         with:
           schedule_file: core/schedules/data_drift.yml
-          log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
+          log_analytics_workspace_name: law${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
 
   upload-model-production:
     name: Upload Model to Production
@@ -76,42 +76,20 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.workflow_run.head_branch }}
 
-      - name: Download model artifact
-        uses: actions/github-script@v6
+      - name: Download artifacts
+        uses: "./.github/templates/download-workflow-artifact"
         with:
-          script: |
-            let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
-               owner: context.repo.owner,
-               repo: context.repo.repo,
-               run_id: context.payload.workflow_run.id,
-            });
-
-            let matchArtifact = allArtifacts.data.artifacts.filter((artifact) => {
-              return artifact.name == "artifacts"
-            })[0];
-
-            let download = await github.rest.actions.downloadArtifact({
-               owner: context.repo.owner,
-               repo: context.repo.repo,
-               artifact_id: matchArtifact.id,
-               archive_format: 'zip',
-            });
-
-            let fs = require('fs');
-            fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/artifacts.zip`, Buffer.from(download.data));
-
-      - name: Unzip model artifact
-        run: unzip artifacts.zip
+          artifact_name: artifacts
 
       - name: Install dependencies
         uses: "./.github/templates/install-dependencies"
         with:
           workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
-          workspace_name: ${{ secrets.WORKSPACE_NAME }}
+          workspace_name: mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Upload and tag model
@@ -137,7 +115,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.workflow_run.head_branch }}
 
@@ -145,7 +123,7 @@ jobs:
         uses: "./.github/templates/install-dependencies"
         with:
           workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
-          workspace_name: ${{ secrets.WORKSPACE_NAME }}
+          workspace_name: mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Create batch endpoint
@@ -153,8 +131,8 @@ jobs:
         with:
           endpoint_type: batch
           endpoint_file: core/deploy/batch/endpoint.yml
-          endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
-          log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
+          endpoint_suffix: ${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
+          log_analytics_workspace_name: law${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
 
       - name: Create batch deployment
         uses: "./.github/templates/create-deployment"
@@ -162,10 +140,10 @@ jobs:
           deployment_type: batch
           deployment_file: core/deploy/batch/deployment.yml
           endpoint_file: core/deploy/batch/endpoint.yml
-          endpoint_suffix: ${{ secrets.ENDPOINT_SUFFIX }}
+          endpoint_suffix: ${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
 
       - name: Create data drift schedule
         uses: "./.github/templates/schedule-job"
         with:
           schedule_file: core/schedules/data_drift.yml
-          log_analytics_workspace_name: ${{ secrets.LOG_ANALYTICS_WORKSPACE_NAME }}
+          log_analytics_workspace_name: law${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}

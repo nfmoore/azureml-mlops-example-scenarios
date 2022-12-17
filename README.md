@@ -19,7 +19,19 @@ This repository contains several example scenarios for productionising models us
 
 Users of Azure Machine Learning might choose to integrate with other services available within Azure to better align with existing workflows, enable new inference scenarios, or gain greater flexibility.
 
-All example scenarios will focus on classical machine learning problems. The `IBM HR Analytics Employee Attrition & Performance` [dataset](https://www.kaggle.com/pavansubhasht/ibm-hr-analytics-attrition-dataset) is available on Kaggle will be used to illustrate each example scenario.
+All example scenarios will focus on classical machine learning problems. An adapted version of the `IBM HR Analytics Employee Attrition & Performance` [dataset](https://www.kaggle.com/pavansubhasht/ibm-hr-analytics-attrition-dataset) (available on Kaggle) will be used to illustrate each example scenario.
+
+### Setup
+
+Detailed instructions for deploying this proof-of-concept are outlined in the [Step-by-Step Setup](.github/docs/step-by-step.md) section of this repository. This proof-of-concept will illustrate how to:
+
+- Manage and version machine learning models, environments, and datasets within Azure Machine Learning.
+- Promote a machine learning model to downstream environments.
+- Deploy models to managed endpoints for batch and online inference scenarios.
+- Deploy a data factory pipeline to orchestrate workflows consuming a batch-managed endpoint.
+- Develop build and deployment workflows for the different inference scenarios.
+- Collect and process inference data to detect data drift.
+- Monitor workloads for usage, performance and data drift.
 
 ### Standalone deployments within Azure Machine Learning
 
@@ -27,8 +39,6 @@ All example scenarios will focus on classical machine learning problems. The `IB
 | ---------------- | ------------------ | ----------- |
 | [Batch Managed Endpoint](./.github/docs/batch-endpoint.md) | Batch | Consume a registered model as a batch managed endpoint within Azure Machine Learning for high-throughput scenarios that can be executed within a single Azure Machine Learning workspace. |
 | [Online Managed Endpoint](./.github/docs/online-endpoint.md) | Online | Consume a registered model as an online managed endpoint within Azure Machine Learning for low-latency scenarios. |
-
-> For detailed instructions to deploy example scenarios for batch managed endpoints and online managed endpoints to a personal Azure environment see the [Step-by-Step Setup](.github/docs/step-by-step.md) section of this repository. This will result in a machine learning model being trained, registered in both environments, and deployed as both types of endpoints.
 
 ### Native integrations between Azure services and deployments within Azure Machine Learning
 

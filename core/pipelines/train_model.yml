@@ -20,25 +20,36 @@ settings:
   default_datastore: azureml:workspaceblobstore
   default_compute: azureml:cpu-cluster
   continue_on_step_failure: false
+  is_deterministic: false
 
 jobs:
   prepare_step:
     type: command
-    component: ../components/prepare.yml
     inputs:
       curated_dataset: ${{parent.inputs.curated_dataset}}
+      random_state: 42
     outputs:
       prepared_data_dir: ${{parent.outputs.prepared_data_dir}}
+    code: ..
+    environment: azureml:employee-attrition-train@latest
+    command: >-
+      python src/prepare.py 
+      --curated_dataset ${{inputs.curated_dataset}} 
+      --prepared_data_dir ${{outputs.prepared_data_dir}}
+      --random_state ${{inputs.random_state}}
 
   data_quality_step:
     type: command
-    component: ../components/data_quality.yml
     inputs:
       prepared_data_dir: ${{parent.jobs.prepare_step.outputs.prepared_data_dir}}
+    code: ..
+    environment: azureml:employee-attrition-train@latest
+    command: >-
+        python src/data_quality.py 
+        --prepared_data_dir ${{inputs.prepared_data_dir}}
 
   sweep_step:
     type: sweep
-    trial: ../components/train.yml
     inputs:
       prepared_data_dir: ${{parent.jobs.prepare_step.outputs.prepared_data_dir}}
       random_state: 42
@@ -64,12 +75,20 @@ jobs:
       max_total_trials: 2
       max_concurrent_trials: 2
       timeout: 720
+    trial: ../components/sweep_trial.yml
 
   register_step:
     type: command
-    component: ../components/register.yml
     inputs:
       model_name: employee-attrition
       model_output: ${{parent.jobs.sweep_step.outputs.model_output}}
       prepared_data_dir: ${{parent.jobs.prepare_step.outputs.prepared_data_dir}}
       conda_env: environments/conda/score.yml
+    code: ..
+    environment: azureml:employee-attrition-train@latest
+    command: >-
+      python src/register.py 
+      --model_name ${{inputs.model_name}} 
+      --model_output ${{inputs.model_output}}
+      --prepared_data_dir ${{inputs.prepared_data_dir}}
+      --conda_env ${{inputs.conda_env}}
