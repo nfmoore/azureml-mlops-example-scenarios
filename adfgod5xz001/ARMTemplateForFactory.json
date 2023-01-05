@@ -1,0 +1,733 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adfgod5xz001"
+		},
+		"AzureKeyVault_properties_typeProperties_baseUrl": {
+			"type": "string"
+		},
+		"AzureMLWorkspace_properties_typeProperties_subscriptionId": {
+			"type": "string"
+		},
+		"AzureMLWorkspace_properties_typeProperties_resourceGroupName": {
+			"type": "string"
+		},
+		"AzureMLWorkspace_properties_typeProperties_mlWorkspaceName": {
+			"type": "string"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_batch_endpoint_name": {
+			"type": "string",
+			"defaultValue": "employee-attrition-be-xwucor001"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_datastore": {
+			"type": "string",
+			"defaultValue": "azureml://datastores/workspaceblobstore/paths"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_datastore": {
+			"type": "string",
+			"defaultValue": "azureml://datastores/workspaceblobstore/paths"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_file_path": {
+			"type": "string",
+			"defaultValue": "data/employee-attrition/inference/batch/01.csv"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_dir_path": {
+			"type": "string",
+			"defaultValue": "outputs/adf"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_deployment_name": {
+			"type": "string",
+			"defaultValue": "main"
+		},
+		"default_properties_tenant_id_value": {
+			"type": "string"
+		},
+		"default_properties_subscription_id_value": {
+			"type": "string"
+		},
+		"default_properties_key_vault_name_value": {
+			"type": "string"
+		},
+		"default_properties_azureml_workspace_name_value": {
+			"type": "string"
+		},
+		"default_properties_azureml_workspace_rg_value": {
+			"type": "string"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/azureml_adf_batch_scoring')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get access token",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Get client id",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Get client secret",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "https://login.microsoftonline.com/@{pipeline().globalParameters.tenant_id}/oauth2/v2.0/token",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/x-www-form-urlencoded"
+							},
+							"body": {
+								"value": "grant_type=client_credentials&scope=https://management.azure.com/.default&client_id=@{activity('Get client id').output.value}&client_secret=@{activity('Get client secret').output.value}",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Get client id",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "https://@{pipeline().globalParameters.key_vault_name}.vault.azure.net/secrets/client-id?api-version=7.0",
+								"type": "Expression"
+							},
+							"method": "GET",
+							"headers": {},
+							"authentication": {
+								"type": "MSI",
+								"resource": "https://vault.azure.net"
+							}
+						}
+					},
+					{
+						"name": "Get client secret",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "https://@{pipeline().globalParameters.key_vault_name}.vault.azure.net/secrets/client-secret?api-version=7.0",
+								"type": "Expression"
+							},
+							"method": "GET",
+							"headers": {},
+							"authentication": {
+								"type": "MSI",
+								"resource": "https://vault.azure.net"
+							}
+						}
+					},
+					{
+						"name": "Get scoring token",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Get client id",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Get client secret",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "https://login.microsoftonline.com/@{pipeline().globalParameters.tenant_id}/oauth2/v2.0/token",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/x-www-form-urlencoded"
+							},
+							"body": {
+								"value": "grant_type=client_credentials&scope=https://ml.azure.com/.default&client_id=@{activity('Get client id').output.value}&client_secret=@{activity('Get client secret').output.value}",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Trigger managed endpoint",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Get access token",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Get scoring token",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "azureml_adf_call_endpoint",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"deployment_name": {
+									"value": "@pipeline().parameters.deployment_name",
+									"type": "Expression"
+								},
+								"access_token": {
+									"value": "@activity('Get access token').output.access_token",
+									"type": "Expression"
+								},
+								"scoring_token": {
+									"value": "@activity('Get scoring token').output.access_token",
+									"type": "Expression"
+								},
+								"input_dataset_uri": {
+									"value": "@{pipeline().parameters.input_datastore}/@{pipeline().parameters.input_file_path}",
+									"type": "Expression"
+								},
+								"output_dataset_uri": {
+									"value": "@{pipeline().parameters.output_datastore}/@{concat(pipeline().parameters.output_dir_path, '/predictions_', formatDateTime(utcNow(), 'yyyy_MM_dd_HH_mm' ), '.csv')}",
+									"type": "Expression"
+								},
+								"azureml_resource_id": {
+									"value": "subscriptions/@{pipeline().globalParameters.subscription_id}/resourceGroups/@{pipeline().globalParameters.azureml_workspace_rg}/providers/Microsoft.MachineLearningServices/workspaces/@{pipeline().globalParameters.azureml_workspace_name}",
+									"type": "Expression"
+								},
+								"batch_endpoint_name": {
+									"value": "@pipeline().parameters.batch_endpoint_name",
+									"type": "Expression"
+								}
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"batch_endpoint_name": {
+						"type": "string",
+						"defaultValue": "employee-attrition-be-god5xz001"
+					},
+					"input_datastore": {
+						"type": "string",
+						"defaultValue": "azureml://datastores/workspaceblobstore/paths"
+					},
+					"output_datastore": {
+						"type": "string",
+						"defaultValue": "azureml://datastores/workspaceblobstore/paths"
+					},
+					"input_file_path": {
+						"type": "string",
+						"defaultValue": "data/employee-attrition/inference/batch/01.csv"
+					},
+					"output_dir_path": {
+						"type": "string",
+						"defaultValue": "output/adf"
+					},
+					"deployment_name": {
+						"type": "string",
+						"defaultValue": "main"
+					}
+				},
+				"variables": {
+					"access_token": {
+						"type": "String"
+					},
+					"tenant_id": {
+						"type": "String"
+					},
+					"client_id": {
+						"type": "String"
+					},
+					"client_secret": {
+						"type": "String"
+					},
+					"job_id": {
+						"type": "String",
+						"defaultValue": "ff965b7c-f9ec-4794-9d17-45f1c0297eaf"
+					},
+					"scoring_token": {
+						"type": "String"
+					},
+					"job_status": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "Batch scoring with Azure ML and ADF/Custom"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-09-02T04:13:13Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/azureml_adf_call_endpoint')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/azureml_adf_call_endpoint')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set job id",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Call managed endpoint",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "job_id",
+							"value": {
+								"value": "@activity('Call managed endpoint').output.name",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Call managed endpoint",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Get scoring endpoint URI",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@activity('Get scoring endpoint URI').output.properties.scoringUri",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Authorization": {
+									"value": "Bearer @{pipeline().parameters.scoring_token}",
+									"type": "Expression"
+								},
+								"azureml-model-deployment": {
+									"value": "@pipeline().parameters.deployment_name",
+									"type": "Expression"
+								}
+							},
+							"body": {
+								"value": "{\n    properties: {\n        \"InputData\":\n        {\n            \"mnistInput\": {\n                \"JobInputType\": \"UriFile\",\n                \"Uri\": \"@{pipeline().parameters.input_dataset_uri}\"\n            }\n        },\n        \"OutputData\":\n        {\n            \"score\": {\n                \"JobOutputType\": \"UriFile\",\n                \"Uri\": \"@{pipeline().parameters.output_dataset_uri}\"\n            }\n        }\n    }\n}",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Check job status until complete",
+						"type": "Until",
+						"dependsOn": [
+							{
+								"activity": "Set job id",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@contains(\n    createArray('Completed', 'Failed', 'Canceled'), \n    variables('job_status')\n)",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Wait",
+									"type": "Wait",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"waitTimeInSeconds": 60
+									}
+								},
+								{
+									"name": "Check job status",
+									"type": "WebActivity",
+									"dependsOn": [
+										{
+											"activity": "Wait",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"url": {
+											"value": "https://management.azure.com/@{pipeline().parameters.azureml_resource_id}/jobs/@{variables('job_id')}?api-version=2022-05-01",
+											"type": "Expression"
+										},
+										"method": "GET",
+										"headers": {
+											"Authorization": {
+												"value": "Bearer @{pipeline().parameters.access_token}",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								{
+									"name": "Set job status",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Check job status",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "job_status",
+										"value": {
+											"value": "@activity('Check job status').output.properties.status",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"timeout": "0.01:00:00"
+						}
+					},
+					{
+						"name": "Get scoring endpoint URI",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "https://management.azure.com/@{pipeline().parameters.azureml_resource_id}/batchEndpoints/@{pipeline().parameters.batch_endpoint_name}?api-version=2022-05-01",
+								"type": "Expression"
+							},
+							"method": "GET",
+							"headers": {
+								"Authorization": {
+									"value": "Bearer @{pipeline().parameters.access_token}",
+									"type": "Expression"
+								},
+								"Content-Type": "application/json"
+							}
+						}
+					},
+					{
+						"name": "If condition",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Check job status until complete",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@contains(\n    createArray('Completed'), \n    variables('job_status')\n)",
+								"type": "Expression"
+							},
+							"ifFalseActivities": [
+								{
+									"name": "Fail",
+									"type": "Fail",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"message": "Job was not completed successfully",
+										"errorCode": "400"
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"deployment_name": {
+						"type": "string",
+						"defaultValue": "main"
+					},
+					"access_token": {
+						"type": "string"
+					},
+					"scoring_token": {
+						"type": "string"
+					},
+					"input_dataset_uri": {
+						"type": "string",
+						"defaultValue": "azureml://datastores/workspaceblobstore/paths/data/employee-attrition/inference/batch/data.csv"
+					},
+					"output_dataset_uri": {
+						"type": "string",
+						"defaultValue": "azureml://datastores/workspaceblobstore/paths/outputs/predictions.csv"
+					},
+					"azureml_resource_id": {
+						"type": "string",
+						"defaultValue": "subscriptions/a326b683-d9a8-4ca6-adff-89d2a3eb1b0c/resourceGroups/azureml-workspace-poc-001-rg/providers/Microsoft.MachineLearningServices/workspaces/mlwxwucor001"
+					},
+					"batch_endpoint_name": {
+						"type": "string",
+						"defaultValue": "https://employee-attrition-be-xwucor001"
+					}
+				},
+				"variables": {
+					"job_id": {
+						"type": "String",
+						"defaultValue": "ff965b7c-f9ec-4794-9d17-45f1c0297eaf"
+					},
+					"job_status": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "Batch scoring with Azure ML and ADF/Custom"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-09-02T06:15:26Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/azureml_pipeline_execute')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Machine learning execute pipeline",
+						"type": "AzureMLExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"experimentName": "adf-experiment",
+							"mlPipelineId": {
+								"value": "@pipeline().parameters.azureml_pipeline_id",
+								"type": "Expression"
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "AzureMLWorkspace",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"azureml_pipeline_id": {
+						"type": "string",
+						"defaultValue": "049e8bd7-c948-4402-a646-f1f9fd4787e8"
+					}
+				},
+				"folder": {
+					"name": "Batch scoring with Azure ML and ADF/Native"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-09-03T03:56:56Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureMLWorkspace')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureKeyVault')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('AzureKeyVault_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureMLWorkspace')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureMLService",
+				"typeProperties": {
+					"subscriptionId": "[parameters('AzureMLWorkspace_properties_typeProperties_subscriptionId')]",
+					"resourceGroupName": "[parameters('AzureMLWorkspace_properties_typeProperties_resourceGroupName')]",
+					"mlWorkspaceName": "[parameters('AzureMLWorkspace_properties_typeProperties_mlWorkspaceName')]",
+					"authentication": "MSI"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/azureml_adf_batch_scoring_trigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "azureml_adf_batch_scoring",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"batch_endpoint_name": "[parameters('azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_batch_endpoint_name')]",
+							"input_datastore": "[parameters('azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_datastore')]",
+							"output_datastore": "[parameters('azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_datastore')]",
+							"input_file_path": "[parameters('azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_file_path')]",
+							"output_dir_path": "[parameters('azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_dir_path')]",
+							"deployment_name": "[parameters('azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_deployment_name')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Month",
+						"interval": 16,
+						"startTime": "2022-12-10T12:00:00Z",
+						"timeZone": "UTC",
+						"schedule": {
+							"monthDays": [
+								1
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/azureml_adf_batch_scoring')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/default')]",
+			"type": "Microsoft.DataFactory/factories/globalparameters",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"tenant_id": {
+					"type": "string",
+					"value": "[parameters('default_properties_tenant_id_value')]"
+				},
+				"subscription_id": {
+					"type": "string",
+					"value": "[parameters('default_properties_subscription_id_value')]"
+				},
+				"key_vault_name": {
+					"type": "string",
+					"value": "[parameters('default_properties_key_vault_name_value')]"
+				},
+				"azureml_workspace_name": {
+					"type": "string",
+					"value": "[parameters('default_properties_azureml_workspace_name_value')]"
+				},
+				"azureml_workspace_rg": {
+					"type": "string",
+					"value": "[parameters('default_properties_azureml_workspace_rg_value')]"
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

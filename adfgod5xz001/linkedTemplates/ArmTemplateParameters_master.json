@@ -1,0 +1,60 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adfgod5xz001"
+		},
+		"AzureKeyVault_properties_typeProperties_baseUrl": {
+			"value": ""
+		},
+		"AzureMLWorkspace_properties_typeProperties_subscriptionId": {
+			"value": ""
+		},
+		"AzureMLWorkspace_properties_typeProperties_resourceGroupName": {
+			"value": ""
+		},
+		"AzureMLWorkspace_properties_typeProperties_mlWorkspaceName": {
+			"value": ""
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_batch_endpoint_name": {
+			"value": "employee-attrition-be-xwucor001"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_datastore": {
+			"value": "azureml://datastores/workspaceblobstore/paths"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_datastore": {
+			"value": "azureml://datastores/workspaceblobstore/paths"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_file_path": {
+			"value": "data/employee-attrition/inference/batch/01.csv"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_dir_path": {
+			"value": "outputs/adf"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_deployment_name": {
+			"value": "main"
+		},
+		"default_properties_tenant_id_value": {
+			"value": ""
+		},
+		"default_properties_subscription_id_value": {
+			"value": ""
+		},
+		"default_properties_key_vault_name_value": {
+			"value": ""
+		},
+		"default_properties_azureml_workspace_name_value": {
+			"value": ""
+		},
+		"default_properties_azureml_workspace_rg_value": {
+			"value": ""
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

@@ -1,0 +1,22 @@
+{
+	"tenant_id": {
+		"type": "string",
+		"value": "16b3c013-d300-468d-ac64-7eda0820b6d3"
+	},
+	"subscription_id": {
+		"type": "string",
+		"value": "a326b683-d9a8-4ca6-adff-89d2a3eb1b0c"
+	},
+	"key_vault_name": {
+		"type": "string",
+		"value": "kvadfgod5xz001"
+	},
+	"azureml_workspace_name": {
+		"type": "string",
+		"value": "mlwgod5xz001"
+	},
+	"azureml_workspace_rg": {
+		"type": "string",
+		"value": "azureml-workspace-sandbox-001-rg"
+	}
+}
