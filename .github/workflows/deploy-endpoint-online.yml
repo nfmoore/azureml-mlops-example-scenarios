@@ -11,6 +11,7 @@ jobs:
   deploy-staging:
     name: Deploy to Staging
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     environment:
       name: Staging
@@ -82,6 +83,7 @@ jobs:
     name: End to End Testing
     runs-on: ubuntu-latest
     needs: deploy-staging
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     environment:
       name: Staging
@@ -123,6 +125,7 @@ jobs:
     name: Upload Model to Production
     runs-on: ubuntu-latest
     needs: end-to-end-testing
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     environment:
       name: Production
@@ -162,6 +165,7 @@ jobs:
     name: Deploy to Production
     runs-on: ubuntu-latest
     needs: upload-model-production
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     environment:
       name: Production
