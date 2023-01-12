@@ -11,6 +11,7 @@ jobs:
   deploy-staging:
     name: Deploy Templates to Staging
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     environment:
       name: Staging
@@ -54,6 +55,7 @@ jobs:
     name: Deploy Templates to Production
     runs-on: ubuntu-latest
     needs: deploy-staging
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     environment:
       name: Production
