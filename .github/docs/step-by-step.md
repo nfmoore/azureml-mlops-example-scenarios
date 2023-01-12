@@ -12,9 +12,16 @@ Before implementing this example scenario the following are needed:
 
 ## 1. Initial Setup
 
+> **Estimated setup time:**
+> - Azure resource deployments: 20 minutes
+> - Configure GitHub environments and secrets: 5 minutes
+> - Run all GitHub workflows: 80 minutes
+
 ### 1.1. Deploy Azure Resources
 
 You will need to create a resource group for resources associated with `Staging` and `Production` environments. The same or separate resource groups can be used. Once these have been created a service principal must be created with a `contributor` role assigned to each resource group.
+
+> Tip: if the aim is to setup a proof-of-concept, use a single resource group for simplicity.
 
 ![1](./images/01.png)
 
