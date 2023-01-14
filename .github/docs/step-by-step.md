@@ -63,7 +63,7 @@ Note that the above deployment will also upload the required data sets and MLTab
 
 ### 1.2. Create GitHub Repository
 
-Log in to your GitHub account and navigate to the [azureml-mlops-example-scenarios](https://github.com/nfmoore/azureml-mlops-example-scenarios) repository and click `use this template` to create a new repository from this template. Rename the template and leave it public. Use [these](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template) instructions for more details about creating a repository from a template.
+Log in to your GitHub account and navigate to the [azureml-mlops-example-scenarios](https://github.com/nfmoore/azureml-mlops-example-scenarios) repository and click `use this template` to create a new repository from this template. Rename the template and leave it public. Ensure you click `Include all branches` to copy all branches from the repository and not just main. Use [these](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template) instructions for more details about creating a repository from a template.
 
 ### 1.3. Configure GitHub Actions Environments
 
