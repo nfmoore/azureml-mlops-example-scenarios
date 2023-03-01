@@ -76,7 +76,7 @@ Use [these](https://docs.github.com/en/github/creating-cloning-and-archiving-rep
 
 GitHub Environments are used to describe the **`Staging`** and **`Production`** deployment targets and will be used to configure protection rules and secrets in this example scenario.
 
-To set up these environments, from the GitHub repository you created in `1.1` click the <kbd>Settings</kbd> tab in the menu bar. 
+To set up these environments, from the GitHub repository you created in `1.1` click the **`Settings`** tab in the menu bar. 
 
 On the new page select **`Environments`** from the sidebar. Click the <kbd>New Environment</kbd> button and create an environment with the `Name` of **`Staging`**. Repeat this to create a second environment with the `Name` of **`Production`**.
 
