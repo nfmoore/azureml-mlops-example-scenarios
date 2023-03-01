@@ -21,7 +21,7 @@ Before implementing this example scenario the following are needed:
 
 You will need to create a resource group for resources associated with `Staging` and `Production` environments. The same or separate resource groups can be used. Once these have been created a service principal must be created with a `contributor` role assigned to each resource group.
 
-> Tip: if the aim is to setup a proof-of-concept, use a single resource group for simplicity.
+> **_Note_**: The aim of this demo is to setup a simple proof-of-concept, therefore a single resource group is used. If separate resources groups are required, the follow instructions/steps will need updated. 
 
 ![1](./images/01.png)
 
@@ -47,7 +47,7 @@ The command should output a JSON object similar to this:
 
 ![1](./images/02.png)
 
-> Tip: Use the [Azure Cloud Shell](https://learn.microsoft.com/azure/cloud-shell/overview)
+> **_Tip_**: Use the [Azure Cloud Shell](https://learn.microsoft.com/azure/cloud-shell/overview)
 
 Store this JSON object, the `clientId` and `clientSecret` as they will be used in subsequent steps.
 
