@@ -79,12 +79,12 @@ Next, you will configure GitHub Action secrets. These are encrypted environment 
 
 You need to create the following secrets in each environment:
 
-| Secret name | How to find secret value |
-|:------------|:-------------------------|
-| AZURE_CREDENTIALS | A JSON object with details of your Azure Service Principal. [This](https://github.com/marketplace/actions/azure-login#configure-deployment-credentials) document will help you configure a service principal with a secret. The value will look something like: `{ "clientId": "<GUID>", "clientSecret": "<GUID>", "subscriptionId": "<GUID>", "tenantId": "<GUID>", ... }`|
-| RESOURCE_GROUP | The name of the resource group that resources are deployed into. |
-| WORKLOAD_IDENTIFIER | The 6 random characters common to each resource in your resource group. This is from the custom deployment. For example, `sw9g3m`. |
-| RESOURCE_INSTANCE | The final value common to each resource in your resource group. This is from the custom deployment. For example, `001`.|
+| Secret name | How to find secret value | Secret type |
+|:------------|:-------------------------|:------------|
+| AZURE_CREDENTIALS | A JSON object with details of your Azure Service Principal. [This](https://github.com/marketplace/actions/azure-login#configure-deployment-credentials) document will help you configure a service principal with a secret. The value will look something like: `{ "clientId": "<GUID>", "clientSecret": "<GUID>", "subscriptionId": "<GUID>", "tenantId": "<GUID>", ... }`| Repository |
+| RESOURCE_GROUP | The name of the resource group that resources are deployed into. | Repository |
+| WORKLOAD_IDENTIFIER | The 6 random characters common to each resource in your resource group. This is from the custom deployment. For example, `sw9g3m`. | Repository |
+| RESOURCE_INSTANCE | The final value common to each resource in your resource group. This is from the custom deployment. For example, `001`.| Environment |
 
 Click the `Add Secret` button and create the above secret with associated values from your deployments from `1.1` in both the `Staging` and `Production` environments.
 
