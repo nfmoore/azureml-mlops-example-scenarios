@@ -21,7 +21,7 @@ Before implementing this example scenario the following are needed:
 
 You will need to create a resource group for resources associated with `Staging` and `Production` environments. The same or separate resource groups can be used. Once these have been created a service principal must be created with a `contributor` role assigned to each resource group.
 
-> **_Note_**: The aim of this demo is to setup a simple proof-of-concept, therefore a single resource group is used. If separate resources groups are required, the follow instructions/steps will need updated. 
+> **_Note_**: The aim of this demo is to setup a simple proof-of-concept, therefore a single resource group is used. If separate resources groups are required, the following instructions/steps will need updated. 
 
 ![1](./images/01.png)
 
@@ -49,7 +49,7 @@ The command should output a JSON object similar to this:
 
 > **_Tip_**: Use the [Azure Cloud Shell](https://learn.microsoft.com/azure/cloud-shell/overview)
 
-Store this JSON object, the `clientId` and `clientSecret` as they will be used in subsequent steps.
+**Store this JSON object, the `clientId` and `clientSecret` as they will be used in subsequent steps.**
 
 Next an Azure Machine Learning workspace with associated resources for `Staging` and `Production` environments will need to be created. To assist with this an ARM template has been created to automate the deployment of all necessary resources. Use the `Deploy to Azure` button below to automatically deploy these resources. You will need to do this twice to deploy 2 separate instances for `Staging` and `Production` respectively. Note no settings need to be changed except the `Resource Instance` parameter (e.g. `001` and `002` respectively).
 
@@ -89,6 +89,10 @@ You need to create the following secrets in each environment:
 Click the `Add Secret` button and create the above secret with associated values from your deployments from `1.1` in both the `Staging` and `Production` environments.
 
 ![1](./images/06.png)
+
+This secret configuration can be checked via **Setting > Secrets and Variables > Actions** (as shown below). 
+
+![1](./images/AML_Source.png)
 
 After creating the above secrets for the `Production` environment, you can enable `Required Viewers` before deploying to this environment. This will allow you to specify people or teams that may approve workflow runs when they access this environment. To enable `Required Viewers`, under the `Environment Protection Rules` section, click the checkbox next to `Required Viewers` and search for your GitHub username and select it from the dropdown and click the `Save Protection Rules` button.
 
