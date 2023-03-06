@@ -67,6 +67,14 @@ In the custom deployment you will need to add the **`clientId`** and **`clientSe
 
 > **_Note_**: The above deployment will also upload the required data sets and MLTable file specifications found in the `core/data/curated/`, `core/data/inference/batch/`, and `core/data/inference/online/` directories to the default blob datastore `workspaceblobstore`. These will be used as part of this example scenario.
 
+Once the deployment process has been completed, you will see several azure components available in the demo resource group. 
+
+Each component follows a consistent naming standard; an abbreviation of the component name, followed by the **`Workload Identifier`** and then the environment reference.
+
+![1](./images/AML_confirm_wk_id.png)
+
+> **_Note_**: The **`Workload Identifier`** is required for the GitHub secrets in step 1.3
+
 ### 1.2. Create GitHub Repository
 
 Log in to your GitHub account and navigate to the [azureml-mlops-example-scenarios](https://github.com/nfmoore/azureml-mlops-example-scenarios) repository and click <kbd>Use this Template</kbd> to create a new repository from this template. Rename the template and leave it public. Ensure you click <kbd>Include all branches</kbd> to copy all branches from the repository and not just main. 
