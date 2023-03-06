@@ -203,6 +203,27 @@ Monitoring can be performend from the managed online endpoint or Azure Monitor c
 
 ![1](./images/21.png)
 
+## Resource Clean-Up
+
+There are two main tasks required to clean-up this deemo;
+1. Delete the Azure Resoure Group
+2. Delete the service principal
+
+### Delete the Resource Group
+
+From the Azure portal, navigate to the demo resource group and select <kbd>Delete resource group</kbd> toolbar button. This will then prompt a confirmation screen, requiring the reourse group name to be entered and the <kbd>Delete</kbd> button to be selected.
+
+This will process will take 5/10mins to complete, it can be montiored via the <kbd>Notification</kbd> toolbar button, represented by the :bell: on the blue stripe. 
+
+### Delete the Service Principle
+
+From the Azure - Cloud CLI, run the following command with your service principal ID in bash.
+
+```bash
+
+az ad sp delete --id <service-principal-name>
+```
+
 ## Related Resources
 
 You might also find these references useful:
