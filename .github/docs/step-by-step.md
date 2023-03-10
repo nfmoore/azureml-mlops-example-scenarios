@@ -1,7 +1,6 @@
 # Step-by-Step Setup
 
-> **Note:**
-> As with all Azure Deployments, this will incur associated costs. Remember to teardown all related resources after use to avoid unnecessary costs.
+> **_Note_**: As with all Azure Deployments, this will incur associated costs. Remember to teardown all related resources after use to avoid unnecessary costs.
 
 ## Prerequisites
 
@@ -23,7 +22,7 @@ You will need to create a resource group for resources associated with **`Stagin
 
 Once these have been created a service principal must be created with a **`contributor`** role assigned to each resource group.
 
-> **_Note_**: The aim of this demo is to setup a simple proof-of-concept, therefore a single resource group is used. If separate resources groups are required, the following instructions/steps will need adjustment to reflect this. 
+> **_Note_**: The aim of this demo is to setup a simple proof-of-concept, therefore a single resource group is used. If separate resources groups are required, the following instructions/steps will need adjustment to reflect this.
 
 ![1](./images/01.png)
 
@@ -67,11 +66,11 @@ In the custom deployment you will need to add the **`clientId`** and **`clientSe
 
 > **_Note_**: The above deployment will also upload the required data sets and MLTable file specifications found in the `core/data/curated/`, `core/data/inference/batch/`, and `core/data/inference/online/` directories to the default blob datastore `workspaceblobstore`. These will be used as part of this example scenario.
 
-Once the deployment process has been completed, you will see several azure components available in the demo resource group. 
+Once the deployment process has been completed, you will see several azure components available in the demo resource group.
 
-Each component follows a consistent naming standard; an abbreviation of the component name, followed by the **`Workload Identifier`** and then the environment reference.
+Each component follows a consistent naming standard; an abbreviation of the component name, followed by the **`Workload Identifier`** and then the environment reference (as shown below).
 
-![1](./images/AML_confirm_wk_id.png)
+![1](./images/03-2.png)
 
 > **_Note_**: The **`Workload Identifier`** is required for the GitHub secrets in step 1.3
 
@@ -111,7 +110,7 @@ Click the <kbd>Add Secret</kbd> button and create the above secret with associat
 
 This secret configuration can be checked via **Setting > Secrets and Variables > Actions** (as shown below). 
 
-![1](./images/AML_Source.png)
+![1](./images/06-2.png)
 
 After creating the above secrets for the **`Production`** environment, you can enable **`Required Viewers`** before deploying to this environment. 
 - This will allow you to specify people or teams that may approve workflow runs when they access this environment.
@@ -122,8 +121,7 @@ To enable **`Required Viewers`**, under the **`Environment Protection Rules`** s
 
 ## 2. Execute Workflows
 
-> **Note:**
-> The `Deploy Model to Online Endpoint` and `Deploy Model to Batch Endpoint` workflows will enable scheduled execution of the `Data Export` and `Data Drift` pipelines periodically.
+> **_Note_**: The `Deploy Model to Online Endpoint` and `Deploy Model to Batch Endpoint` workflows will enable scheduled execution of the `Data Export` and `Data Drift` pipelines periodically.
 
 From your GitHub repository select **`Actions`** from the menu. From here you will be able to view the GitHub Action implementing the CI/CD pipeline for this example scenario. By default, the workflow in this example scenario is triggered manually within GitHub.
 
@@ -169,9 +167,7 @@ Once the `Build Azure Data Factory` workflow completes the `Deploy to Azure Data
 
 ![1](./images/13.png)
 
-> **Note:**
->
-> If you do not want to deploy a model to an online or batch managed endpoint as part of this proof-of-concept you can cancel the `Deploy Model for Online Inference` or `Deploy Model for Batch Inference` workflow respectively.
+> **_Note_**: If you do not want to deploy a model to an online or batch managed endpoint as part of this proof-of-concept you can cancel the `Deploy Model for Online Inference` or `Deploy Model for Batch Inference` workflow respectively.
 >
 >If you do not want to highlight Azure Data Factory integration as part of this proof-of-concept you do not need to run the `Build Azure Data Factory` workflow
 
