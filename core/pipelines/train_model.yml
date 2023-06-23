@@ -18,7 +18,7 @@ outputs:
 
 settings:
   default_datastore: azureml:workspaceblobstore
-  default_compute: azureml:cpu-cluster
+  default_compute: azureml:serverless
   continue_on_step_failure: false
   is_deterministic: false
 
@@ -45,8 +45,8 @@ jobs:
     code: ..
     environment: azureml:employee-attrition-train@latest
     command: >-
-        python src/data_quality.py 
-        --prepared_data_dir ${{inputs.prepared_data_dir}}
+      python src/data_quality.py 
+      --prepared_data_dir ${{inputs.prepared_data_dir}}
 
   sweep_step:
     type: sweep
