@@ -5,475 +5,473 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "11725857033922208372"
+      "templateHash": "3512217663939602793"
     }
   },
   "parameters": {
     "workloadIdentifier": {
       "type": "string",
-      "defaultValue": "[substring(uniqueString(resourceGroup().id), 0, 6)]",
+      "defaultValue": "[substring(uniqueString(resourceGroup().id), 1, 6)]",
+      "maxLength": 6,
+      "minLength": 2,
       "metadata": {
-        "description": "Workload Identifier"
+        "description": "A unique identifier for the workload."
       }
     },
-    "resourceInstance": {
+    "stagingEnvironmentIdentifier": {
       "type": "string",
       "defaultValue": "001",
+      "maxLength": 8,
+      "minLength": 2,
       "metadata": {
-        "description": "Resource Instance"
+        "description": "A unique identifier for the staging environment."
+      }
+    },
+    "productionEnvironmentIdentifier": {
+      "type": "string",
+      "defaultValue": "002",
+      "maxLength": 8,
+      "minLength": 2,
+      "metadata": {
+        "description": "A unique identifier for the production environment."
+      }
+    },
+    "deploymentLocation": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "The location of resource deployments."
       }
     },
     "servicePrincipalClientId": {
       "type": "string",
       "metadata": {
-        "description": "Service Principal Client Id"
+        "description": "The client ID of the service principal used to authenticate with Azure services."
       }
     },
     "servicePrincipalSecret": {
       "type": "securestring",
       "metadata": {
-        "description": "Service Principal Secret"
-      }
-    },
-    "azureMLWorkspaceName": {
-      "type": "string",
-      "defaultValue": "[format('mlw{0}{1}', parameters('workloadIdentifier'), parameters('resourceInstance'))]",
-      "metadata": {
-        "description": "Azure Machine Learning Workspace Name"
-      }
-    },
-    "azureMLWorkspaceLocation": {
-      "type": "string",
-      "defaultValue": "[resourceGroup().location]",
-      "metadata": {
-        "description": "Azure Machine Learning Workspace Location"
-      }
-    },
-    "azureMLStorageAccountName": {
-      "type": "string",
-      "defaultValue": "[format('st{0}{1}', parameters('workloadIdentifier'), parameters('resourceInstance'))]",
-      "metadata": {
-        "description": "Azure Machine Learning Storage Account Name"
-      }
-    },
-    "azureMLAppInsightsName": {
-      "type": "string",
-      "defaultValue": "[format('appi{0}{1}', parameters('workloadIdentifier'), parameters('resourceInstance'))]",
-      "metadata": {
-        "description": "Azure Machine Learning Application Insights Name"
-      }
-    },
-    "azureMLContainerRegistryName": {
-      "type": "string",
-      "defaultValue": "[format('cr{0}{1}', parameters('workloadIdentifier'), parameters('resourceInstance'))]",
-      "metadata": {
-        "description": "Azure Machine Learning Container Registry Name"
-      }
-    },
-    "azureMlComputeClusterName": {
-      "type": "string",
-      "defaultValue": "cpu-cluster",
-      "metadata": {
-        "description": "Azure Machine Learning Compute Cluster Name"
-      }
-    },
-    "azuremlKeyVaultName": {
-      "type": "string",
-      "defaultValue": "[format('kvmlw{0}{1}', parameters('workloadIdentifier'), parameters('resourceInstance'))]",
-      "metadata": {
-        "description": "Azure Machine Learning Key Vault Name"
-      }
-    },
-    "azuremlKeyVaultLocation": {
-      "type": "string",
-      "defaultValue": "[resourceGroup().location]",
-      "metadata": {
-        "description": "Azure Machine Learning Key Vault Location"
-      }
-    },
-    "logAnalyticsWorkspaceName": {
-      "type": "string",
-      "defaultValue": "[format('law{0}{1}', parameters('workloadIdentifier'), parameters('resourceInstance'))]",
-      "metadata": {
-        "description": "Log Analytics Workspace Name"
-      }
-    },
-    "logAnalyticsWorkspaceLocation": {
-      "type": "string",
-      "defaultValue": "[resourceGroup().location]",
-      "metadata": {
-        "description": "Log Analytics Workspace Location"
-      }
-    },
-    "deploymentScriptName": {
-      "type": "string",
-      "defaultValue": "[format('ds{0}{1}', parameters('workloadIdentifier'), parameters('resourceInstance'))]",
-      "metadata": {
-        "description": "Deployment Script Name"
-      }
-    },
-    "azureMLRegistryName": {
-      "type": "string",
-      "defaultValue": "[format('mlr{0}', parameters('workloadIdentifier'))]",
-      "metadata": {
-        "description": "Azure ML Registry Name"
-      }
-    },
-    "azureMLRegistryPrimaryLocation": {
-      "type": "string",
-      "defaultValue": "[resourceGroup().location]",
-      "metadata": {
-        "description": "Azure ML Registry Primary Location"
-      }
-    },
-    "dataFactoryName": {
-      "type": "string",
-      "defaultValue": "[format('adf{0}{1}', parameters('workloadIdentifier'), parameters('resourceInstance'))]",
-      "metadata": {
-        "description": "Azure Data Factory Name"
-      }
-    },
-    "dataFactoryLocation": {
-      "type": "string",
-      "defaultValue": "[resourceGroup().location]",
-      "metadata": {
-        "description": "Azure Data Factory Location"
-      }
-    },
-    "addRepositoryConfiguration": {
-      "type": "bool",
-      "defaultValue": false,
-      "metadata": {
-        "description": "Azure Data Factory Location"
-      }
-    },
-    "dataFactoryRepositoryName": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Azure Data Factory Repository Name"
-      }
-    },
-    "repositoryAccountName": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Repository Account Name"
-      }
-    },
-    "collaborationBranch": {
-      "type": "string",
-      "defaultValue": "main",
-      "metadata": {
-        "description": "Azure Data Factory Collaboration Branch"
-      }
-    },
-    "rootFolder": {
-      "type": "string",
-      "defaultValue": "adf",
-      "metadata": {
-        "description": "Azure Data Factory Root Folder"
-      }
-    },
-    "dataFactoryKeyVaultName": {
-      "type": "string",
-      "defaultValue": "[format('kvadf{0}{1}', parameters('workloadIdentifier'), parameters('resourceInstance'))]",
-      "metadata": {
-        "description": "Azure Data Factory Key Vault Name"
-      }
-    },
-    "dataFactoryKeyVaultLocation": {
-      "type": "string",
-      "defaultValue": "[resourceGroup().location]",
-      "metadata": {
-        "description": "Azure Data Factory Key Vault Location"
+        "description": "The secret for the service principal used to authenticate with Azure services."
       }
     }
   },
-  "variables": {
-    "azureRbacLogAnalyticsReaderRoleId": "73c42c96-874c-492b-b04d-ab87d138a893"
-  },
   "resources": [
     {
-      "type": "Microsoft.KeyVault/vaults",
-      "apiVersion": "2021-10-01",
-      "name": "[parameters('azuremlKeyVaultName')]",
-      "location": "[parameters('azuremlKeyVaultLocation')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "deploy_azureml_shared",
+      "resourceGroup": "[resourceGroup().name]",
       "properties": {
-        "createMode": "default",
-        "enabledForDeployment": false,
-        "enabledForDiskEncryption": false,
-        "enabledForTemplateDeployment": false,
-        "enableSoftDelete": true,
-        "enableRbacAuthorization": true,
-        "enablePurgeProtection": true,
-        "networkAcls": {
-          "bypass": "AzureServices",
-          "defaultAction": "Deny"
+        "expressionEvaluationOptions": {
+          "scope": "inner"
         },
-        "sku": {
-          "family": "A",
-          "name": "standard"
+        "mode": "Incremental",
+        "parameters": {
+          "deploymentLocation": {
+            "value": "[parameters('deploymentLocation')]"
+          },
+          "azureMLRegistryName": {
+            "value": "[format('mlr{0}', parameters('workloadIdentifier'))]"
+          }
         },
-        "softDeleteRetentionInDays": 7,
-        "tenantId": "[subscription().tenantId]"
-      }
-    },
-    {
-      "type": "Microsoft.Storage/storageAccounts",
-      "apiVersion": "2021-02-01",
-      "name": "[parameters('azureMLStorageAccountName')]",
-      "location": "[parameters('azureMLWorkspaceLocation')]",
-      "kind": "StorageV2",
-      "sku": {
-        "name": "Standard_LRS"
-      },
-      "properties": {
-        "encryption": {
-          "services": {
-            "blob": {
-              "enabled": true
-            },
-            "file": {
-              "enabled": true
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.18.4.5664",
+              "templateHash": "11943191121509310299"
             }
           },
-          "keySource": "Microsoft.Storage"
+          "parameters": {
+            "deploymentLocation": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]"
+            },
+            "azureMLRegistryName": {
+              "type": "string"
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.MachineLearningServices/registries",
+              "apiVersion": "2022-12-01-preview",
+              "name": "[parameters('azureMLRegistryName')]",
+              "location": "[parameters('deploymentLocation')]",
+              "identity": {
+                "type": "SystemAssigned"
+              },
+              "properties": {
+                "regionDetails": [
+                  {
+                    "location": "[parameters('deploymentLocation')]",
+                    "acrDetails": [
+                      {
+                        "systemCreatedAcrAccount": {
+                          "acrAccountSku": "Premium"
+                        }
+                      }
+                    ],
+                    "storageAccountDetails": [
+                      {
+                        "systemCreatedStorageAccount": {
+                          "storageAccountHnsEnabled": false,
+                          "storageAccountType": "Standard_LRS"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
         }
       }
     },
     {
-      "type": "Microsoft.Insights/components",
-      "apiVersion": "2020-02-02-preview",
-      "name": "[parameters('azureMLAppInsightsName')]",
-      "location": "[parameters('azureMLWorkspaceLocation')]",
-      "kind": "web",
+      "copy": {
+        "name": "m_azureml_workspaces",
+        "count": "[length(createArray(parameters('stagingEnvironmentIdentifier'), parameters('productionEnvironmentIdentifier')))]"
+      },
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "[format('deploy_azureml_workspace_{0}', createArray(parameters('stagingEnvironmentIdentifier'), parameters('productionEnvironmentIdentifier'))[copyIndex()])]",
       "properties": {
-        "Application_Type": "web"
-      }
-    },
-    {
-      "type": "Microsoft.ContainerRegistry/registries",
-      "apiVersion": "2019-05-01",
-      "name": "[parameters('azureMLContainerRegistryName')]",
-      "location": "[parameters('azureMLWorkspaceLocation')]",
-      "sku": {
-        "name": "Basic"
-      },
-      "properties": {}
-    },
-    {
-      "type": "Microsoft.MachineLearningServices/workspaces",
-      "apiVersion": "2021-04-01",
-      "name": "[parameters('azureMLWorkspaceName')]",
-      "location": "[parameters('azureMLWorkspaceLocation')]",
-      "sku": {
-        "name": "basic",
-        "tier": "basic"
-      },
-      "identity": {
-        "type": "SystemAssigned"
-      },
-      "properties": {
-        "friendlyName": "[parameters('azureMLWorkspaceName')]",
-        "keyVault": "[resourceId('Microsoft.KeyVault/vaults', parameters('azuremlKeyVaultName'))]",
-        "storageAccount": "[resourceId('Microsoft.Storage/storageAccounts', parameters('azureMLStorageAccountName'))]",
-        "applicationInsights": "[resourceId('Microsoft.Insights/components', parameters('azureMLAppInsightsName'))]",
-        "containerRegistry": "[resourceId('Microsoft.ContainerRegistry/registries', parameters('azureMLContainerRegistryName'))]"
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Insights/components', parameters('azureMLAppInsightsName'))]",
-        "[resourceId('Microsoft.ContainerRegistry/registries', parameters('azureMLContainerRegistryName'))]",
-        "[resourceId('Microsoft.KeyVault/vaults', parameters('azuremlKeyVaultName'))]",
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('azureMLStorageAccountName'))]"
-      ]
-    },
-    {
-      "type": "Microsoft.MachineLearningServices/workspaces/computes",
-      "apiVersion": "2021-04-01",
-      "name": "[format('{0}/{1}', parameters('azureMLWorkspaceName'), parameters('azureMlComputeClusterName'))]",
-      "location": "[parameters('azureMLWorkspaceLocation')]",
-      "identity": {
-        "type": "SystemAssigned"
-      },
-      "properties": {
-        "computeType": "AmlCompute",
-        "properties": {
-          "vmSize": "Standard_DS11_v2",
-          "vmPriority": "Dedicated",
-          "scaleSettings": {
-            "maxNodeCount": 4,
-            "minNodeCount": 0
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "deploymentLocation": {
+            "value": "[parameters('deploymentLocation')]"
+          },
+          "azureMLWorkspaceName": {
+            "value": "[format('mlw{0}{1}', parameters('workloadIdentifier'), createArray(parameters('stagingEnvironmentIdentifier'), parameters('productionEnvironmentIdentifier'))[copyIndex()])]"
+          },
+          "azureMLStorageAccountName": {
+            "value": "[format('stmlw{0}{1}', parameters('workloadIdentifier'), createArray(parameters('stagingEnvironmentIdentifier'), parameters('productionEnvironmentIdentifier'))[copyIndex()])]"
+          },
+          "azuremlKeyVaultName": {
+            "value": "[format('kvmlw{0}{1}', parameters('workloadIdentifier'), createArray(parameters('stagingEnvironmentIdentifier'), parameters('productionEnvironmentIdentifier'))[copyIndex()])]"
+          },
+          "azureMLContainerRegistryName": {
+            "value": "[format('crmlw{0}{1}', parameters('workloadIdentifier'), createArray(parameters('stagingEnvironmentIdentifier'), parameters('productionEnvironmentIdentifier'))[copyIndex()])]"
+          },
+          "azureMLAppInsightsName": {
+            "value": "[format('appimlw{0}{1}', parameters('workloadIdentifier'), createArray(parameters('stagingEnvironmentIdentifier'), parameters('productionEnvironmentIdentifier'))[copyIndex()])]"
+          },
+          "logAnalyticsWorkspaceName": {
+            "value": "[format('lawmlw{0}{1}', parameters('workloadIdentifier'), createArray(parameters('stagingEnvironmentIdentifier'), parameters('productionEnvironmentIdentifier'))[copyIndex()])]"
           }
-        }
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.MachineLearningServices/workspaces', parameters('azureMLWorkspaceName'))]"
-      ]
-    },
-    {
-      "type": "Microsoft.OperationalInsights/workspaces",
-      "apiVersion": "2020-03-01-preview",
-      "name": "[parameters('logAnalyticsWorkspaceName')]",
-      "location": "[parameters('logAnalyticsWorkspaceLocation')]",
-      "properties": {
-        "retentionInDays": 30,
-        "sku": {
-          "name": "PerGB2018"
         },
-        "workspaceCapping": {
-          "dailyQuotaGb": 1
-        }
-      }
-    },
-    {
-      "type": "Microsoft.MachineLearningServices/registries",
-      "apiVersion": "2022-12-01-preview",
-      "name": "[parameters('azureMLRegistryName')]",
-      "location": "[parameters('azureMLRegistryPrimaryLocation')]",
-      "identity": {
-        "type": "SystemAssigned"
-      },
-      "properties": {
-        "managedResourceGroup": {
-          "resourceId": "string"
-        },
-        "regionDetails": [
-          {
-            "acrDetails": [
-              {
-                "systemCreatedAcrAccount": {
-                  "acrAccountSku": "Premium"
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.18.4.5664",
+              "templateHash": "5525292360440084563"
+            }
+          },
+          "parameters": {
+            "deploymentLocation": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]"
+            },
+            "azureMLWorkspaceName": {
+              "type": "string"
+            },
+            "azureMLStorageAccountName": {
+              "type": "string"
+            },
+            "azuremlKeyVaultName": {
+              "type": "string"
+            },
+            "azureMLContainerRegistryName": {
+              "type": "string"
+            },
+            "azureMLAppInsightsName": {
+              "type": "string"
+            },
+            "logAnalyticsWorkspaceName": {
+              "type": "string"
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.MachineLearningServices/workspaces",
+              "apiVersion": "2022-12-01-preview",
+              "name": "[parameters('azureMLWorkspaceName')]",
+              "location": "[parameters('deploymentLocation')]",
+              "identity": {
+                "type": "SystemAssigned"
+              },
+              "properties": {
+                "keyVault": "[resourceId('Microsoft.KeyVault/vaults', parameters('azuremlKeyVaultName'))]",
+                "storageAccount": "[resourceId('Microsoft.Storage/storageAccounts', parameters('azureMLStorageAccountName'))]",
+                "applicationInsights": "[resourceId('Microsoft.Insights/components', parameters('azureMLAppInsightsName'))]",
+                "containerRegistry": "[resourceId('Microsoft.ContainerRegistry/registries', parameters('azureMLContainerRegistryName'))]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Insights/components', parameters('azureMLAppInsightsName'))]",
+                "[resourceId('Microsoft.ContainerRegistry/registries', parameters('azureMLContainerRegistryName'))]",
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('azuremlKeyVaultName'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('azureMLStorageAccountName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.KeyVault/vaults",
+              "apiVersion": "2022-07-01",
+              "name": "[parameters('azuremlKeyVaultName')]",
+              "location": "[parameters('deploymentLocation')]",
+              "properties": {
+                "createMode": "default",
+                "enabledForDeployment": false,
+                "enabledForDiskEncryption": false,
+                "enabledForTemplateDeployment": false,
+                "enableSoftDelete": true,
+                "enableRbacAuthorization": true,
+                "enablePurgeProtection": true,
+                "networkAcls": {
+                  "bypass": "AzureServices",
+                  "defaultAction": "Deny"
+                },
+                "sku": {
+                  "family": "A",
+                  "name": "standard"
+                },
+                "softDeleteRetentionInDays": 7,
+                "tenantId": "[subscription().tenantId]"
+              }
+            },
+            {
+              "type": "Microsoft.Storage/storageAccounts",
+              "apiVersion": "2022-09-01",
+              "name": "[parameters('azureMLStorageAccountName')]",
+              "location": "[parameters('deploymentLocation')]",
+              "kind": "StorageV2",
+              "sku": {
+                "name": "Standard_LRS"
+              },
+              "properties": {
+                "encryption": {
+                  "services": {
+                    "blob": {
+                      "enabled": true
+                    },
+                    "file": {
+                      "enabled": true
+                    }
+                  },
+                  "keySource": "Microsoft.Storage"
                 }
               }
-            ],
-            "location": "[parameters('azureMLRegistryPrimaryLocation')]",
-            "storageAccountDetails": [
-              {
-                "systemCreatedStorageAccount": {
-                  "storageAccountHnsEnabled": false,
-                  "storageAccountType": "Standard_GRS"
+            },
+            {
+              "type": "Microsoft.ContainerRegistry/registries",
+              "apiVersion": "2023-01-01-preview",
+              "name": "[parameters('azureMLContainerRegistryName')]",
+              "location": "[parameters('deploymentLocation')]",
+              "sku": {
+                "name": "Basic"
+              },
+              "properties": {}
+            },
+            {
+              "type": "Microsoft.Insights/components",
+              "apiVersion": "2020-02-02",
+              "name": "[parameters('azureMLAppInsightsName')]",
+              "location": "[parameters('deploymentLocation')]",
+              "kind": "web",
+              "properties": {
+                "Application_Type": "web",
+                "WorkspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsWorkspaceName'))]",
+                "Flow_Type": "Bluefield"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsWorkspaceName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.OperationalInsights/workspaces",
+              "apiVersion": "2022-10-01",
+              "name": "[parameters('logAnalyticsWorkspaceName')]",
+              "location": "[parameters('deploymentLocation')]",
+              "properties": {
+                "sku": {
+                  "name": "PerGB2018"
+                },
+                "retentionInDays": 30,
+                "publicNetworkAccessForIngestion": "Enabled",
+                "publicNetworkAccessForQuery": "Disabled",
+                "workspaceCapping": {
+                  "dailyQuotaGb": 1
                 }
               }
-            ]
-          }
-        ]
+            }
+          ]
+        }
       }
     },
     {
-      "type": "Microsoft.DataFactory/factories",
-      "apiVersion": "2018-06-01",
-      "name": "[parameters('dataFactoryName')]",
-      "location": "[parameters('dataFactoryLocation')]",
-      "properties": {
-        "repoConfiguration": "[if(parameters('addRepositoryConfiguration'), createObject('accountName', parameters('repositoryAccountName'), 'repositoryName', parameters('dataFactoryRepositoryName'), 'collaborationBranch', parameters('collaborationBranch'), 'rootFolder', parameters('rootFolder'), 'type', 'FactoryGitHubConfiguration'), createObject())]"
+      "copy": {
+        "name": "m_data_factories",
+        "count": "[length(createArray(parameters('stagingEnvironmentIdentifier'), parameters('productionEnvironmentIdentifier')))]"
       },
-      "identity": {
-        "type": "SystemAssigned"
-      }
-    },
-    {
-      "type": "Microsoft.KeyVault/vaults",
-      "apiVersion": "2021-10-01",
-      "name": "[parameters('dataFactoryKeyVaultName')]",
-      "location": "[parameters('dataFactoryKeyVaultLocation')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "[format('deploy_data_factory_{0}', createArray(parameters('stagingEnvironmentIdentifier'), parameters('productionEnvironmentIdentifier'))[copyIndex()])]",
       "properties": {
-        "createMode": "default",
-        "enabledForDeployment": false,
-        "enabledForDiskEncryption": false,
-        "enabledForTemplateDeployment": false,
-        "enableSoftDelete": true,
-        "enableRbacAuthorization": false,
-        "enablePurgeProtection": true,
-        "networkAcls": {
-          "bypass": "AzureServices",
-          "defaultAction": "Deny"
+        "expressionEvaluationOptions": {
+          "scope": "inner"
         },
-        "sku": {
-          "family": "A",
-          "name": "standard"
+        "mode": "Incremental",
+        "parameters": {
+          "deploymentLocation": {
+            "value": "[parameters('deploymentLocation')]"
+          },
+          "dataFactoryName": {
+            "value": "[format('df{0}{1}', parameters('workloadIdentifier'), createArray(parameters('stagingEnvironmentIdentifier'), parameters('productionEnvironmentIdentifier'))[copyIndex()])]"
+          },
+          "dataFactoryKeyVaultName": {
+            "value": "[format('kvdf{0}{1}', parameters('workloadIdentifier'), createArray(parameters('stagingEnvironmentIdentifier'), parameters('productionEnvironmentIdentifier'))[copyIndex()])]"
+          },
+          "servicePrincipalClientId": {
+            "value": "[parameters('servicePrincipalClientId')]"
+          },
+          "servicePrincipalSecret": {
+            "value": "[parameters('servicePrincipalSecret')]"
+          }
         },
-        "softDeleteRetentionInDays": 7,
-        "tenantId": "[subscription().tenantId]",
-        "accessPolicies": [
-          {
-            "objectId": "[reference(resourceId('Microsoft.DataFactory/factories', parameters('dataFactoryName')), '2018-06-01', 'full').identity.principalId]",
-            "tenantId": "[subscription().tenantId]",
-            "permissions": {
-              "secrets": [
-                "get",
-                "list"
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.18.4.5664",
+              "templateHash": "3286325288868263935"
+            }
+          },
+          "parameters": {
+            "deploymentLocation": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]"
+            },
+            "dataFactoryName": {
+              "type": "string"
+            },
+            "dataFactoryKeyVaultName": {
+              "type": "string"
+            },
+            "servicePrincipalClientId": {
+              "type": "string"
+            },
+            "addRepositoryConfiguration": {
+              "type": "bool",
+              "defaultValue": false
+            },
+            "repositoryAccountName": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "dataFactoryRepositoryName": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "collaborationBranch": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "rootFolder": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "servicePrincipalSecret": {
+              "type": "securestring"
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.DataFactory/factories",
+              "apiVersion": "2018-06-01",
+              "name": "[parameters('dataFactoryName')]",
+              "location": "[parameters('deploymentLocation')]",
+              "properties": {
+                "repoConfiguration": "[if(parameters('addRepositoryConfiguration'), createObject('accountName', parameters('repositoryAccountName'), 'repositoryName', parameters('dataFactoryRepositoryName'), 'collaborationBranch', parameters('collaborationBranch'), 'rootFolder', parameters('rootFolder'), 'type', 'FactoryGitHubConfiguration'), createObject())]"
+              },
+              "identity": {
+                "type": "SystemAssigned"
+              }
+            },
+            {
+              "type": "Microsoft.KeyVault/vaults",
+              "apiVersion": "2022-07-01",
+              "name": "[parameters('dataFactoryKeyVaultName')]",
+              "location": "[parameters('deploymentLocation')]",
+              "properties": {
+                "createMode": "default",
+                "enabledForDeployment": false,
+                "enabledForDiskEncryption": false,
+                "enabledForTemplateDeployment": false,
+                "enableSoftDelete": true,
+                "enableRbacAuthorization": false,
+                "enablePurgeProtection": true,
+                "networkAcls": {
+                  "bypass": "AzureServices",
+                  "defaultAction": "Deny"
+                },
+                "sku": {
+                  "family": "A",
+                  "name": "standard"
+                },
+                "softDeleteRetentionInDays": 7,
+                "tenantId": "[subscription().tenantId]",
+                "accessPolicies": [
+                  {
+                    "objectId": "[reference(resourceId('Microsoft.DataFactory/factories', parameters('dataFactoryName')), '2018-06-01', 'full').identity.principalId]",
+                    "tenantId": "[subscription().tenantId]",
+                    "permissions": {
+                      "secrets": [
+                        "get",
+                        "list"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.DataFactory/factories', parameters('dataFactoryName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.KeyVault/vaults/secrets",
+              "apiVersion": "2022-07-01",
+              "name": "[format('{0}/{1}', parameters('dataFactoryKeyVaultName'), 'clientId')]",
+              "properties": {
+                "value": "[parameters('servicePrincipalClientId')]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('dataFactoryKeyVaultName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.KeyVault/vaults/secrets",
+              "apiVersion": "2022-07-01",
+              "name": "[format('{0}/{1}', parameters('dataFactoryKeyVaultName'), 'clientSecret')]",
+              "properties": {
+                "value": "[parameters('servicePrincipalSecret')]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('dataFactoryKeyVaultName'))]"
               ]
             }
-          }
-        ]
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.DataFactory/factories', parameters('dataFactoryName'))]"
-      ]
-    },
-    {
-      "type": "Microsoft.KeyVault/vaults/secrets",
-      "apiVersion": "2021-11-01-preview",
-      "name": "[format('{0}/{1}', parameters('dataFactoryKeyVaultName'), 'client-id')]",
-      "properties": {
-        "value": "[parameters('servicePrincipalClientId')]"
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.KeyVault/vaults', parameters('dataFactoryKeyVaultName'))]"
-      ]
-    },
-    {
-      "type": "Microsoft.KeyVault/vaults/secrets",
-      "apiVersion": "2021-11-01-preview",
-      "name": "[format('{0}/{1}', parameters('dataFactoryKeyVaultName'), 'client-secret')]",
-      "properties": {
-        "value": "[parameters('servicePrincipalSecret')]"
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.KeyVault/vaults', parameters('dataFactoryKeyVaultName'))]"
-      ]
-    },
-    {
-      "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2020-08-01-preview",
-      "scope": "[format('Microsoft.OperationalInsights/workspaces/{0}', parameters('logAnalyticsWorkspaceName'))]",
-      "name": "[guid(parameters('azureMlComputeClusterName'), parameters('logAnalyticsWorkspaceName'), 'Log Analytics Reader')]",
-      "properties": {
-        "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('azureRbacLogAnalyticsReaderRoleId'))]",
-        "principalId": "[reference(resourceId('Microsoft.MachineLearningServices/workspaces/computes', split(format('{0}/{1}', parameters('azureMLWorkspaceName'), parameters('azureMlComputeClusterName')), '/')[0], split(format('{0}/{1}', parameters('azureMLWorkspaceName'), parameters('azureMlComputeClusterName')), '/')[1]), '2021-04-01', 'full').identity.principalId]",
-        "principalType": "ServicePrincipal"
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.MachineLearningServices/workspaces/computes', split(format('{0}/{1}', parameters('azureMLWorkspaceName'), parameters('azureMlComputeClusterName')), '/')[0], split(format('{0}/{1}', parameters('azureMLWorkspaceName'), parameters('azureMlComputeClusterName')), '/')[1])]",
-        "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsWorkspaceName'))]"
-      ]
-    },
-    {
-      "type": "Microsoft.Resources/deploymentScripts",
-      "apiVersion": "2020-10-01",
-      "name": "[parameters('deploymentScriptName')]",
-      "location": "[parameters('azureMLWorkspaceLocation')]",
-      "kind": "AzureCLI",
-      "properties": {
-        "azCliVersion": "2.30.0",
-        "timeout": "PT5M",
-        "retentionInterval": "PT1H",
-        "environmentVariables": [
-          {
-            "name": "AZURE_STORAGE_ACCOUNT",
-            "value": "[parameters('azureMLStorageAccountName')]"
-          },
-          {
-            "name": "AZURE_STORAGE_KEY",
-            "secureValue": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('azureMLStorageAccountName')), '2021-02-01').keys[0].value]"
-          }
-        ],
-        "scriptContent": "      # Upload data to data store\n\n      SOURCE_CURATED_DATA_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/main/core/data/curated/01.csv'\n      SOURCE_BATCH_INFERENCE_DATA_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/main/core/data/inference/batch/01.csv'\n      DESTINATION_CURATED_DATA_PATH='./data/employee-attrition/curated/01.csv'\n      DESTINATION_BATCH_INFERENCE_DATA_PATH='./data/employee-attrition/inference/batch/01.csv'\n\n      SOURCE_CURATED_MLTABLE_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/main/core/data/curated/MLTable'\n      SOURCE_BATCH_INFERENCE_MLTABLE_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/main/core/data/inference/batch/MLTable'\n      SOURCE_ONLINE_INFERENCE_MLTABLE_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/main/core/data/inference/online/MLTable'\n      DESTINATION_CURATED_MLTABLE_PATH='./data/employee-attrition/curated/MLTable'\n      DESTINATION_BATCH_INFERENCE_MLTABLE_PATH='./data/employee-attrition/inference/batch/MLTable'\n      DESTINATION_ONLINE_INFERENCE_MLTABLE_PATH='./data/employee-attrition/inference/online/MLTable'\n\n      curl -o $DESTINATION_CURATED_DATA_PATH $SOURCE_CURATED_DATA_PATH --create-dirs\n      curl -o $DESTINATION_BATCH_INFERENCE_DATA_PATH $SOURCE_BATCH_INFERENCE_DATA_PATH --create-dirs\n\n      curl -o $DESTINATION_CURATED_MLTABLE_PATH $SOURCE_CURATED_MLTABLE_PATH --create-dirs\n      curl -o $DESTINATION_BATCH_INFERENCE_MLTABLE_PATH $SOURCE_BATCH_INFERENCE_MLTABLE_PATH --create-dirs\n      curl -o $DESTINATION_ONLINE_INFERENCE_MLTABLE_PATH $SOURCE_ONLINE_INFERENCE_MLTABLE_PATH --create-dirs\n\n      CONTAINER_NAME=$(az storage container list --account-name $AZURE_STORAGE_ACCOUNT --account-key $AZURE_STORAGE_KEY --query \"[].name\" | grep \"azureml-blobstore-*\" | tr -d ',' | xargs)\n      az storage blob upload-batch --destination $CONTAINER_NAME --account-name $AZURE_STORAGE_ACCOUNT --account-key $AZURE_STORAGE_KEY --destination-path ./data --source ./data\n\n      "
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('azureMLStorageAccountName'))]"
-      ]
+          ]
+        }
+      }
     }
   ]
 }
