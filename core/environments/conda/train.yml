@@ -1,4 +1,4 @@
-name: employee-attrition-train
+name: credit-card-default-train
 
 channels:
   - conda-forge

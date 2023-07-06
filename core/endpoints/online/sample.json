@@ -1,0 +1,59 @@
+{
+  "input_data": {
+    "columns": [
+      "sex",
+      "education",
+      "marriage",
+      "repayment_status_1",
+      "repayment_status_2",
+      "repayment_status_3",
+      "repayment_status_4",
+      "repayment_status_5",
+      "repayment_status_6",
+      "credit_limit",
+      "age",
+      "bill_amount_1",
+      "bill_amount_2",
+      "bill_amount_3",
+      "bill_amount_4",
+      "bill_amount_5",
+      "bill_amount_6",
+      "payment_amount_1",
+      "payment_amount_2",
+      "payment_amount_3",
+      "payment_amount_4",
+      "payment_amount_5",
+      "payment_amount_6"
+    ],
+    "index": [
+      0
+    ],
+    "data": [
+      [
+        "male",
+        "university",
+        "married",
+        "duly_paid",
+        "duly_paid",
+        "duly_paid",
+        "duly_paid",
+        "no_delay",
+        "no_delay",
+        18000.0,
+        33.0,
+        764.95,
+        2221.95,
+        1131.85,
+        5074.85,
+        3448.0,
+        1419.95,
+        2236.5,
+        1137.55,
+        5084.55,
+        111.65,
+        306.9,
+        805.65
+      ]
+    ]
+  }
+}

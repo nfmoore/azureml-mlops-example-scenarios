@@ -1,0 +1,106 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+display_name: model_training_pipeline
+experiment_name: credit_card_default
+description: Pipeline to build an MLFlow model to determine the likelihood of credit card default.
+tags:
+  project: credit_card_default
+  job_type: model_training
+
+inputs:
+  curated_dataset:
+    type: mltable
+    path: azureml:uci-credit-card-defaults-curated@latest
+
+outputs:
+  prepared_data_dir:
+    mode: rw_mount
+
+  model_artifact_dir:
+    mode: rw_mount
+
+settings:
+  default_datastore: azureml:workspaceblobstore
+  default_compute: azureml:serverless
+  continue_on_step_failure: false
+  is_deterministic: false
+
+jobs:
+  prepare_step:
+    type: command
+    name: prepare_step
+    display_name: prepare_step
+    inputs:
+      curated_dataset: ${{parent.inputs.curated_dataset}}
+      random_state: 42
+    outputs:
+      prepared_data_dir: ${{parent.outputs.prepared_data_dir}}
+    code: ../../
+    environment: azureml:credit-card-default-train@latest
+    command: >-
+      python src/prepare.py 
+      --curated_dataset ${{inputs.curated_dataset}} 
+      --prepared_data_dir ${{outputs.prepared_data_dir}}
+      --random_state ${{inputs.random_state}}
+
+  data_quality_step:
+    type: command
+    name: data_quality_step
+    display_name: data_quality_step
+    inputs:
+      prepared_data_dir: ${{parent.jobs.prepare_step.outputs.prepared_data_dir}}
+    code: ../../
+    environment: azureml:credit-card-default-train@latest
+    command: >-
+      python src/data_quality.py 
+      --prepared_data_dir ${{inputs.prepared_data_dir}}
+
+  sweep_step:
+    type: sweep
+    name: sweep_step
+    display_name: sweep_step
+    inputs:
+      prepared_data_dir: ${{parent.jobs.prepare_step.outputs.prepared_data_dir}}
+      random_state: 42
+    outputs:
+      model_output: ${{parent.outputs.model_artifact_dir}}
+    sampling_algorithm: random
+    search_space:
+      n_estimators:
+        type: uniform
+        min_value: 100
+        max_value: 1000
+      max_depth:
+        type: uniform
+        min_value: 1
+        max_value: 25
+      criterion:
+        type: choice
+        values: ["gini", "entropy"]
+    objective:
+      primary_metric: validation_f1_score
+      goal: maximize
+    limits:
+      max_total_trials: 8
+      max_concurrent_trials: 4
+      timeout: 720
+    trial: ../components/sweep_trial.yml
+
+  register_step:
+    type: command
+    name: register_step
+    display_name: register_step
+    inputs:
+      model_name: credit-card-default
+      model_output: ${{parent.jobs.sweep_step.outputs.model_output}}
+      prepared_data_dir: ${{parent.jobs.prepare_step.outputs.prepared_data_dir}}
+      conda_env: environments/conda/score.yml
+    code: ../../
+    environment: azureml:credit-card-default-train@latest
+    command: >-
+      python src/register.py 
+      --model_name ${{inputs.model_name}} 
+      --model_output ${{inputs.model_output}}
+      --prepared_data_dir ${{inputs.prepared_data_dir}}
+      --conda_env ${{inputs.conda_env}}

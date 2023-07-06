@@ -101,7 +101,9 @@ resource r_azureMlContainerRegistry 'Microsoft.ContainerRegistry/registries@2023
   sku: {
     name: 'Basic'
   }
-  properties: {}
+  properties: {
+    adminUserEnabled: true
+  }
 }
 
 //Azure ML Application Insights

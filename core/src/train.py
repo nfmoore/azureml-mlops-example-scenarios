@@ -71,7 +71,7 @@ def make_classifer_pipeline(params: Dict[str, Union[str,  int]]) -> Pipeline:
     # categorical features transformations
     categorical_transformer = Pipeline(steps=[
         ("imputer", SimpleImputer(strategy="constant", fill_value="missing")),
-        ("ohe", OneHotEncoder())]
+        ("ohe", OneHotEncoder(handle_unknown='ignore',))]
     )
 
     # numeric features transformations

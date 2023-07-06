@@ -1,4 +1,4 @@
-name: employee-attrition-score
+name: credit-card-default-score
 
 channels:
   - conda-forge

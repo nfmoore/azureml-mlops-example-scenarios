@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "3512217663939602793"
+      "templateHash": "16600849041729242948"
     }
   },
   "parameters": {
@@ -173,7 +173,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "5525292360440084563"
+              "templateHash": "2980247096153828891"
             }
           },
           "parameters": {
@@ -278,7 +278,9 @@
               "sku": {
                 "name": "Basic"
               },
-              "properties": {}
+              "properties": {
+                "adminUserEnabled": true
+              }
             },
             {
               "type": "Microsoft.Insights/components",
