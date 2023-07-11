@@ -74,7 +74,7 @@ resource r_azureMlWorkspace 'Microsoft.MachineLearningServices/workspaces@2022-0
 // Azure ML Compute Cluster
 // This resource deploys a compute cluster to the Azure Machine Learning workspace.
 resource r_azureMlComputeCluster 'Microsoft.MachineLearningServices/workspaces/computes@2021-04-01' = {
-  name: azureMlComputeClusterName
+  name: '${azureMLWorkspaceName}/${azureMlComputeClusterName}'
   location: deploymentLocation
   identity: {
     type: 'SystemAssigned'

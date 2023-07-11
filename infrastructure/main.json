@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "13227480269153660570"
+      "templateHash": "7957845204622906783"
     }
   },
   "parameters": {
@@ -195,7 +195,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "12103163570105677239"
+              "templateHash": "15821268740461101659"
             }
           },
           "parameters": {
@@ -270,7 +270,7 @@
             {
               "type": "Microsoft.MachineLearningServices/workspaces/computes",
               "apiVersion": "2021-04-01",
-              "name": "[parameters('azureMlComputeClusterName')]",
+              "name": "[format('{0}/{1}', parameters('azureMLWorkspaceName'), parameters('azureMlComputeClusterName'))]",
               "location": "[parameters('deploymentLocation')]",
               "identity": {
                 "type": "SystemAssigned"
@@ -377,11 +377,11 @@
               "name": "[guid(parameters('azureMlComputeClusterName'), parameters('logAnalyticsWorkspaceName'), 'Log Analytics Reader')]",
               "properties": {
                 "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('azureRbacLogAnalyticsReaderRoleId'))]",
-                "principalId": "[reference(resourceId('Microsoft.MachineLearningServices/workspaces/computes', split(parameters('azureMlComputeClusterName'), '/')[0], split(parameters('azureMlComputeClusterName'), '/')[1]), '2021-04-01', 'full').identity.principalId]",
+                "principalId": "[reference(resourceId('Microsoft.MachineLearningServices/workspaces/computes', split(format('{0}/{1}', parameters('azureMLWorkspaceName'), parameters('azureMlComputeClusterName')), '/')[0], split(format('{0}/{1}', parameters('azureMLWorkspaceName'), parameters('azureMlComputeClusterName')), '/')[1]), '2021-04-01', 'full').identity.principalId]",
                 "principalType": "ServicePrincipal"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.MachineLearningServices/workspaces/computes', split(parameters('azureMlComputeClusterName'), '/')[0], split(parameters('azureMlComputeClusterName'), '/')[1])]",
+                "[resourceId('Microsoft.MachineLearningServices/workspaces/computes', split(format('{0}/{1}', parameters('azureMLWorkspaceName'), parameters('azureMlComputeClusterName')), '/')[0], split(format('{0}/{1}', parameters('azureMLWorkspaceName'), parameters('azureMlComputeClusterName')), '/')[1])]",
                 "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsWorkspaceName'))]"
               ]
             },
