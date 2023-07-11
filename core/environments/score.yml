@@ -1,5 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
-name: credit-card-default-score
+name: credit_card_default_score
 version: 1
 image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
 conda_file: conda/score.yml

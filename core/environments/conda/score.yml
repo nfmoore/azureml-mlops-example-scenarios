@@ -1,4 +1,4 @@
-name: credit-card-default-score
+name: credit_card_default_score
 
 channels:
   - conda-forge

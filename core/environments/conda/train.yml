@@ -1,4 +1,4 @@
-name: credit-card-default-train
+name: credit_card_default_train
 
 channels:
   - conda-forge
