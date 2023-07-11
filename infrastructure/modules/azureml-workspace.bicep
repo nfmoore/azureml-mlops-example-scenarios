@@ -219,15 +219,15 @@ resource s_deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' =
 
       SOURCE_CURATED_DATA_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/development/core/data/curated/01.csv'
       SOURCE_BATCH_INFERENCE_DATA_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/development/core/data/inference/batch/01.csv'
-      DESTINATION_CURATED_DATA_PATH='./data/uci-credit-default/curated/01.csv'
-      DESTINATION_BATCH_INFERENCE_DATA_PATH='./data/uci-credit-default/inference/batch/01.csv'
+      DESTINATION_CURATED_DATA_PATH='./data/uci-credit-card-default/curated/01.csv'
+      DESTINATION_BATCH_INFERENCE_DATA_PATH='./data/uci-credit-card-default/inference/batch/01.csv'
 
       SOURCE_CURATED_MLTABLE_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/development/core/data/curated/MLTable'
       SOURCE_BATCH_INFERENCE_MLTABLE_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/development/core/data/inference/batch/MLTable'
       SOURCE_ONLINE_INFERENCE_MLTABLE_PATH='https://raw.githubusercontent.com/nfmoore/azureml-mlops-example-scenarios/development/core/data/inference/online/MLTable'
-      DESTINATION_CURATED_MLTABLE_PATH='./data/uci-credit-default/curated/MLTable'
-      DESTINATION_BATCH_INFERENCE_MLTABLE_PATH='./data/uci-credit-default/inference/batch/MLTable'
-      DESTINATION_ONLINE_INFERENCE_MLTABLE_PATH='./data/uci-credit-default/inference/online/MLTable'
+      DESTINATION_CURATED_MLTABLE_PATH='./data/uci-credit-card-default/curated/MLTable'
+      DESTINATION_BATCH_INFERENCE_MLTABLE_PATH='./data/uci-credit-card-default/inference/batch/MLTable'
+      DESTINATION_ONLINE_INFERENCE_MLTABLE_PATH='./data/uci-credit-card-default/inference/online/MLTable'
 
       curl -o $DESTINATION_CURATED_DATA_PATH $SOURCE_CURATED_DATA_PATH --create-dirs
       curl -o $DESTINATION_BATCH_INFERENCE_DATA_PATH $SOURCE_BATCH_INFERENCE_DATA_PATH --create-dirs
