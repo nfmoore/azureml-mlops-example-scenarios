@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
-name: uci_credit_card_default_curated_ds
+name: credit_card_default_uci_curated_ds
 version: 1
 description: This is a curated version of UCI's Credit Card Default Dataset. This dataset contains information on default payments, demographic factors, credit data, history of payment, and bill statements of credit card clients in Taiwan from April 2005 to September 2005.
 type: mltable
-path: azureml://datastores/workspaceblobstore/paths/data/uci-credit-default/curated/
+path: azureml://datastores/workspaceblobstore/paths/data/uci-credit-card-default/curated/
