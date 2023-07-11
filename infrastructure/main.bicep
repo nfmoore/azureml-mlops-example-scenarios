@@ -14,11 +14,23 @@ param workloadIdentifier string = substring(uniqueString(resourceGroup().id), 1,
 @maxLength(8)
 param stagingEnvironmentIdentifier string = '001'
 
+// Staging environment name used to create unique names for resources.
+@description('A name for the staging environment.')
+@minLength(2)
+@maxLength(16)
+param stagingEnvironmentName string = 'Staging'
+
 // Production environment identifier used to create unique names for resources.
 @description('A unique identifier for the production environment.')
 @minLength(2)
 @maxLength(8)
 param productionEnvironmentIdentifier string = '002'
+
+// Production environment name used to create unique names for resources.
+@description('A name for the production environment.')
+@minLength(2)
+@maxLength(16)
+param productionEnvironmentName string = 'Production'
 
 // The location of resource deployments. Defaults to the location of the resource group.
 @description('The location of resource deployments.')
@@ -53,6 +65,7 @@ module m_azureml_shared 'modules/azureml-shared.bicep' = {
 module m_azureml_workspaces 'modules/azureml-workspace.bicep' = [for environmentIdentifier in [ stagingEnvironmentIdentifier, productionEnvironmentIdentifier ]: {
   name: 'deploy_azureml_workspace_${environmentIdentifier}'
   params: {
+    environmentName: ((environmentIdentifier == stagingEnvironmentIdentifier) ? stagingEnvironmentName : productionEnvironmentName)
     deploymentLocation: deploymentLocation
     azureMLWorkspaceName: 'mlw${workloadIdentifier}${environmentIdentifier}'
     azureMLStorageAccountName: 'stmlw${workloadIdentifier}${environmentIdentifier}'
@@ -60,6 +73,7 @@ module m_azureml_workspaces 'modules/azureml-workspace.bicep' = [for environment
     azureMLContainerRegistryName: 'crmlw${workloadIdentifier}${environmentIdentifier}'
     azureMLAppInsightsName: 'appimlw${workloadIdentifier}${environmentIdentifier}'
     logAnalyticsWorkspaceName: 'lawmlw${workloadIdentifier}${environmentIdentifier}'
+    deploymentScriptName: 'ds${workloadIdentifier}${environmentIdentifier}'
   }
 }]
 

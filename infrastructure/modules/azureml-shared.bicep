@@ -14,7 +14,7 @@ param azureMLRegistryName string
 
 // Azure Machine Learning Registry
 // This resource deploys an Azure Machine Learning registry.
-resource r_azureMLRegistry 'Microsoft.MachineLearningServices/registries@2022-12-01-preview' = {
+resource r_azureMLRegistry 'Microsoft.MachineLearningServices/registries@2022-10-01-preview' = {
   name: azureMLRegistryName
   location: deploymentLocation
   identity: {
@@ -24,18 +24,18 @@ resource r_azureMLRegistry 'Microsoft.MachineLearningServices/registries@2022-12
     regionDetails: [
       {
         location: deploymentLocation
-        acrDetails: [
-          {
-            systemCreatedAcrAccount: {
-              acrAccountSku: 'Premium'
-            }
-          }
-        ]
         storageAccountDetails: [
           {
             systemCreatedStorageAccount: {
               storageAccountHnsEnabled: false
               storageAccountType: 'Standard_LRS'
+            }
+          }
+        ]
+        acrDetails: [
+          {
+            systemCreatedAcrAccount: {
+              acrAccountSku: 'Premium'
             }
           }
         ]
