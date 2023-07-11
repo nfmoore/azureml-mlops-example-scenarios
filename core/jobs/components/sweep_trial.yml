@@ -19,7 +19,7 @@ outputs:
   model_output:
     type: mlflow_model
 code: ../../
-environment: azureml:credit-card-default-train@latest
+environment: azureml:credit_card_default_train@latest
 command: >-
   python src/train.py 
   --prepared_data_dir ${{inputs.prepared_data_dir}}
