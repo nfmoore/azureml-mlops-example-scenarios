@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
-name: employee-attrition-inference-online
+name: credit_card_default_online_inference_ds
 version: 1
-description: Processed employee attrition data from online model inferencing.
+description: This dataset contains data collected from online model inferencing.
 type: mltable
-path: azureml://datastores/workspaceblobstore/paths/data/employee-attrition/inference/online/
+path: azureml://datastores/workspaceblobstore/paths/data/uci-credit-default/inference/online/

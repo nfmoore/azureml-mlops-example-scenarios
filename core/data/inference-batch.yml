@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
-name: employee-attrition-inference-batch
+name: credit_card_default_batch_inference_ds
 version: 1
-description: Processed employee attrition data from batch model inferencing.
+description: This is a generated dataset based on UCI's Credit Card Default dataset and for batch model inferencing.
 type: mltable
-path: azureml://datastores/workspaceblobstore/paths/data/employee-attrition/inference/batch/
+path: azureml://datastores/workspaceblobstore/paths/data/uci-credit-default/inference/batch/
