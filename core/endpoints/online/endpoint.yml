@@ -1,3 +1,3 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json
-name: employee-attrition-oe
+name: credit-card-default-oe
 auth_mode: key

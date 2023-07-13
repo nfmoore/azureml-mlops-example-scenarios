@@ -1,5 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
-name: credit_card_default_online_inference_ds
+name: credit-card-default-online-inference-ds
 version: 1
 description: This dataset contains data collected from online model inferencing.
 type: mltable

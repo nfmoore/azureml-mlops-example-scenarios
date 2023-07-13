@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/schedule.schema.json
-name: employee-attrition-drift-pipeline-schedule
-display_name: employee-attrition-drift-pipeline-schedule
+name: credit-card-default-drift-schedule
+display_name: credit-card-default-drift-schedule
 description: Recurring job scheduled to measure data drift between a reference dataset and target dataset.
 
 trigger:

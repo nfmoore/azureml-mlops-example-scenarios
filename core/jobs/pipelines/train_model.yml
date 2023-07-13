@@ -1,8 +1,8 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 
-display_name: model_training_pipeline
-experiment_name: credit_card_default
+display_name: model-training-pipeline
+experiment_name: credit-card-default
 description: Pipeline to build an MLFlow model to determine the likelihood of credit card default.
 tags:
   project: credit_card_default
@@ -11,7 +11,7 @@ tags:
 inputs:
   curated_dataset:
     type: mltable
-    path: azureml:credit_card_default_uci_curated_ds@latest
+    path: azureml:credit-card-default-uci-curated-ds@latest
 
 outputs:
   prepared_data_dir:
@@ -37,7 +37,7 @@ jobs:
     outputs:
       prepared_data_dir: ${{parent.outputs.prepared_data_dir}}
     code: ../../
-    environment: azureml:credit_card_default_train@latest
+    environment: azureml:credit-card-default-train@latest
     command: >-
       python src/prepare.py 
       --curated_dataset ${{inputs.curated_dataset}} 
@@ -51,7 +51,7 @@ jobs:
     inputs:
       prepared_data_dir: ${{parent.jobs.prepare_step.outputs.prepared_data_dir}}
     code: ../../
-    environment: azureml:credit_card_default_train@latest
+    environment: azureml:credit-card-default-train@latest
     command: >-
       python src/data_quality.py 
       --prepared_data_dir ${{inputs.prepared_data_dir}}
@@ -92,12 +92,12 @@ jobs:
     name: register_step
     display_name: register_step
     inputs:
-      model_name: credit_card_default
+      model_name: credit-card-default
       model_output: ${{parent.jobs.sweep_step.outputs.model_output}}
       prepared_data_dir: ${{parent.jobs.prepare_step.outputs.prepared_data_dir}}
       conda_env: environments/conda/score.yml
     code: ../../
-    environment: azureml:credit_card_default_train@latest
+    environment: azureml:credit-card-default-train@latest
     command: >-
       python src/register.py 
       --model_name ${{inputs.model_name}} 

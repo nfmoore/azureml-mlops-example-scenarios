@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
 name: main
-endpoint_name: employee-attrition-be
-model: azureml:employee-attrition@latest
+endpoint_name: credit-card-default-be
+model: azureml:credit-card-default@latest
 compute: azureml:cpu-cluster
 resources:
   instance_count: 1

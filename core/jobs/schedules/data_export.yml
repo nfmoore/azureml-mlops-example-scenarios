@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/schedule.schema.json
-name: employee-attrition-export-pipeline-schedule
-display_name: employee-attrition-export-pipeline-schedule
+name: credit-card-default-data-export-schedule
+display_name: credit-card-default-data-export-schedule
 description: Recurring job scheduled to export inference data from log analytics workspace and write to storage.
 
 trigger:

@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-display_name: online_deployment_data_export
-experiment_name: credit_card_default
+display_name: online-deployment-data-export
+experiment_name: credit-card-default
 description: Pipeline to export inference data from log analytics workspace and write to storage.
 tags:
   project: credit_card_default
@@ -28,7 +28,7 @@ jobs:
     outputs:
       prepared_data_dir: ${{parent.outputs.prepared_data_dir}}
     code: ..
-    environment: azureml:credit_card_default_drift@latest
+    environment: azureml:credit-card-default-drift@latest
     command: >-
       python src/export.py 
       --model_name ${{inputs.model_name}} 

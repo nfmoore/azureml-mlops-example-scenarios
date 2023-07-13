@@ -1,5 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
-name: credit_card_default_batch_inference_ds
+name: credit-card-default-batch-inference-ds
 version: 1
 description: This is a generated dataset based on UCI's Credit Card Default dataset and for batch model inferencing.
 type: mltable
