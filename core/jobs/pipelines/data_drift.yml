@@ -1,16 +1,19 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-display_name: employee-attrition-drift-pipeline
-experiment_name: employee-attrition-drift-pipeline
+display_name: data_drift
+experiment_name: credit_card_default
 description: Pipeline to measure data drift between a reference dataset and target dataset.
+tags:
+  project: credit_card_default
+  job_type: data_drift
 
 inputs:
   reference_data:
     type: mltable
-    path: azureml:employee-attrition-curated@latest
+    path: azureml:credit_card_default_uci_curated_ds@latest
   target_data:
     type: mltable
-    path: azureml:employee-attrition-inference-batch@latest
+    path: azureml:credit_card_default_batch_inference_ds@latest
 
 settings:
   default_datastore: azureml:workspaceblobstore
@@ -25,9 +28,9 @@ jobs:
     inputs:
       reference_data: ${{parent.inputs.reference_data}}
       target_data: ${{parent.inputs.target_data}}
-      model_name: employee-attrition
+      model_name: credit_card_default
     code: ..
-    environment: azureml:employee-attrition-drift@latest
+    environment: azureml:credit_card_default_drift@latest
     command: >-
       python src/drift.py 
       --model_name ${{inputs.model_name}} 

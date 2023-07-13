@@ -1,8 +1,11 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-display_name: employee-attrition-export-pipeline
-experiment_name: employee-attrition-export-pipeline
+display_name: online_deployment_data_export
+experiment_name: credit_card_default
 description: Pipeline to export inference data from log analytics workspace and write to storage.
+tags:
+  project: credit_card_default
+  job_type: data_export
 
 outputs:
   prepared_data_dir:
@@ -25,7 +28,7 @@ jobs:
     outputs:
       prepared_data_dir: ${{parent.outputs.prepared_data_dir}}
     code: ..
-    environment: azureml:employee-attrition-drift@latest
+    environment: azureml:credit_card_default_drift@latest
     command: >-
       python src/export.py 
       --model_name ${{inputs.model_name}} 
