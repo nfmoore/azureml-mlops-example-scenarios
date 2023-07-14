@@ -1,0 +1,9 @@
+{
+	"name": "df5mclzu001",
+	"location": "westus3",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "c5107951-2d95-4f51-a4cd-4d6d5dbe0ced",
+		"tenantId": "333131ab-9d8f-408b-8e66-01602e408f71"
+	}
+}
