@@ -13,6 +13,10 @@
 						]
 					}
 				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "job_id",
@@ -134,6 +138,10 @@
 									]
 								}
 							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "job_status",
@@ -219,7 +227,7 @@
 			},
 			"input_dataset_uri": {
 				"type": "string",
-				"defaultValue": "azureml://datastores/workspaceblobstore/paths/data/employee-attrition/inference/batch/data.csv"
+				"defaultValue": "azureml://datastores/workspaceblobstore/paths/data/uci-credit-card-default/inference/batch/01.csv"
 			},
 			"output_dataset_uri": {
 				"type": "string",
@@ -227,11 +235,11 @@
 			},
 			"azureml_resource_id": {
 				"type": "string",
-				"defaultValue": "subscriptions/a326b683-d9a8-4ca6-adff-89d2a3eb1b0c/resourceGroups/azureml-workspace-poc-001-rg/providers/Microsoft.MachineLearningServices/workspaces/mlwxwucor001"
+				"defaultValue": "/subscriptions/5f341982-4f40-4ecf-9cee-93ab5e24693f/resourceGroups/rg-azureml-sandbox-01/providers/Microsoft.MachineLearningServices/workspaces/mlw5mclzu001"
 			},
 			"batch_endpoint_name": {
 				"type": "string",
-				"defaultValue": "https://employee-attrition-be-xwucor001"
+				"defaultValue": "credit-card-default-be"
 			}
 		},
 		"variables": {
