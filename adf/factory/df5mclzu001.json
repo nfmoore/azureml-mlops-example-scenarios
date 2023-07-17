@@ -9,6 +9,10 @@
 			"key_vault_name": {
 				"type": "string",
 				"value": "kvdf5mclzu001"
+			},
+			"subscription_id": {
+				"type": "string",
+				"value": "5f341982-4f40-4ecf-9cee-93ab5e24693f"
 			}
 		}
 	},
