@@ -56,7 +56,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"url": {
-						"value": "https://@{pipeline().globalParameters.key_vault_name}.vault.azure.net/secrets/client-id?api-version=7.0",
+						"value": "https://@{pipeline().globalParameters.key_vault_name}.vault.azure.net/secrets/clientId?api-version=7.0",
 						"type": "Expression"
 					},
 					"method": "GET",
@@ -80,7 +80,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"url": {
-						"value": "https://@{pipeline().globalParameters.key_vault_name}.vault.azure.net/secrets/client-secret?api-version=7.0",
+						"value": "https://@{pipeline().globalParameters.key_vault_name}.vault.azure.net/secrets/clientSecret?api-version=7.0",
 						"type": "Expression"
 					},
 					"method": "GET",
@@ -184,22 +184,6 @@
 							"type": "Expression"
 						}
 					}
-				}
-			},
-			{
-				"name": "Wait",
-				"type": "Wait",
-				"dependsOn": [
-					{
-						"activity": "Trigger managed endpoint",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"waitTimeInSeconds": 1
 				}
 			}
 		],
