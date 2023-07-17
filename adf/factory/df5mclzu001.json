@@ -1,5 +1,13 @@
 {
 	"name": "df5mclzu001",
+	"properties": {
+		"globalParameters": {
+			"tenant_id": {
+				"type": "string",
+				"value": "333131ab-9d8f-408b-8e66-01602e408f71"
+			}
+		}
+	},
 	"location": "westus3",
 	"identity": {
 		"type": "SystemAssigned",
