@@ -13,6 +13,10 @@
 			"subscription_id": {
 				"type": "string",
 				"value": "5f341982-4f40-4ecf-9cee-93ab5e24693f"
+			},
+			"azureml_workspace_rg": {
+				"type": "string",
+				"value": "rg-azureml-sandbox-01"
 			}
 		}
 	},
