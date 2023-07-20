@@ -1,0 +1,42 @@
+name: Build Azure Data Factory
+
+on:
+  workflow_dispatch: # For demonstration purposes
+
+  # push: # Runs workflow when you push a commit or tag
+  #   branches:
+  #     - adf_publish
+
+jobs:
+  publish-artifacts:
+    name: Publish Templates
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          ref: adf_development
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 14
+      
+      - run: |
+          echo '{ "scripts":{ "build":"node node_modules/@microsoft/azure-data-factory-utilities/lib/index" }, "dependencies":{ "@microsoft/azure-data-factory-utilities":"^1.0.0" } }' > package.json 
+
+      - run: npm install
+
+      - run: npm run build validate / ${{ env.TARGET_DATA_FACTORY_RESOURCE_ID }}
+
+      - run: npm run build export / ${{ env.TARGET_DATA_FACTORY_RESOURCE_ID }} "ArmTemplate"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: ArmTemplate
