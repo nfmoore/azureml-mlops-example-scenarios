@@ -27,9 +27,9 @@ jobs:
 
       - run: npm install
 
-      - run: npm run build validate / ${{ env.TARGET_DATA_FACTORY_RESOURCE_ID }}
+      - run: npm run build validate $GITHUB_WORKSPACE ${{ env.TARGET_DATA_FACTORY_RESOURCE_ID }}
 
-      - run: npm run build export / ${{ env.TARGET_DATA_FACTORY_RESOURCE_ID }} "ArmTemplate"
+      - run: npm run build export $GITHUB_WORKSPACE ${{ env.TARGET_DATA_FACTORY_RESOURCE_ID }} "ArmTemplate"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
