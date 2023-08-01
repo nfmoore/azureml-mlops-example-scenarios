@@ -13,11 +13,7 @@ jobs:
         shell: bash -l {0}
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-        with:
-          ref: adf_cb
-
+    
       - uses: actions/setup-node@v3
         with:
           node-version: 14
