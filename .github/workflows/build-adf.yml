@@ -16,22 +16,28 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
         with:
-          ref: adf_cb
+          ref: development
 
-      - uses: actions/setup-node@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
         with:
           node-version: 16
 
-      - run: |
-          echo '{ "scripts":{ "build":"node node_modules/@microsoft/azure-data-factory-utilities/lib/index" }, "dependencies":{ "@microsoft/azure-data-factory-utilities":"^1.0.0" } }' > $GITHUB_WORKSPACE/package.json
+      - name: Write dependencies
+        run: |
+          echo '{ "scripts":{ "build":"node node_modules/@microsoft/azure-data-factory-utilities/lib/index" }, "dependencies":{ "@microsoft/azure-data-factory-utilities":"^1.0.0" } }' > package.json
 
-      - run: npm install
+      - name: Install dependencies
+        run: |
+          npm install
 
-      - run: |
-          npm run build validate ./adf /subscriptions/5f341982-4f40-4ecf-9cee-93ab5e24693f/resourceGroups/rg-azureml-sandbox-01/providers/Microsoft.DataFactory/factories/df5mclzu001
+      - name: Validate resources
+        run: |
+          npm run build validate ./adf ${{ secrets.TARGET_DATA_FACTORY_RESOURCE_ID }}
 
-      - run: | 
-          npm run build export ./adf /subscriptions/5f341982-4f40-4ecf-9cee-93ab5e24693f/resourceGroups/rg-azureml-sandbox-01/providers/Microsoft.DataFactory/factories/df5mclzu001 "ArmTemplate"
+      - name: Validate and generate template
+        run: |
+          npm run build export ./adf ${{ secrets.TARGET_DATA_FACTORY_RESOURCE_ID }} "ArmTemplate"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
