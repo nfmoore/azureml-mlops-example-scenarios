@@ -25,7 +25,7 @@ jobs:
       - run: |
           echo '{ "scripts":{ "build":"node node_modules/@microsoft/azure-data-factory-utilities/lib/index" }, "dependencies":{ "@microsoft/azure-data-factory-utilities":"^1.0.0" } }' > $GITHUB_WORKSPACE/package.json
 
-      - run: npm ci
+      - run: npm install
 
       - run: |
           npm run build validate ./adf /subscriptions/5f341982-4f40-4ecf-9cee-93ab5e24693f/resourceGroups/rg-azureml-sandbox-01/providers/Microsoft.DataFactory/factories/df5mclzu001
