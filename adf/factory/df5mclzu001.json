@@ -5,29 +5,5 @@
 		"type": "SystemAssigned",
 		"principalId": "c5107951-2d95-4f51-a4cd-4d6d5dbe0ced",
 		"tenantId": "333131ab-9d8f-408b-8e66-01602e408f71"
-	},
-	"properties": {
-		"globalParameters": {
-			"tenant_id": {
-				"type": "string",
-				"value": "333131ab-9d8f-408b-8e66-01602e408f71"
-			},
-			"subscription_id": {
-				"type": "string",
-				"value": "5f341982-4f40-4ecf-9cee-93ab5e24693f"
-			},
-			"key_vault_name": {
-				"type": "string",
-				"value": "kvdf5mclzu001"
-			},
-			"azureml_workspace_name": {
-				"type": "string",
-				"value": "mlw5mclzu001"
-			},
-			"azureml_workspace_rg": {
-				"type": "string",
-				"value": "rg-azureml-sandbox-01"
-			}
-		}
 	}
 }
