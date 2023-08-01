@@ -31,7 +31,6 @@ jobs:
           npm run build validate ./adf /subscriptions/5f341982-4f40-4ecf-9cee-93ab5e24693f/resourceGroups/rg-azureml-sandbox-01/providers/Microsoft.DataFactory/factories/df5mclzu001
 
       - run: | 
-          cd $GITHUB_WORKSPACE/
           npm run build export ./adf /subscriptions/5f341982-4f40-4ecf-9cee-93ab5e24693f/resourceGroups/rg-azureml-sandbox-01/providers/Microsoft.DataFactory/factories/df5mclzu001 "ArmTemplate"
 
       - name: Upload artifacts
