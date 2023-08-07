@@ -16,7 +16,7 @@
 			},
 			"azureml_workspace_rg": {
 				"type": "string",
-				"value": "mlw5mclzu001"
+				"value": "rg-azureml-sandbox-01"
 			},
 			"azureml_workspace_name": {
 				"type": "string",
