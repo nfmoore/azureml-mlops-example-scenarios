@@ -10,10 +10,10 @@
 					"type": "PipelineReference"
 				},
 				"parameters": {
-					"batch_endpoint_name": "employee-attrition-be-god5xz001",
+					"batch_endpoint_name": "employee-attrition-be-5mclzu001",
 					"input_datastore": "azureml://datastores/workspaceblobstore/paths",
 					"output_datastore": "azureml://datastores/workspaceblobstore/paths",
-					"input_file_path": "data/employee-attrition/inference/batch/01.csv",
+					"input_file_path": "data/uci-credit-default/inference/batch/01.csv",
 					"output_dir_path": "outputs/adf",
 					"deployment_name": "main"
 				}
