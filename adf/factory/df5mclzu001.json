@@ -17,6 +17,10 @@
 			"azureml_workspace_rg": {
 				"type": "string",
 				"value": "mlw5mclzu001"
+			},
+			"azureml_workspace_name": {
+				"type": "string",
+				"value": "mlw5mclzu001"
 			}
 		}
 	},
