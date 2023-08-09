@@ -24,7 +24,7 @@ jobs:
 
       - name: "Set development adf name"
         run: |
-          DEVELOPMENT_DATA_FACTORY_NAME=$(find . -type d -name "adf*")
+          DEVELOPMENT_DATA_FACTORY_NAME=$(find . -type d -name "df*")
           echo "DEVELOPMENT_DATA_FACTORY_NAME=$DEVELOPMENT_DATA_FACTORY_NAME" >> $GITHUB_ENV
 
       - name: Create template and parameter files for staging
