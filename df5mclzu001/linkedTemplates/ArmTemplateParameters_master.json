@@ -1,0 +1,36 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "df5mclzu001"
+		},
+		"AzureKeyVault_properties_typeProperties_baseUrl": {
+			"value": ""
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_batch_endpoint_name": {
+			"value": "employee-attrition-be-5mclzu001"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_datastore": {
+			"value": "azureml://datastores/workspaceblobstore/paths"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_datastore": {
+			"value": "azureml://datastores/workspaceblobstore/paths"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_file_path": {
+			"value": "data/uci-credit-default/inference/batch/01.csv"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_dir_path": {
+			"value": "outputs/adf"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_deployment_name": {
+			"value": "main"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

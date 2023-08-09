@@ -1,0 +1,90 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "df5mclzu001"
+		},
+		"AzureKeyVault_properties_typeProperties_baseUrl": {
+			"type": "string"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_batch_endpoint_name": {
+			"type": "string",
+			"defaultValue": "employee-attrition-be-5mclzu001"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_datastore": {
+			"type": "string",
+			"defaultValue": "azureml://datastores/workspaceblobstore/paths"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_datastore": {
+			"type": "string",
+			"defaultValue": "azureml://datastores/workspaceblobstore/paths"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_file_path": {
+			"type": "string",
+			"defaultValue": "data/uci-credit-default/inference/batch/01.csv"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_dir_path": {
+			"type": "string",
+			"defaultValue": "outputs/adf"
+		},
+		"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_deployment_name": {
+			"type": "string",
+			"defaultValue": "main"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "df5mclzu001_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureKeyVault_properties_typeProperties_baseUrl": {
+						"value": "[parameters('AzureKeyVault_properties_typeProperties_baseUrl')]"
+					},
+					"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_batch_endpoint_name": {
+						"value": "[parameters('azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_batch_endpoint_name')]"
+					},
+					"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_datastore": {
+						"value": "[parameters('azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_datastore')]"
+					},
+					"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_datastore": {
+						"value": "[parameters('azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_datastore')]"
+					},
+					"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_file_path": {
+						"value": "[parameters('azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_input_file_path')]"
+					},
+					"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_dir_path": {
+						"value": "[parameters('azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_output_dir_path')]"
+					},
+					"azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_deployment_name": {
+						"value": "[parameters('azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_deployment_name')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
