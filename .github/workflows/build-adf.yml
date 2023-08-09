@@ -30,8 +30,8 @@ jobs:
       - name: Create template and parameter files for staging
         run: |
           mkdir -p artifacts
-          cp ${{ env.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateParametersForFactory.json artifacts/ARMTemplateParametersForFactory.json
-          cp ${{ env.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateForFactory.json artifacts/ARMTemplateForFactory.json
+          cp ${{ vars.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateParametersForFactory.json artifacts/ARMTemplateParametersForFactory.json
+          cp ${{ vars.DEVELOPMENT_DATA_FACTORY_NAME }}/ARMTemplateForFactory.json artifacts/ARMTemplateForFactory.json
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
