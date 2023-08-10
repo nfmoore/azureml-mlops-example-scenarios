@@ -4,7 +4,7 @@ description: Create Azure ML data asset if one does not exist.
 
 inputs:
   data_file:
-    description: Local path to the YAML file containing the Azure ML data specification specification
+    description: Local path to the YAML file containing the Azure ML data specification
     required: true
   azure_credentials:
     description: JSON object for the service principal used to authenticate with Azure
@@ -32,7 +32,7 @@ runs:
                   echo "data asset version exists"
               else
                   echo "Creating new data asset version"
-                  az ml data create --file ${{ inputs.data_file }}
+                  az ml data create --file ${{ inputs.data_file }} # Note: In practice the data specification in the repo would act as the source of truth. In this case the update parameter would be used.
               fi
         else
             echo "Creating new data asset"
