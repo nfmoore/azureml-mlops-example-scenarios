@@ -28,7 +28,7 @@ runs:
         echo $ENVIRONMENT_NAME $ENVIRONMENT_VERSION
 
         ENVIRONMENT_EXISTS=$(az ml environment list --query "[?name=='$ENVIRONMENT_NAME']" | wc -l)
-        echo $ENVIRONMENT_EXISTS 
+        echo $ENVIRONMENT_EXISTS
 
         if [[ $ENVIRONMENT_EXISTS -ne 1 ]]; then
             ENVIRONMENT_VERSION_EXISTS=$(az ml environment list --name $ENVIRONMENT_NAME --query "[?version=='$ENVIRONMENT_VERSION']" | wc -l)
