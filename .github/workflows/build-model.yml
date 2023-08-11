@@ -40,7 +40,7 @@ jobs:
 
       - name: Set model name and version
         run: |
-          MODEL_NAME=$(yq '.jobs.register_step.inputs.model_name' < core/pipelines/train_model.yml)
+          MODEL_NAME=$(yq '.jobs.register_step.inputs.model_name' < core/jobs/pipelines/train_model.yml)
           MODEL_VERSION=$(az ml model list --name $MODEL_NAME --query "[0].version" | bc -l)
 
           echo "MODEL_NAME=$MODEL_NAME" >> $GITHUB_ENV
