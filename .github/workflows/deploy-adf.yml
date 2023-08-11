@@ -79,7 +79,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           enable-AzPSSession: true
 
-      - name: "Set tenant id and subscription id"
+      - name: Set tenant id and subscription id
         run: |
           TENANT_ID=$(az account show --query 'tenantId')
           SUBSCRIPTION_ID=$(az account show --query 'id')
