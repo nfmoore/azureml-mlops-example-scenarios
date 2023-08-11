@@ -36,7 +36,7 @@ jobs:
       - name: Run pipeline job to train model
         uses: "./.github/templates/run-job"
         with:
-          job_file: core/pipelines/train_model.yml
+          job_file: core/jobs/pipelines/train_model.yml
 
       - name: Set model name and version
         run: |
