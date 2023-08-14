@@ -42,7 +42,7 @@ jobs:
           ENVIRONMENT_NAME=$(yq '.name' < core/environments/train.yml)
           ENVIRONMENT_VERSION=$(yq '.version' < core/environments/train.yml)
 
-          echo "ENVIRONMENT_TRAINING=${ENVIRONMENT_NAME}/version/${ENVIRONMENT_VERSION}" >> $GITHUB_ENV
+          echo "ENVIRONMENT_TRAINING=${ENVIRONMENT_NAME}/versions/${ENVIRONMENT_VERSION}" >> $GITHUB_ENV
 
       - name: Overwrite job environment parameters
         if: ${{ env.USE_ML_REGISTRY }}
