@@ -42,10 +42,10 @@ jobs:
           ENVIRONMENT_VERSION=$(yq '.version' < core/environments/train.yml)
           echo "ENVIRONMENT_VERSION=$ENVIRONMENT_VERSION" >> $GITHUB_ENV
 
-          yq -i '.jobs.prepare_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/credit-card-default-train/version/${{ env.ENVIRONMENT_VERSION }}"' core/jobs/pipelines/train_model.yml
-          yq -i '.jobs.data_quality_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/credit-card-default-train/version/${{ env.ENVIRONMENT_VERSION }}"' core/jobs/pipelines/train_model.yml
-          yq -i '.jobs.register_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/credit-card-default-train/version/${{ env.ENVIRONMENT_VERSION }}"' core/jobs/pipelines/train_model.yml
-          yq -i '.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/credit-card-default-train/version/${{ env.ENVIRONMENT_VERSION }}"' core/jobs/components/sweep_trial.yml
+          yq -i '.jobs.prepare_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/credit-card-default-train/version/$ENVIRONMENT_VERSION"' core/jobs/pipelines/train_model.yml
+          yq -i '.jobs.data_quality_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/credit-card-default-train/version/$ENVIRONMENT_VERSION"' core/jobs/pipelines/train_model.yml
+          yq -i '.jobs.register_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/credit-card-default-train/version/$ENVIRONMENT_VERSION"' core/jobs/pipelines/train_model.yml
+          yq -i '.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/credit-card-default-train/version/$ENVIRONMENT_VERSION"' core/jobs/components/sweep_trial.yml
 
       - name: Run pipeline job to train model
         uses: "./.github/templates/run-job"
