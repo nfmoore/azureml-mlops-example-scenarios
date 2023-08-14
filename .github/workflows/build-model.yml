@@ -39,10 +39,12 @@ jobs:
       - name: Overwrite job environment parameters
         if: ${{ env.USE_ML_REGISTRY }}
         run: |
-          yq -i '.jobs.prepare_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/credit-card-default-train"' core/jobs/pipelines/train_model.yml
-          yq -i '.jobs.data_quality_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/credit-card-default-train"' core/jobs/pipelines/train_model.yml
-          yq -i '.jobs.register_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/credit-card-default-train"' core/jobs/pipelines/train_model.yml
-          yq -i '.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/credit-card-default-train"' core/jobs/components/sweep_trial.yml
+          ENVIRONMENT_VERSION=$(yq '.version' < core/environments/train.yml)
+
+          yq -i '.jobs.prepare_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/credit-card-default-train/version/${ENVIRONMENT_VERSION}"' core/jobs/pipelines/train_model.yml
+          yq -i '.jobs.data_quality_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/credit-card-default-train/version/${ENVIRONMENT_VERSION}"' core/jobs/pipelines/train_model.yml
+          yq -i '.jobs.register_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/credit-card-default-train/version/${ENVIRONMENT_VERSION}"' core/jobs/pipelines/train_model.yml
+          yq -i '.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/credit-card-default-train/version/${ENVIRONMENT_VERSION}"' core/jobs/components/sweep_trial.yml
 
       - name: Run pipeline job to train model
         uses: "./.github/templates/run-job"
