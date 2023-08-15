@@ -11,7 +11,7 @@ on:
   #   - cron: "0 0 * * 0"
 
 env:
-  USE_ML_REGISTRY: "true"
+  USE_ML_REGISTRY: "false"
 
 jobs:
   create-model-staging:
