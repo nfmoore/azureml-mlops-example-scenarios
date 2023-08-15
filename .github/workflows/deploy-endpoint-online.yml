@@ -40,7 +40,7 @@ jobs:
 
       - name: Set model name and version
         run: |
-          MODEL_NAME=$(jq --raw-output '.model_name' model.json | bc -l)
+          MODEL_NAME=$(jq --raw-output '.model_name' model.json)
           MODEL_VERSION=$(jq --raw-output '.model_version' model.json | bc -l)
           echo "REGISTERED_MODEL=${MODEL_NAME}/versions/${MODEL_VERSION}" >> $GITHUB_ENV
 
@@ -167,7 +167,7 @@ jobs:
 
       - name: Set model name and version
         run: |
-          MODEL_NAME=$(jq --raw-output '.model_name' model.json | bc -l)
+          MODEL_NAME=$(jq --raw-output '.model_name' model.json)
           MODEL_VERSION=$(jq --raw-output '.model_version' model.json | bc -l)
           echo "REGISTERED_MODEL=${MODEL_NAME}/versions/${MODEL_VERSION}" >> $GITHUB_ENV
 
