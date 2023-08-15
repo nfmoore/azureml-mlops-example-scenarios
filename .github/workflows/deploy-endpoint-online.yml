@@ -44,9 +44,17 @@ jobs:
           MODEL_VERSION=$(jq --raw-output '.model_version' model.json | bc -l)
           echo "REGISTERED_MODEL=${MODEL_NAME}/versions/${MODEL_VERSION}" >> $GITHUB_ENV
 
-      - name: Overwrite model parameter for deployment
+      - name: Get score enviroment from registry
+        run: |
+          ENVIRONMENT_NAME=$(yq '.name' < core/environments/score.yml)
+          ENVIRONMENT_VERSION=$(yq '.version' < core/environments/score.yml)
+
+          echo "ENVIRONMENT_SCORE=${ENVIRONMENT_NAME}/versions/${ENVIRONMENT_VERSION}" >> $GITHUB_ENV
+
+      - name: Overwrite parameters for deployment
         run: |
           yq -i '.model = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/models/${{ env.REGISTERED_MODEL }}"' core/endpoints/online/deployment.yml
+          yq -i '.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/${{ env.ENVIRONMENT_SCORE }}"' core/endpoints/online/deployment.yml
           cat core/endpoints/online/deployment.yml
 
       - name: Create online endpoint
@@ -70,11 +78,19 @@ jobs:
           LOG_ANALYTICS_WORKSPACE_ID=$(az monitor log-analytics workspace show --workspace-name law${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }} | jq --raw-output '.customerId')
           echo "LOG_ANALYTICS_WORKSPACE_ID=$LOG_ANALYTICS_WORKSPACE_ID" >> $GITHUB_ENV
 
-      - name: Overwrite parameters for job
+      - name: Get drift enviroment from registry
+        run: |
+          ENVIRONMENT_NAME=$(yq '.name' < core/environments/drift.yml)
+          ENVIRONMENT_VERSION=$(yq '.version' < core/environments/drift.yml)
+
+          echo "ENVIRONMENT_DRIFT=${ENVIRONMENT_NAME}/versions/${ENVIRONMENT_VERSION}" >> $GITHUB_ENV
+
+      - name: Overwrite parameters for data export schedule
         run: |
           yq -i '.jobs.data_export_step.inputs.model_name = "${{ vars.MODEL_NAME }}"' core/jobs/pipelines/data_export.yml
           yq -i '.jobs.data_export_step.inputs.model_version = "${{ vars.MODEL_VERSION }}"' core/jobs/pipelines/data_export.yml
           yq -i '.jobs.data_export_step.inputs.log_analytics_workspace_id = "${{ vars.LOG_ANALYTICS_WORKSPACE_ID }}"' core/jobs/pipelines/data_export.yml
+          yq -i '.jobs.data_export_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/${{ env.ENVIRONMENT_DRIFT }}"' core/jobs/pipelines/data_export.yml
           cat core/jobs/pipelines/data_export.yml
 
       - name: Create data export schedule
@@ -83,15 +99,16 @@ jobs:
           schedule_file: core/jobs/schedules/data_export.yml
           log_analytics_workspace_name: law${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
 
-      - name: Overwrite instrumentation key parameter for deployment
+      - name: Overwrite parameters for data drift schedule
         run: |
           yq -i '.jobs.data_drift_step.environment_variables.APPLICATIONINSIGHTS_CONNECTION_STRING = "${{ vars.INSTRUMENTATION_KEY }}"' core/jobs/pipelines/data_drift.yml
+          yq -i '.jobs.prepare_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/${{ env.ENVIRONMENT_DRIFT }}"' core/jobs/pipelines/data_drift.yml
           cat core/jobs/pipelines/data_drift.yml
 
       - name: Create data drift schedule
         uses: "./.github/templates/schedule-job"
         with:
-          schedule_file: core/jobs/pipelines/data_drift.yml
+          schedule_file: core/jobs/schedules/data_drift.yml
           log_analytics_workspace_name: law${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
 
   end-to-end-testing:
@@ -171,9 +188,17 @@ jobs:
           MODEL_VERSION=$(jq --raw-output '.model_version' model.json | bc -l)
           echo "REGISTERED_MODEL=${MODEL_NAME}/versions/${MODEL_VERSION}" >> $GITHUB_ENV
 
-      - name: Overwrite model parameter for deployment
+      - name: Get score enviroment from registry
+        run: |
+          ENVIRONMENT_NAME=$(yq '.name' < core/environments/score.yml)
+          ENVIRONMENT_VERSION=$(yq '.version' < core/environments/score.yml)
+
+          echo "ENVIRONMENT_SCORE=${ENVIRONMENT_NAME}/versions/${ENVIRONMENT_VERSION}" >> $GITHUB_ENV
+
+      - name: Overwrite parameters for deployment
         run: |
           yq -i '.model = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/models/${{ env.REGISTERED_MODEL }}"' core/endpoints/online/deployment.yml
+          yq -i '.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/${{ env.ENVIRONMENT_SCORE }}"' core/endpoints/online/deployment.yml
           cat core/endpoints/online/deployment.yml
 
       - name: Create online endpoint
@@ -197,11 +222,19 @@ jobs:
           LOG_ANALYTICS_WORKSPACE_ID=$(az monitor log-analytics workspace show --workspace-name law${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }} | jq --raw-output '.customerId')
           echo "LOG_ANALYTICS_WORKSPACE_ID=$LOG_ANALYTICS_WORKSPACE_ID" >> $GITHUB_ENV
 
-      - name: Overwrite parameters for job
+      - name: Get drift enviroment from registry
+        run: |
+          ENVIRONMENT_NAME=$(yq '.name' < core/environments/drift.yml)
+          ENVIRONMENT_VERSION=$(yq '.version' < core/environments/drift.yml)
+
+          echo "ENVIRONMENT_DRIFT=${ENVIRONMENT_NAME}/versions/${ENVIRONMENT_VERSION}" >> $GITHUB_ENV
+
+      - name: Overwrite parameters for data export schedule
         run: |
           yq -i '.jobs.data_export_step.inputs.model_name = "${{ vars.MODEL_NAME }}"' core/jobs/pipelines/data_export.yml
           yq -i '.jobs.data_export_step.inputs.model_version = "${{ vars.MODEL_VERSION }}"' core/jobs/pipelines/data_export.yml
           yq -i '.jobs.data_export_step.inputs.log_analytics_workspace_id = "${{ vars.LOG_ANALYTICS_WORKSPACE_ID }}"' core/jobs/pipelines/data_export.yml
+          yq -i '.jobs.data_export_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/${{ env.ENVIRONMENT_DRIFT }}"' core/jobs/pipelines/data_export.yml
           cat core/jobs/pipelines/data_export.yml
 
       - name: Create data export schedule
@@ -210,13 +243,14 @@ jobs:
           schedule_file: core/jobs/schedules/data_export.yml
           log_analytics_workspace_name: law${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
 
-      - name: Overwrite instrumentation key parameter for deployment
+      - name: Overwrite parameters for data drift schedule
         run: |
           yq -i '.jobs.data_drift_step.environment_variables.APPLICATIONINSIGHTS_CONNECTION_STRING = "${{ vars.INSTRUMENTATION_KEY }}"' core/jobs/pipelines/data_drift.yml
+          yq -i '.jobs.prepare_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/${{ env.ENVIRONMENT_DRIFT }}"' core/jobs/pipelines/data_drift.yml
           cat core/jobs/pipelines/data_drift.yml
 
       - name: Create data drift schedule
         uses: "./.github/templates/schedule-job"
         with:
-          schedule_file: core/jobs/pipelines/data_drift.yml
+          schedule_file: core/jobs/schedules/data_drift.yml
           log_analytics_workspace_name: law${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
