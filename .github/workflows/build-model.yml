@@ -40,7 +40,7 @@ jobs:
 
           echo "ENVIRONMENT_TRAINING=${ENVIRONMENT_NAME}/versions/${ENVIRONMENT_VERSION}" >> $GITHUB_ENV
 
-      - name: Overwrite job environment parameters
+      - name: Overwrite environment parameter for job
         run: |
           yq -i '.jobs.prepare_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/${{ env.ENVIRONMENT_TRAINING }}"' core/jobs/pipelines/train_model.yml
           yq -i '.jobs.data_quality_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/${{ env.ENVIRONMENT_TRAINING }}"' core/jobs/pipelines/train_model.yml
