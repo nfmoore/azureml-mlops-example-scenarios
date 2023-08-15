@@ -80,7 +80,7 @@ jobs:
       - name: Create data export schedule
         uses: "./.github/templates/schedule-job"
         with:
-          schedule_file: core/schedules/data_export.yml
+          schedule_file: core/jobs/schedules/data_export.yml
           log_analytics_workspace_name: law${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
 
       - name: Overwrite instrumentation key parameter for deployment
@@ -122,15 +122,15 @@ jobs:
 
       - name: Invoke online endpoint
         run: |
-          ENDPOINT_NAME=$(yq '.name' < core/deploy/online/endpoint.yml)-${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
-          DEPLOYMENT_NAME=$(yq '.name' < core/deploy/online/deployment.yml)
+          ENDPOINT_NAME=$(yq '.name' < core/endpoints/online/endpoint.yml)-${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
+          DEPLOYMENT_NAME=$(yq '.name' < core/endpoints/online/deployment.yml)
           echo $ENDPOINT_NAME $DEPLOYMENT_NAME
           az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME --request-file core/endpoints/online/sample.json
 
       - name: Send all traffic to deployment
         run: |
-          ENDPOINT_NAME=$(yq '.name' < core/deploy/online/endpoint.yml)-${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
-          DEPLOYMENT_NAME=$(yq '.name' < core/deploy/online/deployment.yml)
+          ENDPOINT_NAME=$(yq '.name' < core/endpoints/online/endpoint.yml)-${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
+          DEPLOYMENT_NAME=$(yq '.name' < core/endpoints/online/deployment.yml)
           echo $ENDPOINT_NAME $DEPLOYMENT_NAME
           az ml online-endpoint update --name $ENDPOINT_NAME --traffic "$DEPLOYMENT_NAME=100"
 
@@ -207,7 +207,7 @@ jobs:
       - name: Create data export schedule
         uses: "./.github/templates/schedule-job"
         with:
-          schedule_file: core/schedules/data_export.yml
+          schedule_file: core/jobs/schedules/data_export.yml
           log_analytics_workspace_name: law${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
 
       - name: Overwrite instrumentation key parameter for deployment
