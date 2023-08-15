@@ -33,6 +33,11 @@ jobs:
           workspace_name: mlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: Download artifacts
+        uses: "./.github/templates/download-workflow-artifact"
+        with:
+          artifact_name: artifacts
+
       - name: Set model name and version
         run: |
           MODEL_NAME=$(jq --raw-output '.model_name' model.json | bc -l)
@@ -154,6 +159,11 @@ jobs:
           workspace_resource_group: ${{ vars.RESOURCE_GROUP }}
           workspace_name: mlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Download artifacts
+        uses: "./.github/templates/download-workflow-artifact"
+        with:
+          artifact_name: artifacts
 
       - name: Set model name and version
         run: |
