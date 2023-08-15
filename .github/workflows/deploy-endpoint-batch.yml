@@ -79,7 +79,7 @@ jobs:
       - name: Create data drift schedule
         uses: "./.github/templates/schedule-job"
         with:
-          schedule_file: core/schedules/data_drift.yml
+          schedule_file: core/jobs/schedules/data_drift.yml
           log_analytics_workspace_name: law${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
 
   deploy-production:
@@ -153,5 +153,5 @@ jobs:
       - name: Create data drift schedule
         uses: "./.github/templates/schedule-job"
         with:
-          schedule_file: core/schedules/data_drift.yml
+          schedule_file: core/jobs/schedules/data_drift.yml
           log_analytics_workspace_name: law${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
