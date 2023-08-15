@@ -10,9 +10,6 @@ on:
   # schedule: # Runs workflow at a scheduled time.
   #   - cron: "0 0 * * 0"
 
-env:
-  USE_ML_REGISTRY: "false"
-
 jobs:
   create-model-staging:
     name: Create Model in Staging
@@ -36,27 +33,6 @@ jobs:
           workspace_name: mlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Get enviroment from registry
-        if: ${{ env.USE_ML_REGISTRY == 'true' }}
-        run: |
-          ENVIRONMENT_NAME=$(yq '.name' < core/environments/train.yml)
-          ENVIRONMENT_VERSION=$(yq '.version' < core/environments/train.yml)
-
-          echo "ENVIRONMENT_TRAINING=${ENVIRONMENT_NAME}/versions/${ENVIRONMENT_VERSION}" >> $GITHUB_ENV
-
-      - name: Overwrite job environment parameters
-        if: ${{ env.USE_ML_REGISTRY == 'true' }}
-        run: |
-          yq -i '.jobs.prepare_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/${{ env.ENVIRONMENT_TRAINING }}"' core/jobs/pipelines/train_model.yml
-          yq -i '.jobs.data_quality_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/${{ env.ENVIRONMENT_TRAINING }}"' core/jobs/pipelines/train_model.yml
-          yq -i '.jobs.register_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/${{ env.ENVIRONMENT_TRAINING }}"' core/jobs/pipelines/train_model.yml
-          yq -i '.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/${{ env.ENVIRONMENT_TRAINING }}"' core/jobs/components/sweep_trial.yml
-
-      - name: Display job files
-        run: |
-          cat core/jobs/pipelines/train_model.yml
-          cat core/jobs/components/sweep_trial.yml
-
       - name: Run pipeline job to train model
         uses: "./.github/templates/run-job"
         with:
@@ -74,11 +50,6 @@ jobs:
         run: |
           az ml model update --name ${{ env.MODEL_NAME }} --version ${{ env.MODEL_VERSION }} \
             --set tags.github_run_id=${{ github.run_id }} tags.github_workflow_url="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-
-      - name: Share model with registry
-        if: ${{ env.USE_ML_REGISTRY == 'true' }}
-        run: |
-          az ml model share --name ${{ env.MODEL_NAME }} --version ${{ env.MODEL_VERSION }} --registry-name mlr${{ vars.WORKLOAD_IDENTIFIER }} --share-with-name ${{ env.MODEL_NAME }} --share-with-version ${{ env.MODEL_VERSION }}
 
       - name: Download model artifact
         run: |
