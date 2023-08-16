@@ -37,7 +37,7 @@ runs:
 
             if [[ "${{ inputs.deployment_type }}" == "online" ]]; then    
                 echo "Updating traffic for online endpoint deployment"
-                az ml ${{ inputs.deployment_type }}-endpoint update --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --traffic 0
+                az ml ${{ inputs.deployment_type }}-endpoint update --name $ENDPOINT_NAME --traffic 0
             fi
 
             az ml ${{ inputs.deployment_type }}-deployment delete --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --yes
