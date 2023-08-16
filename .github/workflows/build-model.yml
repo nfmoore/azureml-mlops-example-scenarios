@@ -37,7 +37,6 @@ jobs:
         run: |
           ENVIRONMENT_NAME=$(yq '.name' < core/environments/train.yml)
           ENVIRONMENT_VERSION=$(yq '.version' < core/environments/train.yml)
-
           echo "ENVIRONMENT_TRAINING=${ENVIRONMENT_NAME}/versions/${ENVIRONMENT_VERSION}" >> $GITHUB_ENV
 
       - name: Overwrite environment parameter for job
@@ -56,7 +55,6 @@ jobs:
         run: |
           MODEL_NAME=$(yq '.jobs.register_step.inputs.model_name' < core/jobs/pipelines/train_model.yml)
           MODEL_VERSION=$(az ml model list --name $MODEL_NAME --query "[0].version" | bc -l)
-
           echo "MODEL_NAME=$MODEL_NAME" >> $GITHUB_ENV
           echo "MODEL_VERSION=$MODEL_VERSION" >> $GITHUB_ENV
 
