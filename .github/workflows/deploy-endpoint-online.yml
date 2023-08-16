@@ -62,7 +62,7 @@ jobs:
           endpoint_type: online
           endpoint_file: core/endpoints/online/endpoint.yml
           endpoint_suffix: ${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
-          log_analytics_workspace_name: law${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
+          log_analytics_workspace_name: lawmlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
 
       - name: Create online deployment
         uses: "./.github/templates/create-deployment"
@@ -74,7 +74,7 @@ jobs:
 
       - name: Set log analytics workspace id
         run: |
-          LOG_ANALYTICS_WORKSPACE_ID=$(az monitor log-analytics workspace show --workspace-name law${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }} | jq --raw-output '.customerId')
+          LOG_ANALYTICS_WORKSPACE_ID=$(az monitor log-analytics workspace show --workspace-name lawmlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }} | jq --raw-output '.customerId')
           echo "LOG_ANALYTICS_WORKSPACE_ID=$LOG_ANALYTICS_WORKSPACE_ID" >> $GITHUB_ENV
 
       - name: Get drift enviroment from registry
@@ -95,7 +95,7 @@ jobs:
         uses: "./.github/templates/schedule-job"
         with:
           schedule_file: core/jobs/schedules/data_export.yml
-          log_analytics_workspace_name: law${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
+          log_analytics_workspace_name: lawmlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
 
       - name: Set instrumentation key
         run: |
@@ -113,7 +113,7 @@ jobs:
         uses: "./.github/templates/schedule-job"
         with:
           schedule_file: core/jobs/schedules/data_drift.yml
-          log_analytics_workspace_name: law${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
+          log_analytics_workspace_name: lawmlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
 
   end-to-end-testing:
     name: End to End Testing
@@ -210,7 +210,7 @@ jobs:
           endpoint_type: online
           endpoint_file: core/endpoints/online/endpoint.yml
           endpoint_suffix: ${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
-          log_analytics_workspace_name: law${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
+          log_analytics_workspace_name: lawmlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
 
       - name: Create online deployment
         uses: "./.github/templates/create-deployment"
@@ -243,7 +243,7 @@ jobs:
         uses: "./.github/templates/schedule-job"
         with:
           schedule_file: core/jobs/schedules/data_export.yml
-          log_analytics_workspace_name: law${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
+          log_analytics_workspace_name: lawmlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
 
       - name: Set instrumentation key
         run: |
@@ -261,4 +261,4 @@ jobs:
         uses: "./.github/templates/schedule-job"
         with:
           schedule_file: core/jobs/schedules/data_drift.yml
-          log_analytics_workspace_name: law${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
+          log_analytics_workspace_name: lawmlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
