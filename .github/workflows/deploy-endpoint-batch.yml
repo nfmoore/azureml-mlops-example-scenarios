@@ -78,10 +78,10 @@ jobs:
 
           echo "ENVIRONMENT_DRIFT=${ENVIRONMENT_NAME}/versions/${ENVIRONMENT_VERSION}" >> $GITHUB_ENV
 
-      - name: Overwrite parameters for deployment
+      - name: Overwrite parameters for data drift job
         run: |
-          yq -i '.jobs.data_drift_step.environment_variables.APPLICATIONINSIGHTS_CONNECTION_STRING = "${{ vars.INSTRUMENTATION_KEY }}"' core/jobs/pipelines/data_drift.yml
-          yq -i '.jobs.prepare_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/${{ env.ENVIRONMENT_DRIFT }}"' core/jobs/pipelines/data_drift.yml
+          yq -i '.jobs.data_drift_step.environment_variables.APPLICATIONINSIGHTS_CONNECTION_STRING = "${{ env.INSTRUMENTATION_KEY }}"' core/jobs/pipelines/data_drift.yml
+          yq -i '.jobs.data_drift_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/${{ env.ENVIRONMENT_DRIFT }}"' core/jobs/pipelines/data_drift.yml
           cat core/jobs/pipelines/data_drift.yml
 
       - name: Create data drift schedule
@@ -161,10 +161,10 @@ jobs:
 
           echo "ENVIRONMENT_DRIFT=${ENVIRONMENT_NAME}/versions/${ENVIRONMENT_VERSION}" >> $GITHUB_ENV
 
-      - name: Overwrite parameters for deployment
+      - name: Overwrite parameters for data drift job
         run: |
-          yq -i '.jobs.data_drift_step.environment_variables.APPLICATIONINSIGHTS_CONNECTION_STRING = "${{ vars.INSTRUMENTATION_KEY }}"' core/jobs/pipelines/data_drift.yml
-          yq -i '.jobs.prepare_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/${{ env.ENVIRONMENT_DRIFT }}"' core/jobs/pipelines/data_drift.yml
+          yq -i '.jobs.data_drift_step.environment_variables.APPLICATIONINSIGHTS_CONNECTION_STRING = "${{ env.INSTRUMENTATION_KEY }}"' core/jobs/pipelines/data_drift.yml
+          yq -i '.jobs.data_drift_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/${{ env.ENVIRONMENT_DRIFT }}"' core/jobs/pipelines/data_drift.yml
           cat core/jobs/pipelines/data_drift.yml
 
       - name: Create data drift schedule
