@@ -83,7 +83,7 @@ jobs:
           ENVIRONMENT_VERSION=$(yq '.version' < core/environments/drift.yml)
           echo "ENVIRONMENT_DRIFT=${ENVIRONMENT_NAME}/versions/${ENVIRONMENT_VERSION}" >> $GITHUB_ENV
 
-      - name: Overwrite parameters for data export schedule
+      - name: Overwrite parameters for data export job
         run: |
           yq -i '.jobs.data_export_step.inputs.model_name = "${{ vars.MODEL_NAME }}"' core/jobs/pipelines/data_export.yml
           yq -i '.jobs.data_export_step.inputs.model_version = "${{ vars.MODEL_VERSION }}"' core/jobs/pipelines/data_export.yml
@@ -231,7 +231,7 @@ jobs:
           ENVIRONMENT_VERSION=$(yq '.version' < core/environments/drift.yml)
           echo "ENVIRONMENT_DRIFT=${ENVIRONMENT_NAME}/versions/${ENVIRONMENT_VERSION}" >> $GITHUB_ENV
 
-      - name: Overwrite parameters for data export schedule
+      - name: Overwrite parameters for data export job
         run: |
           yq -i '.jobs.data_export_step.inputs.model_name = "${{ vars.MODEL_NAME }}"' core/jobs/pipelines/data_export.yml
           yq -i '.jobs.data_export_step.inputs.model_version = "${{ vars.MODEL_VERSION }}"' core/jobs/pipelines/data_export.yml
