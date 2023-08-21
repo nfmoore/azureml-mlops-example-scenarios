@@ -1,37 +1,37 @@
 """Constants used as a reference by different scripts"""
 
 # define target column
-TARGET = ['default_payment_next_month']
+TARGET = ["default_payment_next_month"]
 
 # define categorical feature columns
 CATEGORICAL_FEATURES = [
-    'sex',
-    'education',
-    'marriage',
-    'repayment_status_1',
-    'repayment_status_2',
-    'repayment_status_3',
-    'repayment_status_4',
-    'repayment_status_5',
-    'repayment_status_6'
+    "sex",
+    "education",
+    "marriage",
+    "repayment_status_1",
+    "repayment_status_2",
+    "repayment_status_3",
+    "repayment_status_4",
+    "repayment_status_5",
+    "repayment_status_6",
 ]
 
 # define numeric feature columns
 NUMERIC_FEATURES = [
-    'credit_limit',
-    'age',
-    'bill_amount_1',
-    'bill_amount_2',
-    'bill_amount_3',
-    'bill_amount_4',
-    'bill_amount_5',
-    'bill_amount_6',
-    'payment_amount_1',
-    'payment_amount_2',
-    'payment_amount_3',
-    'payment_amount_4',
-    'payment_amount_5',
-    'payment_amount_6'
+    "credit_limit",
+    "age",
+    "bill_amount_1",
+    "bill_amount_2",
+    "bill_amount_3",
+    "bill_amount_4",
+    "bill_amount_5",
+    "bill_amount_6",
+    "payment_amount_1",
+    "payment_amount_2",
+    "payment_amount_3",
+    "payment_amount_4",
+    "payment_amount_5",
+    "payment_amount_6",
 ]
 
 # define all features
@@ -62,13 +62,9 @@ INPUT_SAMPLE = [
         "payment_amount_3": 5084.55,
         "payment_amount_4": 111.65,
         "payment_amount_5": 306.9,
-        "payment_amount_6": 805.65
+        "payment_amount_6": 805.65,
     }
 ]
 
 # define sample response for inference
-OUTPUT_SAMPLE = {
-    "predictions": [
-        0.02
-    ]
-}
+OUTPUT_SAMPLE = {"predictions": [0.02]}

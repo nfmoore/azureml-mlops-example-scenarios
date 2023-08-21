@@ -16,9 +16,9 @@ def main(args: Namespace) -> None:
 
     # initiate dataset objects
     dataset_train = Dataset(
-        df_train, cat_features=CATEGORICAL_FEATURES, label=TARGET[0])
-    dataset_test = Dataset(
-        df_test, cat_features=CATEGORICAL_FEATURES, label=TARGET[0])
+        df_train, cat_features=CATEGORICAL_FEATURES, label=TARGET[0]
+    )
+    dataset_test = Dataset(df_test, cat_features=CATEGORICAL_FEATURES, label=TARGET[0])
 
     # run data integrity suite
     data_integrity_suite = data_integrity()
@@ -27,12 +27,12 @@ def main(args: Namespace) -> None:
     # run train test validation suite
     train_test_validation_suite = train_test_validation()
     train_test_validation_result = train_test_validation_suite.run(
-        dataset_train, dataset_test)
+        dataset_train, dataset_test
+    )
 
     # display test results
     print("data integrity suite result:", data_integrity_result.passed())
-    print("train test validation suite result:",
-          train_test_validation_result.passed())
+    print("train test validation suite result:", train_test_validation_result.passed())
 
     # save html output
     data_integrity_result.save_as_html("./data_integrity.html")

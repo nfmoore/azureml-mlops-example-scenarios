@@ -11,13 +11,13 @@ from azure.monitor.query import LogsQueryClient, LogsQueryStatus
 def main(args: Namespace) -> None:
     """Query log analytics workspace and write inference data to a datastore"""
     # setup log analytics client
-    client_id = os.environ.get('DEFAULT_IDENTITY_CLIENT_ID')
+    client_id = os.environ.get("DEFAULT_IDENTITY_CLIENT_ID")
     credential = ManagedIdentityCredential(client_id=client_id)
     client = LogsQueryClient(credential)
 
     # specify query window
     end_time = datetime.now(timezone.utc)
-    start_time = (end_time - timedelta(days=args.number_of_previous_days))
+    start_time = end_time - timedelta(days=args.number_of_previous_days)
 
     # create query
     log_analytics_query = f"""
@@ -32,9 +32,15 @@ def main(args: Namespace) -> None:
 
     # query log analytics workspace
     df_export = query_workspace(
-        client, args.log_analytics_workspace_id, log_analytics_query, start_time, end_time)
+        client,
+        args.log_analytics_workspace_id,
+        log_analytics_query,
+        start_time,
+        end_time,
+    )
     df_export["TimeGenerated"] = df_export["TimeGenerated"].dt.strftime(
-        "%Y-%m-%d %H:%M:%S")
+        "%Y-%m-%d %H:%M:%S"
+    )
 
     # define file name and path
     file_name = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
@@ -52,14 +58,14 @@ def query_workspace(
     log_analytics_workspace_id: str,
     log_analytics_query: str,
     start_time: datetime,
-    end_time: datetime
+    end_time: datetime,
 ) -> pd.DataFrame:
     """Query log analytics workspace and return data"""
     # query log analytics workspace
     response = client.query_workspace(
         workspace_id=log_analytics_workspace_id,
         query=log_analytics_query,
-        timespan=(start_time, end_time)
+        timespan=(start_time, end_time),
     )
 
     # extract data from response for both partial and successful scenarios
