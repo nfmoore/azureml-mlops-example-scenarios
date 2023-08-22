@@ -18,11 +18,11 @@ Before implementing this example scenario the following are needed:
 
 ### 1.1. Deploy Azure Resources
 
-You will need to create a resource group for resources associated with **`Staging`** and **`Production`** environments. The same or separate resource groups can be used. 
+You will need to create a resource group for resources associated with **`Staging`** and **`Production`** environments. The same or separate resource groups can be used.
 
 Once these have been created a service principal must be created with a **`contributor`** role assigned to each resource group.
 
-> **_Note_**: The aim of this demo is to setup a simple proof-of-concept, therefore a single resource group is used. If separate resources groups are required, the following instructions/steps will need adjustment to reflect this.
+> **Note**: The aim of this demo is to setup a simple proof-of-concept, therefore a single resource group is used. If separate resources groups are required, the following instructions/steps will need adjustment to reflect this.
 
 ![1](./images/01.png)
 
