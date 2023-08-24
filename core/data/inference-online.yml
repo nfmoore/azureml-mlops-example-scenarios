@@ -3,4 +3,4 @@ name: credit-card-default-online-inference-ds
 version: 1
 description: This dataset contains data collected from online model inferencing.
 type: mltable
-path: azureml://datastores/workspaceblobstore/paths/data/uci-credit-default/inference/online/
+path: azureml://datastores/workspaceblobstore/paths/data/uci-credit-card-default/inference/online/

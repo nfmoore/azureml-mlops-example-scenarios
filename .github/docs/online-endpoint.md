@@ -13,13 +13,12 @@ This approach is best suited for:
 
 The below diagram shows a high-level design for implementing online scoring workloads suitable for classical machine learning scenarios using Azure Machine Learning.
 
-![design](./images/design-online.png)
+![design](./images/scenarios/design-online.png)
 
 The solution consists of:
 
 - **Datastores:** production-grade data used to develop models.
 - **Experimentation workstation:** workstation where data scientists can access data, explore data and develop machine learning models.
-- **Artefact repository:** place to store machine learning models and experiment metrics.
 - **Training pipeline:** machine learning pipeline job used to build a model artifact for deployment.
 - **Model deployment:** managed online endpoint used to host the model artifact for online inferencing.
 - **Monitoring:** central monitoring solution for application and model logs and metrics. Inference data and data drift metrics are stored here.
@@ -27,11 +26,12 @@ The solution consists of:
 - **Data export:** solution to export inference data collected from the managed online endpoint. This can be used to retrain the model or determine data drift.
 - **Source control:** solution to track code.
 - **Automated workflows:** workflows to automate the build and deployment of different components used in the solution.
+- **Machine Learning Registry:** central registry for storing and sharing artifacts (model, environments and components) between workspaces in staging and production from a single location.
 
 The end-to-end workflow operation consists of:
 
 1. Creating a machine learning model as an output from a pipeline job designed to develop a model artifact for the relevant use case.
-2. The model artifact is registered in the model registry and consumed by the online managed endpoint.
+2. The model artifact is registered in the Machine Learning Registry and consumed by the online managed endpoint.
 3. When triggered, the online managed endpoint will consume data within a payload and send a response. This payload will be logged within Azure Monitor.
 4. Inference data collected from the request payload can be extracted by an Azure Machine Learning pipeline job by querying Azure Monitor and writing the output to blob storage. These can be used as an input to calculating data drift metrics.
 5. Data drift metrics will be calculated via a pipeline job and sent to Azure Monitor via Application Insights as custom metrics.
@@ -41,16 +41,13 @@ The end-to-end workflow operation consists of:
 
 The below diagram shows the overall CI/CD process as built with GitHub Actions. This approach consists of three environments consisting of an identical set of resources.
 
-![design](./images/cicd-online.png)
+![design](./images/scenarios/cicd-online.png)
 
 The environments include:
 
 - **Development:** used by developers to build and test their solutions.
 - **Staging:** used to test deployments before going to production in a production-like environment. Any integration tests are run in this environment.
 - **Production:** used for the final production environment.
-
-> **Note:**
-> An [Azure Machine Learning registry (preview)](https://learn.microsoft.com/azure/machine-learning/how-to-share-models-pipelines-across-workspaces-with-registries?tabs=cli) can be used to share models, components and environments between workspaces in staging and production from a single location. This approach has not been used in this solution.
 
 ## Scenario Walkthrough
 
@@ -61,7 +58,7 @@ This section describes the main components of the example scenario that relate t
 
 ### Data Assets
 
-A reference to data assets stored within a datastore needs to be created. Two data assets will be created in this example scenario - one for training a model referencing `core/data/curated/01.csv`, another for model inference referencing `core/data/inference/batch/01.csv`, and another for data collected from online inference. Azure Machine Learning datasets enable:
+A reference to data assets stored within a datastore needs to be created. Two data assets will be created in this example scenario - one for training a model referencing `core/data/credit-card-default/curated/01.csv`, another for model inference referencing `core/data/credit-card-default/inference/batch/01.csv`, and another for data collected from online inference. Azure Machine Learning datasets enable:
 
 - Keep a single copy of data in storage referenced by datasets.
 - Seamlessly access data during model training without worrying about connection strings or data paths.
@@ -70,7 +67,7 @@ A reference to data assets stored within a datastore needs to be created. Two da
 
 ### Model Training Pipeline
 
-An Azure Machine Learning environment called `employee-attrition-train` for the model training pipeline will need to be created. An Azure Machine Learning environment specifies the runtime, Python packages, environment variables, and software settings.
+An Azure Machine Learning environment called `credit-card-default-train` for the model training pipeline will need to be created. An Azure Machine Learning environment specifies the runtime, Python packages, environment variables, and software settings.
 
 To register the environment for the model training pipeline in the Azure Machine Learning workspace execute:
 
@@ -81,7 +78,7 @@ az ml environment create -f core/environments/train.yml
 To register the curated data for the model training pipeline in the Azure Machine Learning workspace execute:
 
 ```bash
-az ml data create -f core/data/curated.yml
+az ml data create -f core/data/credit-card-default/curated.yml
 ```
 
 The model training pipeline is defined in `core/pipelines/train_model.yml`. It orchestrates the model development process by executing data preprocessing, data quality reporting, model training with hyperparameter tuning, and model registration logic encapsulated in different scripts. These are found in the `core/src` directory. This pipeline can be used to train an initial model and subsequent model version (i.e. retraining).
@@ -112,7 +109,7 @@ az ml online-endpoint create -f core/deploy/online/endpoint.yml
 
 Next, a deployment must be created for the endpoint. A deployment is a set of resources required for hosting the model that does the actual inferencing. Note that a single endpoint can contain multiple deployments.
 
-An environment called `employee-attrition-score` must be created to support the deployments by executing:
+An environment called `credit-card-default-score` must be created to support the deployments by executing:
 
 ```bash
 az ml environment create -f core/environments/score.yml
@@ -127,7 +124,7 @@ az ml online-deployment create -f core/deploy/online/deployment.yml
 To evoke the online endpoint several options exist including CLI, REST, or manually via the workspace UI.
 
 ```bash
-ENDPOINT_NAME=employee-attrition-oe
+ENDPOINT_NAME=credit-card-default-oe
 
 az ml online-endpoint invoke --name $ENDPOINT_NAME --request-file core/deploy/online/sample.json
 ```
@@ -152,7 +149,7 @@ To calculate data drift Evidently AI, an open-source framework to evaluate, test
 
 In this example scenario, a data drift pipeline job will be triggered and metrics will be calculated and sent to Azure Monitor via Application Insights as custom metrics. The model data drift pipeline is defined in `core/pipelines/data_drift.yml`. This pipeline can be triggered on a re-occurring schedule whenever data drift metrics need to be calculated.
 
-First, an environment called `employee-attrition-drift` for the data drift pipeline must be created by executing:
+First, an environment called `credit-card-default-drift` for the data drift pipeline must be created by executing:
 
 ```bash
 az ml environment create -f core/environments/drift.yml
@@ -176,7 +173,7 @@ To view overall data drift metrics the following query can be executed in Log An
 
 ```kql
 traces
-| where message has 'employee-attrition' and message has 'OverallDriftMetrics'
+| where message has 'credit-card-default' and message has 'OverallDriftMetrics'
 | project timestamp, data=parse_json(tostring(message)).data
 | evaluate bag_unpack(data)
 ```
@@ -185,7 +182,7 @@ To view feature level data drift metrics the following query can be executed in 
 
 ```kql
 traces
-| where message has 'employee-attrition' and message has 'FeatureDriftMetrics'
+| where message has 'credit-card-default' and message has 'FeatureDriftMetrics'
 | project timestamp, data=parse_json(tostring(message)).data
 | mv-expand data
 | evaluate bag_unpack(data)
@@ -196,7 +193,7 @@ In addition to data drift custom logs emitted from the managed online endpoint c
 ```kql
 AmlOnlineEndpointConsoleLog
 | where TimeGenerated > ago (1d)
-| where Message has 'online/employee-attrition/1' and Message has 'InputData'
+| where Message has 'online/credit-card-default/1' and Message has 'InputData'
 | project TimeGenerated, ResponsePayload=split(Message, '|')
 | project TimeGenerated, InputData=parse_json(tostring(ResponsePayload[-1])).data
 | project TimeGenerated, InputData=parse_json(tostring(InputData))
@@ -219,7 +216,7 @@ Once logs have been collected, to filter and parse inference data from custom lo
 ```kql
 AmlOnlineEndpointConsoleLog
 | where TimeGenerated > ago (1d)
-| where Message has 'online/employee-attrition/1' and Message has 'InputData'
+| where Message has 'online/credit-card-default/1' and Message has 'InputData'
 | project TimeGenerated, ResponsePayload=split(Message, '|')
 | project TimeGenerated, InputData=parse_json(tostring(ResponsePayload[-1])).data
 | project TimeGenerated, InputData=parse_json(tostring(InputData))
@@ -248,7 +245,7 @@ In this example scenario, four workflows have been developed in the `.github/wor
 - **Code Quality:** implementing regular code scanning on select branches when code is pushed and on a schedule.
 - **Create Data Assets:** workflow intended to deploy new data assets to staging and production environments as they are created. Data assets are defined in specification files which trigger the workflow as changes are committed.
 - **Create Environments:** workflow intended to deploy new Azure Machine Learning environments to staging and production environments as they are created. Azure Machine Learning environments are defined in specification files which trigger the workflow as changes are committed.
-- **Train and Deploy Model:** a workflow that trains a model in a staging environment and registers a model artifact to the workflow. This workflow will automatically trigger the `Deploy Model for Online Inference` workflow upon completion. Triggering this workflow on a schedule can be used to implement a model retraining process.
+- **Build Model:** a workflow that trains a model in a staging environment and registers a model artifact to the workflow. This workflow will automatically trigger the `Deploy Model for Online Inference` workflow upon completion. Triggering this workflow on a schedule can be used to implement a model retraining process.
 - **Deploy Model for Online Inference:** a workflow that creates endpoints and deployments referencing the model in the staging environment, runs end-to-end tests, copies model assets to the production environment, and recreates endpoints and deployments in the production environment.
 
 ## Related Resources
@@ -258,3 +255,4 @@ You might also find these references useful:
 - [Deploy and score a machine learning model by using an online endpoint](https://docs.microsoft.com/azure/machine-learning/how-to-deploy-managed-online-endpoints)
 - [Monitor online endpoints](https://docs.microsoft.com/azure/machine-learning/how-to-monitor-online-endpoints)
 - [Safe rollout of ML models using Azure ML Managed Online Endpoints](https://github.com/rsethur/saferollout)
+- [Azure Machine Learning registry](https://learn.microsoft.com/azure/machine-learning/how-to-share-models-pipelines-across-workspaces-with-registries?tabs=cli)

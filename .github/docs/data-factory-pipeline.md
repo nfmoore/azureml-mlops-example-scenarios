@@ -14,20 +14,20 @@ This approach is best suited for:
 
 The below diagram shows a high-level design for implementing batch scoring workloads suitable for classical machine learning scenarios using Azure Machine Learning which are orchestrated via Azure Data Factory.
 
-![design](./images/design-adf.png)
+![design](./images/scenarios/design-adf.png)
 
 The solution consists of the following components:
 
 - **Datastores:** production-grade data used to develop models.
 - **Experimentation workstation:** workstation where data scientists can access data, explore data and develop machine learning models.
 - **Orchestration:** central solution responsible for triggering pipelines and orchestrating data movement.
-- **Artefact repository:** place to store machine learning models and experiment metrics.
 - **Training pipeline:** machine learning pipeline job used to build a model artifact for deployment.
 - **Model deployment:** managed batch endpoint used to host the model artifact for batch inferencing.
 - **Monitoring:** central monitoring solution for application and model logs and metrics. Inference data and data drift metrics are stored here.
 - **Data drift pipeline:** pipeline job to calculate data drift metrics based on inference data and model training data.
 - **Source control:** solution to track code.
 - **Automated workflows:** workflows to automate the build and deployment of different components used in the solution.
+- **Machine Learning Registry:** central registry for storing and sharing artifacts (model, environments and components) between workspaces in staging and production from a single location.
 
 > **Note:**
 >
@@ -36,7 +36,7 @@ The solution consists of the following components:
 The end-to-end workflow operation consists of:
 
 1. Creating a machine learning model as an output from a pipeline job designed to develop a model artifact for the relevant use case.
-2. The model artifact is registered in the model registry and consumed by the batch managed endpoint.
+2. The model artifact is registered in the Machine Learning Registry and consumed by the batch managed endpoint.
 3. When triggered, the batch managed endpoint will consume a data set as an input and produce a data set as an output.
 4. An Azure Data Factory pipeline will be used to orchestrate all batch inferencing and data movement. This pipeline will call the batch managed endpoint in Azure Machine Learning and copy the output data set to another destination (e.g. Azure SQL DB or another Azure Data Factory sink).
 5. Data drift metrics will be calculated via a pipeline job and sent to Azure Monitor via Application Insights as custom metrics.
@@ -56,20 +56,17 @@ The below diagram shows the overall CI/CD process as built with GitHub Actions. 
 
 Azure Machine Learning artifacts will follow the build and release process shown in the below diagram.
 
-![design](./images/cicd-batch.png)
+![design](./images/scenarios/cicd-batch.png)
 
 Azure Data Factory pipelines will follow the build and release process shown in the below diagram. It's important that the associated Azure Machine Learning artifacts have to be created first in each environment.
 
-![design](./images/cicd-adf.png)
+![design](./images/scenarios/cicd-adf.png)
 
 The environments include:
 
 - **Development:** used by developers to build and test their solutions.
 - **Staging:** used to test deployments before going to production in a production-like environment. Any integration tests are run in this environment.
 - **Production:** used for the final production environment.
-
-> **Note:**
-> An [Azure Machine Learning registry (preview)](https://learn.microsoft.com/azure/machine-learning/how-to-share-models-pipelines-across-workspaces-with-registries?tabs=cli) can be used to share models, components and environments between workspaces in staging and production from a single location. This approach has not been used in this solution.
 
 > **Note:**
 > In a metadata-driven approach re-deploying the Azure Data Factory pipelines is not necessary if a separate use-case adopts logic captured in an existing Azure Data Factory pipeline.
@@ -119,3 +116,4 @@ You might also find these references useful:
 - [ADF Integration Tests](https://github.com/Azure-Samples/modern-data-warehouse-dataops/blob/main/single_tech_samples/datafactory/tests/integrationtests/tests/README.md)
 - [Deploy a Data-tier Application](https://docs.microsoft.com/sql/relational-databases/data-tier-applications/deploy-a-data-tier-application)
 - [CI/CD for Azure SQL Database](https://github.com/Azure-Samples/modern-data-warehouse-dataops/tree/main/single_tech_samples/azuresql)
+- [Azure Machine Learning registry](https://learn.microsoft.com/azure/machine-learning/how-to-share-models-pipelines-across-workspaces-with-registries?tabs=cli)
