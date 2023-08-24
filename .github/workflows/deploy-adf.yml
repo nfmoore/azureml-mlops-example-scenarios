@@ -33,7 +33,7 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-          enable-AzPSSession: true 
+          enable-AzPSSession: true
 
       - name: "Set tenant id and subscription id"
         run: |
@@ -45,11 +45,11 @@ jobs:
       - name: Deploy template
         uses: Azure/data-factory-deploy-action@v1.2.0
         with:
-          resourceGroupName: ${{ secrets.RESOURCE_GROUP }}
-          dataFactoryName: adf${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
+          resourceGroupName: ${{ vars.RESOURCE_GROUP }}
+          dataFactoryName: df${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
           armTemplateFile: ARMTemplateForFactory.json
           armTemplateParametersFile: ARMTemplateParametersForFactory.json
-          additionalParameters: 'factoryName="adf${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}" AzureKeyVault_properties_typeProperties_baseUrl="https://adfkv${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}.vault.azure.net/" AzureMLWorkspace_properties_typeProperties_subscriptionId="${{ env.SUBSCRIPTION_ID }}" AzureMLWorkspace_properties_typeProperties_resourceGroupName="${{ secrets.RESOURCE_GROUP }}" AzureMLWorkspace_properties_typeProperties_mlWorkspaceName="mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}" default_properties_tenant_id_value="${{ env.TENANT_ID }}" default_properties_subscription_id_value="${{ env.SUBSCRIPTION_ID }}" default_properties_key_vault_name_value="adfkv${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}" default_properties_azureml_workspace_name_value="mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}" default_properties_azureml_workspace_rg_value="${{ secrets.RESOURCE_GROUP }}" azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_batch_endpoint_name="employee-attrition-be-${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}"'
+          additionalParameters: 'factoryName="df${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}" AzureKeyVault_properties_typeProperties_baseUrl="https://kvdf${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}.vault.azure.net/" azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_batch_endpoint_name="credit-default-be-${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}"'
 
   deploy-production:
     name: Deploy Templates to Production
@@ -77,20 +77,20 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-          enable-AzPSSession: true 
+          enable-AzPSSession: true
 
-      - name: "Set tenant id and subscription id"
+      - name: Set tenant id and subscription id
         run: |
           TENANT_ID=$(az account show --query 'tenantId')
           SUBSCRIPTION_ID=$(az account show --query 'id')
           echo "TENANT_ID=$TENANT_ID" >> $GITHUB_ENV
           echo "SUBSCRIPTION_ID=$SUBSCRIPTION_ID" >> $GITHUB_ENV
-          
+
       - name: Deploy template
         uses: Azure/data-factory-deploy-action@v1.2.0
         with:
-          resourceGroupName: ${{ secrets.RESOURCE_GROUP }}
-          dataFactoryName: adf${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
+          resourceGroupName: ${{ vars.RESOURCE_GROUP }}
+          dataFactoryName: df${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
           armTemplateFile: ARMTemplateForFactory.json
           armTemplateParametersFile: ARMTemplateParametersForFactory.json
-          additionalParameters: 'factoryName="adf${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}" AzureKeyVault_properties_typeProperties_baseUrl="https://adfkv${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}.vault.azure.net/" AzureMLWorkspace_properties_typeProperties_subscriptionId="${{ env.SUBSCRIPTION_ID }}" AzureMLWorkspace_properties_typeProperties_resourceGroupName="${{ secrets.RESOURCE_GROUP }}" AzureMLWorkspace_properties_typeProperties_mlWorkspaceName="mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}" default_properties_tenant_id_value="${{ env.TENANT_ID }}" default_properties_subscription_id_value="${{ env.SUBSCRIPTION_ID }}" default_properties_key_vault_name_value="adfkv${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}" default_properties_azureml_workspace_name_value="mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}" default_properties_azureml_workspace_rg_value="${{ secrets.RESOURCE_GROUP }}" azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_batch_endpoint_name="employee-attrition-be-${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}"'
+          additionalParameters: 'factoryName="df${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}" AzureKeyVault_properties_typeProperties_baseUrl="https://kvdf${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}.vault.azure.net/" azureml_adf_batch_scoring_trigger_properties_azureml_adf_batch_scoring_parameters_batch_endpoint_name="credit-default-be-${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}"'

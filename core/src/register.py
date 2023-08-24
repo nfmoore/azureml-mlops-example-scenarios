@@ -23,7 +23,7 @@ def main(args: Namespace) -> None:
         artifact_path="model",
         conda_env=args.conda_env,
         signature=model_signature,
-        registered_model_name=args.model_name
+        registered_model_name=args.model_name,
     )
 
 

@@ -27,7 +27,7 @@ runs:
       run: |
         set -e # fail on error
         az version
-        az extension add --name ml --version 2.14.1
+        az extension add --name ml --version 2.18.0
 
     - name: Install yq
       shell: bash

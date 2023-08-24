@@ -1,501 +1,82 @@
-EmployeeNumber,Gender,Education,EducationField,Department,JobRole,JobLevel,PerformanceRating,JobInvolvement,JobSatisfaction,RelationshipSatisfaction,EnvironmentSatisfaction,BusinessTravel,OverTime,WorkLifeBalance,MaritalStatus,StockOptionLevel,Age,DistanceFromHome,MonthlyIncome,DailyRate,HourlyRate,MonthlyRate,NumCompaniesWorked,PercentSalaryHike,TotalWorkingYears,TrainingTimesLastYear,YearsAtCompany,YearsInCurrentRole,YearsSinceLastPromotion,YearsWithCurrManager
-3001,Male,Bachelor,Medical,Research & Development,Research Scientist,L1,Medium,Medium,Medium,High,Very High,Travel Frequently,Never,Good,Single,L0,27,2,2580,591,87,6297,2,13,6,0,4,2,1,2
-3002,Male,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L2,High,High,High,Very High,Medium,Travel Frequently,Frequently,Bad,Divorced,L1,44,24,3161,920,43,19920,3,22,19,0,1,0,0,0
-3003,Female,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L2,High,High,High,High,High,Travel Never,Frequently,Best,Single,L0,39,2,3646,592,54,17181,2,23,11,2,1,0,0,0
-3004,Female,Bachelor,Life Sciences,Research & Development,Research Scientist,L5,Low,Low,Low,Medium,Medium,Travel Rarely,Frequently,Better,Single,L0,29,10,2404,906,92,11479,6,20,3,5,0,0,0,0
-3005,Female,College,Marketing,Sales,Sales Representative,L1,Medium,Medium,Medium,High,High,Travel Rarely,Frequently,Good,Single,L0,41,20,3140,1356,70,21728,1,22,4,5,4,3,0,2
-3006,Male,Master,Technical Degree,Research & Development,Research Scientist,L1,Medium,Medium,Medium,Medium,Medium,Travel Never,Never,Best,Married,L1,47,14,5467,1169,64,2125,8,18,16,4,8,7,1,7
-3007,Female,Below College,Life Sciences,Research & Development,Research Scientist,L2,Low,Low,Low,Very High,High,Travel Frequently,Frequently,Better,Single,L0,32,16,3919,1125,72,4681,1,22,10,5,10,2,6,7
-3008,Male,Below College,Medical,Research & Development,Research Scientist,L1,High,High,High,Low,Low,Travel Rarely,Frequently,Good,Single,L0,29,18,2389,896,86,14961,1,13,4,3,4,3,0,1
-3009,Male,Master,Life Sciences,Sales,Sales Representative,L2,Medium,Medium,Medium,Medium,Medium,Travel Rarely,Never,Best,Married,L0,31,7,2329,154,41,11737,3,15,13,2,7,7,5,2
-3010,Male,Doctor,Medical,Research & Development,Research Director,L2,Low,Low,Low,Very High,High,Travel Frequently,Frequently,Better,Single,L0,50,22,14411,333,88,24450,1,13,32,2,32,6,13,9
-3011,Male,Master,Marketing,Sales,Sales Executive,L1,High,High,High,Low,Low,Travel Rarely,Never,Better,Married,L3,31,16,8161,1079,70,19002,2,13,10,2,1,0,0,0
-3012,Female,Bachelor,Human Resources,Human Resources,Human Resources,L1,Medium,Medium,Medium,High,High,Travel Frequently,Never,Good,Divorced,L1,30,8,2180,600,66,9732,6,11,6,0,4,2,1,2
-3013,Male,Master,Medical,Sales,Sales Executive,L1,High,High,High,High,Medium,Travel Rarely,Never,Bad,Divorced,L0,31,13,4233,1365,46,11512,2,17,9,2,3,1,1,2
-3014,Male,Master,Medical,Sales,Sales Executive,L4,High,High,High,High,Medium,Travel Rarely,Never,Bad,Divorced,L0,31,13,4233,1365,46,11512,2,17,9,2,3,1,1,2
-3015,Male,Bachelor,Medical,Research & Development,Research Director,L3,Medium,Medium,Medium,Low,High,Travel Rarely,Never,Good,Single,L0,40,14,19626,1308,44,17544,1,14,21,2,20,7,4,9
-3016,Male,Bachelor,Life Sciences,Sales,Sales Representative,L2,High,High,High,Medium,High,Travel Rarely,Frequently,Bad,Divorced,L1,23,7,2275,427,99,25103,1,21,3,2,3,2,0,2
-3017,Male,Below College,Life Sciences,Research & Development,Research Scientist,L1,Medium,Medium,Medium,Very High,Low,Travel Rarely,Frequently,Best,Single,L0,22,7,2472,391,75,26092,1,23,1,2,1,0,0,0
-3018,Female,Below College,Technical Degree,Research & Development,Manufacturing Director,L2,High,High,High,Low,Low,Travel Frequently,Never,Better,Single,L0,31,24,5238,163,30,6670,2,20,9,3,5,4,1,4
-3019,Female,Below College,Life Sciences,Research & Development,Research Scientist,L2,Low,Low,Low,Low,Medium,Travel Frequently,Frequently,Good,Single,L0,32,16,3919,1125,72,4681,1,22,10,5,10,2,6,7
-3020,Female,Doctor,Life Sciences,Research & Development,Laboratory Technician,L2,High,High,High,Very High,Low,Travel Frequently,Never,Best,Single,L0,38,29,2406,653,50,5456,1,11,10,2,10,3,9,9
-3021,Male,College,Technical Degree,Sales,Sales Executive,L2,High,High,High,High,Very High,Travel Frequently,Frequently,Better,Married,L1,50,8,6796,562,50,23452,3,14,18,4,4,3,1,3
-3022,Male,Master,Life Sciences,Research & Development,Research Scientist,L1,High,High,High,Very High,Medium,Travel Rarely,Never,Good,Single,L0,40,2,2809,1322,52,2725,2,14,8,2,2,2,2,2
-3023,Female,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L1,Very High,Very High,Very High,High,High,Travel Rarely,Never,Best,Single,L0,21,10,1416,1334,36,17258,1,13,1,6,1,0,1,0
-3024,Male,Below College,Medical,Sales,Sales Representative,L1,High,High,High,Low,Medium,Travel Rarely,Never,Better,Married,L0,28,10,1052,1144,74,23384,1,22,1,5,1,0,0,0
-3025,Male,Below College,Medical,Research & Development,Manager,L4,High,High,High,Medium,High,Travel Never,Never,Better,Single,L0,55,2,16756,444,40,17323,7,15,31,3,9,7,6,2
-3026,Male,Bachelor,Medical,Sales,Sales Executive,L3,High,High,High,Very High,Low,Travel Rarely,Never,Good,Married,L0,35,10,10306,737,55,21530,9,17,15,3,13,12,6,0
-3027,Male,Master,Marketing,Sales,Sales Executive,L2,Medium,Medium,Medium,Low,High,Travel Rarely,Frequently,Bad,Single,L0,32,2,9907,414,82,26186,7,12,7,3,2,2,2,2
-3028,Female,Master,Other,Research & Development,Research Scientist,L1,High,High,High,High,Medium,Travel Rarely,Never,Bad,Married,L2,32,5,3312,634,35,18783,3,17,6,3,3,2,0,2
-3029,Male,College,Marketing,Sales,Sales Executive,L2,High,High,High,Low,Medium,Travel Rarely,Never,Best,Married,L2,26,28,6272,703,66,7428,1,20,6,5,5,3,1,4
-3030,Male,Bachelor,Life Sciences,Research & Development,Healthcare Representative,L2,Medium,Medium,Medium,Very High,High,Travel Frequently,Never,Better,Divorced,L1,33,6,7725,1296,30,5335,3,23,15,2,13,11,4,7
-3031,Male,College,Medical,Research & Development,Laboratory Technician,L2,Medium,Medium,Medium,High,Low,Travel Rarely,Frequently,Better,Married,L1,40,19,2741,905,99,16523,8,15,15,2,7,2,3,7
-3032,Male,College,Technical Degree,Human Resources,Human Resources,L1,High,High,High,High,High,Travel Rarely,Never,Good,Single,L0,19,2,2564,489,52,18437,1,12,1,3,1,0,0,0
-3033,Female,Below College,Medical,Research & Development,Laboratory Technician,L1,High,High,High,Medium,Low,Travel Frequently,Never,Better,Single,L0,36,18,2153,635,73,7703,1,13,8,2,8,1,1,7
-3034,Male,Master,Medical,Research & Development,Laboratory Technician,L1,High,High,High,Low,Medium,Travel Rarely,Frequently,Better,Divorced,L1,26,16,2373,1449,45,14180,2,13,5,2,3,2,0,2
-3035,Male,Bachelor,Medical,Research & Development,Laboratory Technician,L1,High,High,High,High,Very High,Travel Rarely,Frequently,Better,Married,L0,39,6,2404,1122,70,4303,7,21,8,2,2,2,2,2
-3036,Male,Master,Life Sciences,Research & Development,Manager,L3,High,High,High,Very High,Low,Travel Never,Frequently,Better,Married,L1,47,29,11849,666,88,10268,1,12,10,2,10,7,9,9
-3037,Male,Master,Other,Research & Development,Laboratory Technician,L1,Medium,Medium,Medium,Medium,Very High,Travel Frequently,Never,Good,Married,L1,35,4,2376,636,47,26537,1,13,2,2,2,2,2,2
-3038,Male,College,Other,Research & Development,Laboratory Technician,L1,High,High,High,Very High,Medium,Travel Frequently,Never,Better,Married,L1,42,5,2093,1474,97,9260,4,17,8,4,2,2,2,0
-3039,Male,Master,Marketing,Sales,Sales Executive,L2,Very High,Very High,Very High,Very High,Medium,Travel Rarely,Never,Best,Divorced,L1,34,1,9725,216,75,12278,0,11,16,2,15,1,0,9
-3040,Male,Below College,Life Sciences,Research & Development,Laboratory Technician,L1,Medium,Medium,Medium,Very High,Low,Travel Never,Never,Better,Married,L0,24,4,3162,1269,46,10778,0,17,6,2,5,2,3,4
-3041,Male,Bachelor,Medical,Research & Development,Laboratory Technician,L1,High,High,High,High,High,Travel Rarely,Frequently,Good,Married,L1,33,14,2436,813,58,22149,5,13,8,2,5,4,0,4
-3042,Female,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L1,High,High,High,Very High,Low,Travel Frequently,Frequently,Better,Married,L1,24,7,2886,1287,55,14168,1,16,6,4,6,3,1,2
-3043,Male,Bachelor,Life Sciences,Research & Development,Healthcare Representative,L3,High,High,High,Medium,Low,Travel Rarely,Never,Better,Married,L1,43,11,7510,574,30,16873,1,17,10,1,10,9,0,9
-3044,Male,College,Life Sciences,Research & Development,Research Scientist,L1,Medium,Medium,Medium,Medium,Very High,Travel Frequently,Frequently,Good,Single,L0,29,24,2439,459,73,14753,1,24,1,3,1,0,1,0
-3045,Female,Bachelor,Technical Degree,Research & Development,Manufacturing Director,L3,High,High,High,Very High,Medium,Travel Rarely,Never,Best,Single,L0,37,1,7491,799,59,23848,4,17,12,3,6,5,1,2
-3046,Male,Master,Life Sciences,Sales,Sales Executive,L3,Medium,Medium,Medium,High,Very High,Travel Frequently,Frequently,Better,Married,L1,40,5,10475,580,48,23772,5,21,20,2,18,13,1,12
-3047,Male,Bachelor,Other,Research & Development,Laboratory Technician,L1,Medium,Medium,Medium,Low,Very High,Travel Rarely,Never,Better,Divorced,L2,27,19,4066,1302,67,16290,1,11,7,3,7,7,0,7
-3048,Male,College,Life Sciences,Research & Development,Healthcare Representative,L2,Very High,Very High,Very High,Very High,Medium,Travel Never,Never,Better,Divorced,L2,25,5,4000,675,85,18384,1,12,6,2,6,3,1,5
-3049,Female,Bachelor,Life Sciences,Research & Development,Research Scientist,L1,Medium,Medium,Medium,High,Very High,Travel Rarely,Frequently,Better,Single,L0,29,10,2404,906,92,11479,6,20,3,5,0,0,0,0
-3050,Male,Master,Life Sciences,Research & Development,Manufacturing Director,L2,High,High,High,Low,Very High,Travel Never,Frequently,Better,Divorced,L2,49,18,6804,1002,92,23793,1,15,7,0,7,7,1,7
-3051,Male,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L2,Low,Low,Low,Very High,Low,Travel Frequently,Frequently,Better,Single,L0,34,7,6074,658,66,22887,1,24,9,3,9,7,0,6
-3052,Male,College,Medical,Research & Development,Laboratory Technician,L1,Medium,Medium,Medium,High,High,Travel Frequently,Never,Good,Single,L0,28,2,2561,289,38,5355,7,11,8,2,0,0,0,0
-3053,Male,Below College,Medical,Research & Development,Laboratory Technician,L1,Low,Low,Low,Low,Low,Travel Rarely,Never,Better,Divorced,L3,33,10,3408,587,38,6705,7,13,8,2,4,3,1,3
-3054,Male,Master,Technical Degree,Research & Development,Laboratory Technician,L1,High,High,High,High,High,Travel Rarely,Frequently,Good,Single,L0,28,5,3441,1434,50,11179,1,13,2,3,2,2,2,2
-3055,Male,Bachelor,Technical Degree,Research & Development,Research Scientist,L1,High,High,High,Low,Very High,Travel Rarely,Never,Better,Single,L0,58,2,2479,289,51,26227,4,24,7,4,1,0,0,0
-3056,Male,Below College,Life Sciences,Research & Development,Laboratory Technician,L1,Medium,Medium,Medium,Very High,Low,Travel Never,Never,Good,Married,L0,24,4,3162,1269,46,10778,0,17,6,2,5,2,3,4
-3057,Male,Bachelor,Life Sciences,Research & Development,Research Scientist,L1,High,High,High,Low,Low,Travel Frequently,Frequently,Better,Single,L0,33,3,3348,1076,70,3164,1,11,10,3,10,8,9,7
-3058,Female,Bachelor,Medical,Research & Development,Research Director,L3,Low,Low,Low,Low,Medium,Travel Rarely,Never,Better,Married,L1,38,10,13206,201,99,3376,3,12,20,3,18,16,1,11
-3059,Male,Master,Medical,Research & Development,Laboratory Technician,L1,High,High,High,Very High,Low,Travel Rarely,Frequently,Better,Divorced,L1,26,16,2373,1449,45,14180,2,13,5,2,3,2,0,2
-3060,Male,College,Life Sciences,Research & Development,Manufacturing Director,L3,High,High,High,High,Very High,Travel Frequently,Never,Good,Divorced,L2,27,10,8793,294,32,4809,1,21,9,4,9,7,1,7
-3061,Male,College,Life Sciences,Research & Development,Research Scientist,L1,High,High,High,Very High,Medium,Travel Never,Never,Better,Single,L0,18,5,1051,287,73,13493,1,15,0,2,0,0,0,0
-3062,Male,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L1,Very High,Very High,Very High,High,High,Travel Rarely,Frequently,Better,Married,L2,23,6,1601,1243,63,3445,1,21,1,2,0,0,0,0
-3063,Male,College,Technical Degree,Sales,Sales Executive,L2,High,High,High,Low,Medium,Travel Frequently,Frequently,Better,Married,L1,50,8,6796,562,50,23452,3,14,18,4,4,3,1,3
-3064,Male,College,Life Sciences,Human Resources,Human Resources,L1,High,High,High,Medium,High,Travel Never,Never,Better,Divorced,L1,28,1,2706,280,43,10494,1,15,3,2,3,2,2,2
-3065,Female,Master,Life Sciences,Sales,Sales Executive,L2,High,High,High,Very High,Low,Travel Frequently,Never,Better,Married,L2,45,26,4286,306,100,5630,2,14,5,4,1,1,0,0
-3066,Male,College,Life Sciences,Research & Development,Research Director,L4,Medium,Medium,Medium,Low,High,Travel Rarely,Never,Better,Married,L1,43,15,17603,1291,65,3525,1,24,14,3,14,10,6,11
-3067,Female,College,Medical,Sales,Sales Representative,L1,High,High,High,High,Medium,Travel Frequently,Frequently,Best,Single,L0,18,3,1569,544,70,18420,1,12,0,2,0,0,0,0
-3068,Female,College,Life Sciences,Sales,Sales Executive,L2,High,High,High,Low,Medium,Travel Rarely,Frequently,Bad,Single,L0,41,1,5993,1102,94,19479,8,11,8,0,6,4,0,5
-3069,Female,Bachelor,Medical,Sales,Sales Representative,L1,Medium,Medium,Medium,Very High,High,Travel Rarely,Never,Good,Single,L0,20,2,2044,500,49,22052,1,13,2,3,2,2,0,2
-3070,Female,Bachelor,Life Sciences,Research & Development,Research Scientist,L1,Medium,Medium,Medium,High,Low,Travel Rarely,Never,Better,Single,L0,31,8,1261,202,34,22262,1,12,1,3,1,0,0,0
-3071,Male,Below College,Medical,Sales,Sales Executive,L2,High,High,High,High,High,Travel Rarely,Never,Good,Single,L0,55,2,5160,436,37,21519,4,16,12,3,9,7,7,3
-3072,Male,Bachelor,Life Sciences,Research & Development,Research Scientist,L1,High,High,High,Medium,Low,Travel Frequently,Frequently,Better,Married,L1,26,2,2042,342,57,15346,6,14,6,2,3,2,1,2
-3073,Female,Bachelor,Medical,Research & Development,Laboratory Technician,L1,High,High,High,Low,Medium,Travel Frequently,Never,Better,Single,L0,30,5,2422,109,60,25725,0,17,4,3,3,2,1,2
-3074,Female,Bachelor,Medical,Research & Development,Manager,L4,High,High,High,High,Very High,Travel Rarely,Frequently,Better,Divorced,L3,55,8,14756,836,33,19730,2,14,21,2,5,0,0,2
-3075,Female,Bachelor,Medical,Research & Development,Laboratory Technician,L1,High,High,High,Medium,Very High,Travel Rarely,Frequently,Good,Divorced,L1,49,16,2587,464,74,24941,4,16,17,2,2,2,2,2
-3076,Female,Master,Medical,Sales,Sales Executive,L2,Medium,Medium,Medium,High,Low,Travel Rarely,Frequently,Better,Single,L0,34,24,4599,790,40,7815,0,23,16,2,15,9,10,10
-3077,Male,Master,Medical,Research & Development,Manufacturing Director,L2,High,High,High,Very High,Very High,Travel Rarely,Frequently,Better,Married,L2,31,22,6179,330,98,21057,1,15,10,3,10,2,6,7
-3078,Male,Bachelor,Other,Research & Development,Manufacturing Director,L2,High,High,High,High,High,Travel Rarely,Never,Better,Married,L1,30,20,9957,1176,85,9096,0,15,7,1,6,2,0,2
-3079,Male,College,Technical Degree,Sales,Sales Executive,L2,High,High,High,Low,Medium,Travel Frequently,Frequently,Better,Married,L1,50,8,6796,562,50,23452,3,14,18,4,4,3,1,3
-3080,Male,College,Life Sciences,Sales,Sales Representative,L1,Medium,Medium,Medium,Low,Low,Travel Rarely,Never,Better,Married,L0,25,9,4400,383,68,15182,3,12,6,2,3,2,2,2
-3081,Female,College,Life Sciences,Sales,Sales Executive,L2,High,High,High,Low,Low,Travel Rarely,Never,Better,Single,L0,24,3,4577,693,65,24785,9,14,4,3,2,2,2,0
-3082,Male,College,Medical,Human Resources,Human Resources,L2,High,High,High,Very High,Medium,Travel Rarely,Frequently,Best,Divorced,L1,46,5,5021,945,80,10425,8,22,16,2,4,2,0,2
-3083,Male,College,Marketing,Sales,Sales Representative,L1,Medium,Medium,Medium,High,Low,Travel Rarely,Frequently,Bad,Married,L0,50,3,2683,869,86,3810,1,14,3,2,3,2,0,2
-3084,Female,Bachelor,Marketing,Sales,Sales Executive,L4,Medium,Medium,Medium,High,High,Travel Rarely,Frequently,Good,Married,L1,46,10,9071,1125,94,11563,2,19,15,3,3,2,1,2
-3085,Female,Master,Life Sciences,Research & Development,Healthcare Representative,L1,Very High,Very High,Very High,High,Medium,Travel Rarely,Never,Best,Single,L0,38,1,7625,827,33,19383,0,13,10,4,9,7,1,8
-3086,Male,Bachelor,Technical Degree,Sales,Sales Representative,L2,High,High,High,High,Very High,Travel Rarely,Never,Good,Married,L1,39,5,2086,895,56,3335,3,14,19,6,1,0,0,0
-3087,Male,Master,Human Resources,Human Resources,Human Resources,L2,High,High,High,High,High,Travel Frequently,Never,Better,Married,L0,38,10,6077,888,71,14814,3,11,10,2,6,3,1,2
-3088,Female,Below College,Life Sciences,Research & Development,Research Scientist,L2,Low,Low,Low,Medium,Medium,Travel Frequently,Frequently,Better,Single,L0,32,16,3919,1125,72,4681,1,22,10,5,10,2,6,7
-3089,Male,Below College,Marketing,Sales,Sales Representative,L2,High,High,High,Medium,Medium,Travel Rarely,Never,Better,Single,L0,21,7,2679,337,31,4567,1,13,1,3,1,0,1,0
-3090,Male,Bachelor,Medical,Research & Development,Laboratory Technician,L1,High,High,High,Very High,Very High,Travel Rarely,Frequently,Good,Married,L0,39,6,2404,1122,70,4303,7,21,8,2,2,2,2,2
-3091,Male,Master,Life Sciences,Sales,Sales Executive,L2,Medium,Medium,Medium,High,Low,Travel Rarely,Never,Bad,Married,L0,37,1,10609,625,46,14922,5,11,17,2,14,1,11,7
-3092,Female,Below College,Marketing,Sales,Manager,L2,Low,Low,Low,Very High,Low,Travel Rarely,Never,Better,Married,L1,52,2,19845,266,57,25846,1,15,33,3,32,14,6,9
-3093,Female,Master,Life Sciences,Research & Development,Research Director,L1,High,High,High,High,Very High,Travel Rarely,Never,Better,Single,L0,53,23,14275,102,72,20206,6,18,33,0,12,9,3,8
-3094,Male,College,Life Sciences,Research & Development,Research Scientist,L3,High,High,High,Medium,Low,Travel Rarely,Never,Better,Divorced,L3,27,4,2517,1167,76,3208,1,11,5,2,5,3,0,3
-3095,Male,Doctor,Marketing,Sales,Sales Executive,L2,Very High,Very High,Very High,Very High,Very High,Travel Rarely,Frequently,Better,Divorced,L2,33,10,8380,536,82,21708,0,14,10,3,9,8,0,8
-3096,Male,College,Medical,Research & Development,Manager,L2,Medium,Medium,Medium,High,Low,Travel Rarely,Never,Best,Married,L1,49,4,18711,1098,85,12124,2,13,23,2,1,0,0,0
-3097,Female,Master,Medical,Research & Development,Manager,L2,High,High,High,Very High,Medium,Travel Rarely,Frequently,Better,Married,L2,30,17,11916,634,95,25927,1,23,9,2,9,1,0,8
-3098,Female,Below College,Technical Degree,Sales,Sales Representative,L1,Medium,Medium,Medium,High,Low,Travel Frequently,Frequently,Better,Single,L0,21,1,2174,756,99,9150,1,11,3,3,3,2,1,2
-3099,Male,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L2,High,High,High,Low,Medium,Travel Rarely,Never,Better,Divorced,L1,31,20,4197,311,89,18624,1,11,10,2,10,8,0,2
-3100,Female,Master,Marketing,Sales,Sales Representative,L2,Low,Low,Low,Low,Medium,Travel Rarely,Frequently,Good,Married,L2,38,2,5405,723,77,4244,2,20,20,4,4,2,0,3
-3101,Male,College,Technical Degree,Human Resources,Human Resources,L1,Medium,Medium,Medium,High,Low,Travel Rarely,Never,Best,Single,L0,19,2,2564,489,52,18437,1,12,1,3,1,0,0,0
-3102,Female,Doctor,Life Sciences,Sales,Manager,L4,High,High,High,Medium,Medium,Travel Rarely,Never,Better,Married,L1,41,2,16595,1276,91,5626,7,16,22,2,18,16,11,8
-3103,Female,Master,Life Sciences,Human Resources,Human Resources,L1,High,High,High,Medium,Medium,Travel Frequently,Frequently,Good,Divorced,L1,26,17,2741,426,58,22808,0,11,8,2,7,7,1,0
-3104,Male,College,Medical,Research & Development,Manufacturing Director,L2,High,High,High,High,Very High,Travel Rarely,Never,Good,Divorced,L2,37,5,6347,1192,61,23177,7,16,8,2,6,2,0,4
-3105,Female,College,Life Sciences,Sales,Sales Executive,L2,Very High,Very High,Very High,Very High,Medium,Travel Frequently,Frequently,Better,Single,L0,47,27,6397,719,77,10339,4,12,8,2,5,4,1,3
-3106,Female,Bachelor,Life Sciences,Research & Development,Manufacturing Director,L4,Medium,Medium,Medium,Low,High,Travel Rarely,Frequently,Better,Single,L0,59,2,13726,715,69,21829,3,13,30,4,5,3,4,3
-3107,Female,Bachelor,Marketing,Sales,Sales Executive,L2,High,High,High,High,Low,Travel Rarely,Never,Better,Single,L0,33,16,5324,118,69,26507,5,15,6,3,3,2,0,2
-3108,Female,Doctor,Life Sciences,Research & Development,Manufacturing Director,L3,Very High,Very High,Very High,Low,High,Travel Frequently,Never,Better,Single,L0,31,1,7446,1445,100,8931,1,11,10,2,10,8,4,7
-3109,Male,Master,Life Sciences,Sales,Sales Executive,L3,Medium,Medium,Medium,High,Low,Travel Rarely,Never,Bad,Married,L0,37,1,10609,625,46,14922,5,11,17,2,14,1,11,7
-3110,Male,Bachelor,Life Sciences,Sales,Manager,L3,Medium,Medium,Medium,High,High,Travel Rarely,Never,Good,Divorced,L1,31,7,11557,688,44,25291,9,21,10,3,5,4,0,1
-3111,Male,Below College,Medical,Research & Development,Laboratory Technician,L1,High,High,High,Very High,High,Travel Never,Never,Better,Single,L0,18,8,1904,247,80,13556,1,12,0,0,0,0,0,0
-3112,Male,Bachelor,Marketing,Sales,Sales Executive,L3,High,High,High,Medium,Medium,Travel Frequently,Never,Better,Married,L0,51,2,10596,541,52,15395,2,11,14,5,4,2,3,2
-3113,Female,Below College,Technical Degree,Research & Development,Manufacturing Director,L2,High,High,High,Very High,Very High,Travel Frequently,Never,Good,Single,L0,31,24,5238,163,30,6670,2,20,9,3,5,4,1,4
-3114,Female,Master,Medical,Research & Development,Manager,L4,High,High,High,Low,Medium,Travel Frequently,Never,Better,Divorced,L1,54,11,16032,1050,87,24456,3,20,26,2,14,9,1,12
-3115,Female,Master,Medical,Research & Development,Laboratory Technician,L1,High,High,High,High,High,Travel Rarely,Never,Better,Divorced,L3,39,1,2232,1431,96,15417,7,14,7,1,3,2,1,2
-3116,Male,Bachelor,Medical,Sales,Sales Executive,L2,High,High,High,Low,High,Travel Rarely,Never,Better,Single,L0,26,10,4684,572,46,9125,1,13,5,4,5,3,1,2
-3117,Male,College,Medical,Sales,Sales Executive,L2,Low,Low,Low,Very High,Medium,Travel Never,Never,Better,Single,L0,26,29,4969,265,79,21813,8,18,7,6,2,2,2,2
-3118,Female,Below College,Marketing,Sales,Manager,L5,Low,Low,Low,Very High,Low,Travel Rarely,Never,Better,Married,L1,52,2,19845,266,57,25846,1,15,33,3,32,14,6,9
-3119,Male,College,Life Sciences,Research & Development,Research Scientist,L1,Medium,Medium,Medium,Medium,Very High,Travel Frequently,Frequently,Good,Single,L0,29,24,2439,459,73,14753,1,24,1,3,1,0,1,0
-3120,Female,Bachelor,Marketing,Sales,Sales Executive,L3,High,High,High,Low,High,Travel Rarely,Never,Best,Married,L2,49,11,7654,1184,43,5860,1,18,9,3,9,8,7,7
-3121,Male,Master,Life Sciences,Research & Development,Research Director,L5,Medium,Medium,Medium,High,Very High,Travel Rarely,Frequently,Better,Divorced,L1,49,18,19502,1245,58,2125,1,17,31,5,31,9,0,9
-3122,Male,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L1,Low,Low,Low,High,Very High,Travel Rarely,Never,Better,Single,L0,35,22,4230,144,46,19225,0,15,6,2,5,4,4,3
-3123,Male,Bachelor,Life Sciences,Research & Development,Healthcare Representative,L3,High,High,High,High,Very High,Travel Frequently,Frequently,Good,Married,L1,42,2,10124,288,40,18611,2,14,24,3,20,8,13,9
-3124,Female,Bachelor,Medical,Research & Development,Healthcare Representative,L3,Medium,Medium,Medium,Medium,Very High,Travel Rarely,Never,Good,Single,L0,34,9,8621,1442,46,17654,1,14,9,3,8,7,7,7
-3125,Female,Bachelor,Technical Degree,Research & Development,Research Scientist,L1,Very High,Very High,Very High,Very High,High,Travel Rarely,Never,Better,Married,L0,34,20,2585,1320,89,21643,0,17,2,5,1,0,0,0
-3126,Female,College,Life Sciences,Research & Development,Laboratory Technician,L1,High,High,High,Low,Low,Travel Rarely,Never,Better,Married,L0,33,2,2707,465,39,21509,7,20,13,3,9,7,1,7
-3127,Female,Bachelor,Medical,Sales,Sales Representative,L4,High,High,High,Low,High,Travel Rarely,Never,Better,Single,L0,20,2,2783,1141,31,13251,1,19,2,3,2,2,2,2
-3128,Female,Master,Life Sciences,Research & Development,Research Scientist,L2,High,High,High,Very High,Very High,Travel Rarely,Frequently,Better,Single,L0,27,17,2394,135,51,25681,1,13,8,2,8,2,7,7
-3129,Male,Master,Medical,Research & Development,Healthcare Representative,L3,Low,Low,Low,High,High,Travel Rarely,Never,Bad,Divorced,L1,60,1,10883,370,92,20467,3,20,19,2,1,0,0,0
-3130,Male,Bachelor,Technical Degree,Research & Development,Manufacturing Director,L3,High,High,High,Medium,Very High,Travel Rarely,Never,Good,Divorced,L2,29,19,4262,232,34,22645,4,12,8,2,3,2,1,2
-3131,Male,Bachelor,Technical Degree,Research & Development,Manufacturing Director,L3,High,High,High,Very High,Medium,Travel Rarely,Frequently,Better,Married,L2,45,29,9380,1448,55,14720,4,18,10,4,3,1,1,2
-3132,Male,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L1,Low,Low,Low,Very High,Low,Travel Frequently,Frequently,Better,Single,L0,34,7,6074,658,66,22887,1,24,9,3,9,7,0,6
-3133,Male,Bachelor,Technical Degree,Research & Development,Laboratory Technician,L3,Low,Low,Low,Medium,High,Travel Rarely,Frequently,Good,Single,L0,26,24,2340,471,66,23213,1,18,1,3,1,0,0,0
-3134,Female,College,Marketing,Sales,Manager,L2,Medium,Medium,Medium,High,Very High,Travel Rarely,Never,Better,Married,L1,46,4,18789,168,33,9946,2,14,26,2,11,4,0,8
-3135,Male,Master,Life Sciences,Research & Development,Healthcare Representative,L4,Medium,Medium,Medium,Very High,High,Travel Frequently,Never,Better,Married,L1,40,1,13503,530,78,14115,1,22,22,3,22,3,11,11
-3136,Male,Bachelor,Medical,Research & Development,Laboratory Technician,L1,High,High,High,High,Very High,Travel Never,Never,Better,Single,L0,44,24,3708,381,49,2104,2,14,9,5,5,2,1,4
-3137,Female,Bachelor,Technical Degree,Research & Development,Research Scientist,L2,Medium,Medium,Medium,Very High,Medium,Travel Rarely,Frequently,Better,Single,L0,30,3,2657,1005,88,8556,5,11,8,5,5,2,0,4
-3138,Female,College,Life Sciences,Sales,Sales Executive,L2,High,High,High,High,High,Travel Rarely,Never,Better,Single,L0,24,3,4577,693,65,24785,9,14,4,3,2,2,2,0
-3139,Male,Below College,Medical,Research & Development,Healthcare Representative,L5,Medium,Medium,Medium,Medium,High,Travel Rarely,Frequently,Better,Married,L0,38,29,6673,1180,70,11354,7,19,17,2,1,0,0,0
-3140,Female,Master,Life Sciences,Research & Development,Manager,L1,High,High,High,Very High,Very High,Travel Rarely,Never,Bad,Married,L1,48,1,15402,1236,40,17997,7,11,21,3,3,2,0,2
-3141,Female,College,Life Sciences,Research & Development,Laboratory Technician,L3,High,High,High,Very High,High,Travel Frequently,Never,Bad,Single,L0,21,10,2625,251,45,25308,1,20,2,2,2,2,2,2
-3142,Male,Bachelor,Marketing,Sales,Sales Executive,L5,Medium,Medium,Medium,Very High,High,Travel Rarely,Never,Best,Divorced,L1,46,9,10096,377,52,15986,4,11,28,1,7,7,4,3
-3143,Male,Below College,Life Sciences,Research & Development,Laboratory Technician,L1,High,High,High,High,High,Travel Frequently,Frequently,Good,Divorced,L1,58,2,2380,781,57,13384,9,14,3,3,1,0,0,0
-3144,Female,Bachelor,Medical,Research & Development,Research Scientist,L3,High,High,High,Medium,Very High,Travel Rarely,Never,Bad,Married,L1,37,10,3936,1470,71,9953,1,11,8,2,8,4,7,7
-3145,Male,Bachelor,Medical,Research & Development,Laboratory Technician,L3,Medium,Medium,Medium,Low,High,Travel Rarely,Frequently,Better,Married,L3,28,24,2408,329,51,7324,1,17,1,3,1,1,0,0
-3146,Female,Master,Medical,Research & Development,Research Scientist,L1,High,High,High,Very High,Very High,Travel Rarely,Never,Bad,Single,L0,29,28,3785,468,73,8489,1,14,5,3,5,4,0,4
-3147,Male,Below College,Medical,Research & Development,Laboratory Technician,L1,Medium,Medium,Medium,Medium,Medium,Travel Never,Never,Better,Single,L0,18,8,1904,247,80,13556,1,12,0,0,0,0,0,0
-3148,Male,Bachelor,Marketing,Sales,Sales Representative,L1,High,High,High,Low,Low,Travel Frequently,Frequently,Better,Single,L0,18,5,1878,1306,69,8059,1,14,0,3,0,0,0,0
-3149,Male,Bachelor,Medical,Research & Development,Laboratory Technician,L1,High,High,High,High,High,Travel Frequently,Never,Good,Married,L1,31,15,2610,874,72,6233,1,12,2,5,2,2,2,2
-3150,Male,Master,Life Sciences,Research & Development,Laboratory Technician,L3,High,High,High,High,Very High,Travel Rarely,Never,Better,Divorced,L1,36,6,2741,917,60,6865,1,14,7,4,7,7,1,7
-3151,Male,Master,Life Sciences,Sales,Sales Executive,L2,High,High,High,High,Very High,Travel Frequently,Never,Better,Divorced,L2,50,1,6728,878,94,14255,7,12,12,3,6,3,0,1
-3152,Female,Bachelor,Human Resources,Human Resources,Human Resources,L1,Medium,Medium,Medium,Low,Low,Travel Frequently,Never,Better,Married,L0,27,22,2863,1337,58,19555,1,12,1,2,1,0,0,0
-3153,Female,Master,Life Sciences,Research & Development,Research Scientist,L1,High,High,High,Very High,Very High,Travel Rarely,Frequently,Better,Married,L3,56,14,4963,441,72,4510,9,18,7,2,5,4,4,3
-3154,Male,Bachelor,Medical,Research & Development,Laboratory Technician,L2,Medium,Medium,Medium,Medium,Very High,Travel Never,Never,Better,Divorced,L2,30,9,3072,111,66,11012,1,11,12,4,12,9,6,10
-3155,Male,Below College,Life Sciences,Research & Development,Healthcare Representative,L2,High,High,High,Low,High,Travel Rarely,Frequently,Good,Married,L1,36,14,6586,1425,68,4821,0,17,17,2,16,8,4,11
-3156,Female,Master,Life Sciences,Sales,Sales Representative,L1,Low,Low,Low,Medium,Medium,Travel Frequently,Never,Better,Single,L0,31,1,1359,667,50,16154,1,12,1,3,1,0,0,0
-3157,Male,College,Life Sciences,Research & Development,Healthcare Representative,L3,High,High,High,Medium,High,Travel Never,Never,Better,Married,L1,39,25,10920,1485,71,3449,3,21,13,2,6,4,0,5
-3158,Male,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L1,Medium,Medium,Medium,Medium,High,Travel Rarely,Frequently,Better,Single,L0,28,24,2028,103,50,12947,5,14,6,4,4,2,0,3
-3159,Male,Master,Medical,Sales,Sales Executive,L2,High,High,High,Very High,Medium,Travel Rarely,Never,Bad,Married,L1,35,18,5561,682,71,15975,0,16,6,2,5,3,0,4
-3160,Female,College,Life Sciences,Sales,Sales Executive,L2,High,High,High,High,High,Travel Rarely,Never,Good,Married,L1,51,14,4936,1178,87,14862,4,11,18,2,7,7,0,7
-3161,Male,College,Life Sciences,Sales,Sales Executive,L2,Low,Low,Low,Medium,Low,Travel Rarely,Never,Better,Single,L0,32,1,6735,964,34,12147,6,15,10,2,0,0,0,0
-3162,Female,Master,Technical Degree,Human Resources,Human Resources,L1,High,High,High,Very High,Low,Travel Rarely,Never,Better,Married,L0,34,9,2742,1107,52,3072,1,15,2,0,2,2,2,2
-3163,Female,Bachelor,Technical Degree,Research & Development,Research Director,L5,High,High,High,Very High,Medium,Travel Rarely,Never,Better,Married,L0,41,12,19545,1360,49,16280,1,12,23,0,22,15,15,8
-3164,Male,Bachelor,Other,Human Resources,Human Resources,L3,Medium,Medium,Medium,Low,Medium,Travel Rarely,Never,Good,Single,L0,29,17,7988,332,51,9769,1,13,10,3,10,9,0,9
-3165,Male,Bachelor,Medical,Research & Development,Healthcare Representative,L2,Very High,Very High,Very High,High,Medium,Travel Rarely,Never,Good,Married,L2,42,13,5538,1128,95,5696,5,18,10,2,0,0,0,0
-3166,Male,Master,Marketing,Sales,Sales Executive,L4,Very High,Very High,Very High,High,Low,Travel Rarely,Frequently,Good,Single,L0,55,13,13695,267,85,9277,6,17,24,2,19,7,3,8
-3167,Male,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L1,Medium,Medium,Medium,Very High,Very High,Travel Rarely,Frequently,Better,Single,L0,32,1,3730,515,62,9571,0,14,4,2,3,2,1,2
-3168,Male,Below College,Human Resources,Human Resources,Human Resources,L1,Low,Low,Low,High,Very High,Travel Rarely,Never,Better,Married,L1,24,22,1555,240,58,11585,1,11,1,2,1,0,0,0
-3169,Male,Master,Medical,Sales,Sales Executive,L2,High,High,High,High,Medium,Travel Rarely,Never,Bad,Divorced,L0,31,13,4233,1365,46,11512,2,17,9,2,3,1,1,2
-3170,Female,College,Medical,Research & Development,Manufacturing Director,L4,Very High,Very High,Very High,Medium,Very High,Travel Frequently,Frequently,Bad,Married,L1,52,28,13247,322,59,9731,2,11,24,3,5,3,0,2
-3171,Female,Master,Life Sciences,Sales,Sales Executive,L2,High,High,High,Very High,Low,Travel Frequently,Never,Best,Married,L2,45,26,4286,306,100,5630,2,14,5,4,1,1,0,0
-3172,Male,Bachelor,Life Sciences,Sales,Sales Executive,L2,High,High,High,Very High,High,Travel Rarely,Never,Good,Married,L1,38,14,9924,1245,80,12355,0,11,10,3,9,8,7,7
-3173,Female,Master,Technical Degree,Human Resources,Human Resources,L1,High,High,High,Very High,Low,Travel Rarely,Never,Bad,Married,L0,34,9,2742,1107,52,3072,1,15,2,0,2,2,2,2
-3174,Female,Bachelor,Medical,Research & Development,Laboratory Technician,L1,High,High,High,Low,Low,Travel Rarely,Never,Better,Single,L0,32,9,4200,1033,41,10224,7,22,10,2,5,4,0,4
-3175,Male,Master,Life Sciences,Sales,Sales Executive,L2,High,High,High,Very High,Medium,Travel Frequently,Never,Bad,Divorced,L2,50,1,6728,878,94,14255,7,12,12,3,6,3,0,1
-3176,Male,Master,Life Sciences,Sales,Manager,L5,Medium,Medium,Medium,Very High,Low,Travel Never,Frequently,Better,Single,L0,52,2,19068,771,79,21030,1,18,33,2,33,7,15,12
-3177,Male,Below College,Medical,Research & Development,Healthcare Representative,L2,High,High,High,Medium,Medium,Travel Rarely,Frequently,Better,Married,L0,38,29,6673,1180,70,11354,7,19,17,2,1,0,0,0
-3178,Male,College,Life Sciences,Sales,Sales Executive,L2,High,High,High,Very High,Medium,Travel Frequently,Never,Good,Married,L1,32,5,6524,379,48,8891,1,14,10,3,10,8,5,3
-3179,Male,Master,Technical Degree,Research & Development,Research Scientist,L1,High,High,High,High,Medium,Travel Rarely,Never,Better,Married,L1,27,2,2226,1354,41,6073,1,11,6,3,5,3,1,2
-3180,Female,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L1,High,High,High,Very High,Low,Travel Frequently,Frequently,Better,Married,L1,24,7,2886,1287,55,14168,1,16,6,4,6,3,1,2
-3181,Female,Bachelor,Human Resources,Human Resources,Human Resources,L1,Medium,Medium,Medium,High,High,Travel Frequently,Never,Better,Divorced,L1,30,8,2180,600,66,9732,6,11,6,0,4,2,1,2
-3182,Male,Master,Life Sciences,Research & Development,Laboratory Technician,L1,High,High,High,Low,Very High,Travel Rarely,Never,Better,Single,L0,32,2,1393,1259,95,24852,1,12,1,2,1,0,0,0
-3183,Female,Below College,Medical,Research & Development,Manager,L5,High,High,High,Medium,Very High,Travel Rarely,Never,Better,Married,L1,40,4,19033,989,46,6499,1,14,21,2,20,8,9,9
-3184,Male,College,Life Sciences,Research & Development,Laboratory Technician,L1,High,High,High,Very High,Low,Travel Rarely,Never,Good,Single,L0,56,24,2587,1162,97,10261,1,16,5,3,4,2,1,0
-3185,Male,Below College,Life Sciences,Research & Development,Research Scientist,L2,High,High,High,Low,Low,Travel Rarely,Never,Better,Single,L0,39,24,4108,116,52,5340,7,13,18,2,7,7,1,7
-3186,Male,Bachelor,Human Resources,Human Resources,Human Resources,L1,Medium,Medium,Medium,Very High,Low,Travel Rarely,Frequently,Better,Divorced,L3,29,13,2335,350,56,3157,4,15,4,3,2,2,2,0
-3187,Male,Master,Medical,Sales,Sales Executive,L3,Low,Low,Low,High,Very High,Travel Rarely,Never,Better,Married,L0,32,4,10400,1045,32,25812,1,11,14,2,14,8,9,8
-3188,Male,Bachelor,Medical,Research & Development,Laboratory Technician,L2,High,High,High,Very High,Very High,Travel Rarely,Frequently,Bad,Married,L0,39,6,2404,1122,70,4303,7,21,8,2,2,2,2,2
-3189,Male,Bachelor,Medical,Research & Development,Manager,L5,High,High,High,Very High,Very High,Travel Rarely,Frequently,Good,Married,L1,55,2,19859,725,78,21199,5,13,24,2,5,2,1,4
-3190,Male,Bachelor,Marketing,Sales,Manager,L2,High,High,High,High,Medium,Travel Rarely,Never,Better,Married,L1,44,5,18213,1099,88,8751,7,11,26,5,22,9,3,10
-3191,Male,Bachelor,Life Sciences,Research & Development,Healthcare Representative,L2,High,High,High,Low,Low,Travel Frequently,Never,Better,Married,L0,31,20,9824,534,66,22908,3,12,12,2,1,0,0,0
-3192,Female,Doctor,Life Sciences,Research & Development,Research Director,L1,High,High,High,Medium,Low,Travel Rarely,Never,Better,Single,L0,42,23,15992,810,44,15901,2,14,16,2,1,0,0,0
-3193,Female,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L1,Medium,Medium,Medium,Low,High,Travel Rarely,Never,Good,Single,L0,21,10,1416,1334,36,17258,1,13,1,6,1,0,1,0
-3194,Male,Master,Life Sciences,Research & Development,Research Scientist,L1,High,High,High,High,Very High,Travel Rarely,Frequently,Good,Divorced,L1,42,18,5410,557,35,11189,6,17,9,3,4,3,1,2
-3195,Male,Bachelor,Medical,Research & Development,Laboratory Technician,L1,Medium,Medium,Medium,Low,Low,Travel Frequently,Never,Better,Divorced,L2,28,1,2596,1009,45,7160,1,15,1,2,1,0,0,0
-3196,Male,Below College,Technical Degree,Research & Development,Manufacturing Director,L5,Medium,Medium,Medium,High,High,Travel Frequently,Never,Better,Married,L1,27,1,4298,472,60,9679,5,19,6,1,2,2,2,0
-3197,Female,Bachelor,Medical,Research & Development,Manufacturing Director,L1,High,High,High,Very High,Low,Travel Frequently,Never,Bad,Single,L0,39,4,5042,711,81,3140,0,13,10,2,9,2,3,8
-3198,Female,Bachelor,Medical,Sales,Sales Representative,L2,Medium,Medium,Medium,Very High,High,Travel Rarely,Never,Good,Single,L0,20,2,2044,500,49,22052,1,13,2,3,2,2,0,2
-3199,Female,Below College,Technical Degree,Sales,Sales Representative,L1,Medium,Medium,Medium,High,Low,Travel Frequently,Frequently,Better,Single,L0,21,1,2174,756,99,9150,1,11,3,3,3,2,1,2
-3200,Female,Doctor,Life Sciences,Research & Development,Manufacturing Director,L3,Very High,Very High,Very High,Low,High,Travel Frequently,Never,Better,Single,L0,31,1,7446,1445,100,8931,1,11,10,2,10,8,4,7
-3201,Female,Below College,Marketing,Sales,Manager,L1,Low,Low,Low,Very High,Low,Travel Rarely,Never,Better,Married,L1,52,2,19845,266,57,25846,1,15,33,3,32,14,6,9
-3202,Female,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L5,High,High,High,High,Very High,Travel Rarely,Never,Good,Divorced,L1,37,14,3034,1107,95,26914,1,12,18,2,18,7,12,17
-3203,Male,Below College,Medical,Research & Development,Laboratory Technician,L5,High,High,High,Very High,High,Travel Never,Never,Better,Single,L0,18,8,1904,247,80,13556,1,12,0,0,0,0,0,0
-3204,Male,Bachelor,Medical,Research & Development,Research Scientist,L3,High,High,High,High,Very High,Travel Never,Never,Good,Married,L3,27,3,1706,443,50,16571,1,11,0,6,0,0,0,0
-3205,Female,College,Medical,Research & Development,Research Director,L4,Medium,Medium,Medium,Very High,Medium,Travel Rarely,Frequently,Good,Divorced,L1,50,7,18740,989,43,16701,5,12,29,2,27,3,13,8
-3206,Male,Bachelor,Medical,Research & Development,Research Scientist,L1,High,High,High,High,High,Travel Rarely,Never,Bad,Married,L1,28,21,2713,440,42,6672,1,11,5,2,5,2,0,2
-3207,Male,Master,Life Sciences,Research & Development,Healthcare Representative,L3,Medium,Medium,Medium,Medium,High,Travel Rarely,Never,Better,Single,L0,48,4,10999,1355,78,22245,7,14,27,3,15,11,4,8
-3208,Male,Bachelor,Life Sciences,Research & Development,Healthcare Representative,L3,High,High,High,Very High,Very High,Travel Rarely,Never,Good,Divorced,L1,34,9,8500,943,86,5494,0,11,10,0,9,7,1,6
-3209,Male,Doctor,Marketing,Sales,Sales Executive,L2,High,High,High,Very High,High,Travel Rarely,Never,Good,Divorced,L1,30,27,5304,501,99,25275,7,23,10,2,8,7,7,7
-3210,Female,Below College,Medical,Research & Development,Research Scientist,L1,Medium,Medium,Medium,Very High,High,Travel Rarely,Never,Good,Single,L0,35,27,2559,1343,53,17852,1,11,6,3,6,5,1,1
-3211,Male,Master,Technical Degree,Research & Development,Laboratory Technician,L1,High,High,High,High,High,Travel Rarely,Frequently,Good,Single,L0,28,5,3441,1434,50,11179,1,13,2,3,2,2,2,2
-3212,Male,Master,Medical,Research & Development,Manufacturing Director,L2,High,High,High,Medium,Very High,Travel Rarely,Never,Bad,Single,L0,37,10,4213,370,58,4992,1,15,10,4,10,3,0,8
-3213,Male,Master,Medical,Research & Development,Research Scientist,L2,Medium,Medium,Medium,Low,High,Travel Rarely,Never,Good,Married,L0,52,8,4941,723,85,17747,2,15,11,3,8,2,7,7
-3214,Male,Below College,Marketing,Sales,Sales Representative,L1,High,High,High,Very High,Very High,Travel Rarely,Frequently,Good,Single,L0,19,22,1675,528,50,26820,1,19,0,2,0,0,0,0
-3215,Male,Doctor,Marketing,Sales,Sales Executive,L2,Medium,Medium,Medium,Medium,Medium,Travel Rarely,Frequently,Better,Divorced,L3,36,13,6134,1456,96,8658,5,13,16,3,2,2,2,2
-3216,Female,Bachelor,Medical,Research & Development,Laboratory Technician,L1,High,High,High,Low,Low,Travel Rarely,Never,Best,Single,L0,32,9,4200,1033,41,10224,7,22,10,2,5,4,0,4
-3217,Male,Bachelor,Medical,Research & Development,Laboratory Technician,L1,High,High,High,High,High,Travel Rarely,Frequently,Bad,Married,L1,33,14,2436,813,58,22149,5,13,8,2,5,4,0,4
-3218,Male,Bachelor,Medical,Research & Development,Research Scientist,L2,High,High,High,High,Very High,Travel Rarely,Never,Good,Divorced,L2,32,2,5470,977,45,25518,0,13,10,4,9,5,1,6
-3219,Male,College,Life Sciences,Research & Development,Laboratory Technician,L2,High,High,High,High,Very High,Travel Never,Frequently,Better,Married,L1,45,23,3633,248,42,14039,1,15,9,2,9,8,0,8
-3220,Male,Bachelor,Medical,Research & Development,Laboratory Technician,L1,Medium,Medium,Medium,Low,Low,Travel Frequently,Never,Better,Divorced,L2,28,1,2596,1009,45,7160,1,15,1,2,1,0,0,0
-3221,Male,Master,Life Sciences,Research & Development,Research Director,L5,High,High,High,Very High,Very High,Travel Rarely,Frequently,Bad,Single,L0,58,2,19246,286,31,25761,7,12,40,2,31,15,13,8
-3222,Male,Bachelor,Medical,Research & Development,Laboratory Technician,L1,Medium,Medium,Medium,Medium,Very High,Travel Rarely,Never,Bad,Single,L0,35,1,2450,992,68,21731,1,19,3,3,3,0,1,2
-3223,Female,Bachelor,Marketing,Sales,Sales Representative,L1,Low,Low,Low,High,Medium,Travel Rarely,Never,Best,Single,L0,29,9,2760,428,52,14630,1,13,2,3,2,2,2,2
-3224,Female,Below College,Medical,Sales,Sales Executive,L2,High,High,High,High,Very High,Travel Rarely,Frequently,Good,Married,L2,24,4,4162,1476,42,15211,1,12,5,3,5,4,0,3
-3225,Male,Master,Life Sciences,Research & Development,Laboratory Technician,L1,High,High,High,High,Low,Travel Rarely,Never,Bad,Single,L0,28,2,3485,529,79,14935,2,11,5,5,0,0,0,0
-3226,Female,Bachelor,Technical Degree,Sales,Sales Executive,L2,High,High,High,Low,Low,Travel Frequently,Never,Better,Single,L0,29,13,5765,115,51,17485,5,11,7,4,5,3,0,0
-3227,Male,College,Life Sciences,Human Resources,Human Resources,L1,High,High,High,Medium,High,Travel Never,Never,Bad,Divorced,L1,28,1,2706,280,43,10494,1,15,3,2,3,2,2,2
-3228,Male,Bachelor,Technical Degree,Sales,Sales Representative,L1,Very High,Very High,Very High,Very High,High,Travel Frequently,Never,Better,Single,L0,29,24,1091,746,45,10642,1,17,1,3,1,0,0,0
-3229,Female,Below College,Technical Degree,Sales,Sales Representative,L1,Low,Low,Low,Low,High,Travel Frequently,Never,Better,Single,L0,19,1,2325,602,100,20989,0,21,1,5,0,0,0,0
-3230,Female,Below College,Medical,Research & Development,Manager,L5,High,High,High,Medium,Very High,Travel Rarely,Never,Good,Married,L1,40,4,19033,989,46,6499,1,14,21,2,20,8,9,9
-3231,Male,Doctor,Medical,Research & Development,Research Scientist,L1,Very High,Very High,Very High,Low,Medium,Travel Rarely,Frequently,Better,Married,L0,41,5,2127,1283,90,5561,2,12,7,5,4,2,0,3
-3232,Female,Bachelor,Medical,Research & Development,Laboratory Technician,L1,High,High,High,Low,Low,Travel Rarely,Never,Better,Single,L0,32,9,4200,1033,41,10224,7,22,10,2,5,4,0,4
-3233,Male,Bachelor,Life Sciences,Research & Development,Healthcare Representative,L3,High,High,High,High,Very High,Travel Frequently,Frequently,Better,Married,L1,42,2,10124,288,40,18611,2,14,24,3,20,8,13,9
-3234,Female,Doctor,Life Sciences,Research & Development,Manufacturing Director,L3,Very High,Very High,Very High,Low,High,Travel Frequently,Never,Better,Single,L0,31,1,7446,1445,100,8931,1,11,10,2,10,8,4,7
-3235,Female,Bachelor,Technical Degree,Sales,Sales Executive,L4,Very High,Very High,Very High,Very High,Low,Travel Rarely,Never,Better,Divorced,L1,46,3,13225,1319,45,7739,2,12,25,5,19,17,2,8
-3236,Male,Below College,Life Sciences,Research & Development,Research Scientist,L1,High,High,High,Low,Very High,Travel Rarely,Frequently,Good,Single,L0,22,7,2472,391,75,26092,1,23,1,2,1,0,0,0
-3237,Male,Master,Marketing,Sales,Sales Executive,L4,High,High,High,Low,Medium,Travel Rarely,Never,Better,Single,L0,39,15,13341,119,77,25098,0,12,21,3,20,8,11,10
-3238,Female,Bachelor,Life Sciences,Sales,Sales Executive,L2,High,High,High,Medium,Medium,Travel Rarely,Never,Better,Single,L0,38,16,4198,437,90,16379,2,12,8,5,3,2,1,2
-3239,Male,College,Life Sciences,Research & Development,Manager,L5,Very High,Very High,Very High,Very High,High,Travel Rarely,Never,Better,Divorced,L2,44,4,19190,1199,92,17477,1,14,26,4,25,9,14,13
-3240,Male,Bachelor,Technical Degree,Research & Development,Research Scientist,L1,High,High,High,Very High,High,Travel Rarely,Never,Bad,Single,L0,29,1,2058,992,85,19757,0,14,7,1,6,2,1,5
-3241,Male,Master,Medical,Research & Development,Manufacturing Director,L2,High,High,High,Medium,Very High,Travel Rarely,Never,Good,Single,L0,37,10,4213,370,58,4992,1,15,10,4,10,3,0,8
-3242,Male,Bachelor,Life Sciences,Sales,Sales Representative,L1,High,High,High,Medium,High,Travel Rarely,Frequently,Better,Divorced,L1,23,7,2275,427,99,25103,1,21,3,2,3,2,0,2
-3243,Female,Master,Life Sciences,Research & Development,Research Scientist,L2,Medium,Medium,Medium,High,High,Travel Rarely,Never,Better,Divorced,L1,34,6,4505,1031,45,15000,6,15,12,3,1,0,0,0
-3244,Male,Below College,Medical,Research & Development,Laboratory Technician,L1,High,High,High,Very High,Medium,Travel Rarely,Frequently,Better,Single,L0,29,3,4723,1370,87,16213,1,18,10,3,10,9,1,5
-3245,Male,Bachelor,Technical Degree,Research & Development,Laboratory Technician,L1,Very High,Very High,Very High,High,Very High,Travel Rarely,Never,Better,Divorced,L1,43,27,4876,990,87,5855,5,12,8,0,6,4,0,2
-3246,Female,Doctor,Medical,Research & Development,Research Director,L4,Very High,Very High,Very High,High,Low,Travel Rarely,Never,Better,Divorced,L1,33,1,16184,922,95,22578,4,19,10,2,6,1,0,5
-3247,Female,Master,Marketing,Sales,Manager,L5,High,High,High,Very High,Medium,Travel Rarely,Never,Good,Single,L0,46,2,18947,705,83,22822,3,12,22,2,2,2,2,1
-3248,Male,Bachelor,Technical Degree,Research & Development,Laboratory Technician,L1,Low,Low,Low,Medium,High,Travel Rarely,Frequently,Bad,Single,L0,26,24,2340,471,66,23213,1,18,1,3,1,0,0,0
-3249,Female,Below College,Medical,Research & Development,Laboratory Technician,L1,High,High,High,Low,Medium,Travel Rarely,Never,Better,Married,L1,29,6,3131,1401,54,26342,1,13,10,5,10,8,0,8
-3250,Male,Master,Life Sciences,Research & Development,Research Scientist,L1,Medium,Medium,Medium,Medium,High,Travel Frequently,Frequently,Better,Married,L1,22,3,2853,1256,48,4223,0,11,1,5,0,0,0,0
-3251,Female,Below College,Marketing,Sales,Sales Executive,L3,High,High,High,Very High,High,Travel Rarely,Frequently,Best,Divorced,L1,41,4,10447,796,81,26458,0,13,23,3,22,14,13,5
-3252,Male,Bachelor,Marketing,Sales,Sales Representative,L1,High,High,High,Very High,Medium,Travel Frequently,Frequently,Better,Single,L0,18,5,1878,1306,69,8059,1,14,0,3,0,0,0,0
-3253,Female,Master,Life Sciences,Research & Development,Laboratory Technician,L1,High,High,High,Very High,High,Travel Rarely,Never,Good,Married,L1,49,25,3211,722,84,22102,1,14,10,3,9,6,1,4
-3254,Male,Doctor,Human Resources,Human Resources,Human Resources,L2,High,High,High,Medium,Very High,Travel Frequently,Frequently,Better,Married,L0,44,1,5743,602,37,10503,4,11,14,3,10,7,0,2
-3255,Female,Bachelor,Human Resources,Human Resources,Human Resources,L3,Medium,Medium,Medium,Low,Very High,Travel Frequently,Frequently,Better,Divorced,L3,34,23,9950,988,43,11533,9,15,11,2,3,2,0,2
-3256,Male,Bachelor,Life Sciences,Research & Development,Research Scientist,L1,Medium,Medium,Medium,Medium,Low,Travel Frequently,Frequently,Better,Single,L0,33,3,3348,1076,70,3164,1,11,10,3,10,8,9,7
-3257,Male,Master,Life Sciences,Research & Development,Manager,L4,Very High,Very High,Very High,High,Very High,Travel Never,Never,Better,Divorced,L1,50,2,17924,881,98,4544,1,11,31,3,31,6,14,7
-3258,Female,Doctor,Marketing,Sales,Sales Executive,L2,High,High,High,High,Medium,Travel Rarely,Never,Better,Married,L1,48,2,4051,163,37,19658,2,14,14,2,9,7,6,7
-3259,Female,Bachelor,Medical,Research & Development,Research Scientist,L1,High,High,High,High,Low,Travel Never,Frequently,Best,Single,L0,19,10,1859,504,96,6148,1,25,1,2,1,1,0,0
-3260,Male,Below College,Life Sciences,Research & Development,Healthcare Representative,L3,High,High,High,Low,Very High,Travel Never,Never,Better,Married,L1,45,1,10748,1238,74,3395,3,23,25,3,23,15,14,4
-3261,Female,College,Life Sciences,Research & Development,Research Scientist,L2,High,High,High,High,High,Travel Rarely,Never,Good,Married,L2,54,9,2897,155,67,22474,3,11,9,6,4,3,2,3
-3262,Male,Bachelor,Medical,Research & Development,Manufacturing Director,L3,High,High,High,Very High,Very High,Travel Frequently,Never,Better,Divorced,L2,37,10,10048,504,61,22573,6,11,17,5,1,0,0,0
-3263,Male,Below College,Marketing,Sales,Sales Representative,L1,High,High,High,High,Medium,Travel Rarely,Never,Better,Single,L0,21,7,2679,337,31,4567,1,13,1,3,1,0,1,0
-3264,Male,College,Medical,Research & Development,Laboratory Technician,L1,Very High,Very High,Very High,Low,High,Travel Frequently,Never,Better,Single,L0,28,2,2561,289,38,5355,7,11,8,2,0,0,0,0
-3265,Female,Below College,Life Sciences,Research & Development,Healthcare Representative,L4,High,High,High,Low,Low,Travel Rarely,Frequently,Better,Married,L1,49,6,13966,465,41,11652,2,19,30,3,15,11,2,12
-3266,Female,Bachelor,Life Sciences,Research & Development,Research Scientist,L1,Medium,Medium,Medium,Very High,Low,Travel Rarely,Frequently,Better,Married,L0,30,22,2132,138,48,11539,4,11,7,2,5,2,0,1
-3267,Male,Below College,Medical,Research & Development,Research Scientist,L1,Medium,Medium,Medium,Medium,Medium,Travel Rarely,Never,Best,Single,L0,34,6,2960,699,83,17102,2,11,8,2,4,2,1,3
-3268,Female,College,Medical,Research & Development,Healthcare Representative,L2,High,High,High,Medium,High,Travel Rarely,Never,Good,Married,L1,46,21,8926,261,66,10842,4,22,13,2,9,7,3,7
-3269,Female,Master,Life Sciences,Human Resources,Human Resources,L1,High,High,High,Medium,Low,Travel Frequently,Frequently,Good,Divorced,L1,26,17,2741,426,58,22808,0,11,8,2,7,7,1,0
-3270,Female,Bachelor,Technical Degree,Research & Development,Laboratory Technician,L2,Medium,Medium,Medium,Medium,High,Travel Frequently,Never,Better,Married,L1,40,11,6323,692,73,26849,1,11,10,2,10,9,9,4
-3271,Male,Doctor,Life Sciences,Research & Development,Research Scientist,L1,Medium,Medium,Medium,Low,Very High,Travel Rarely,Never,Better,Single,L0,32,6,3038,120,43,12430,3,20,8,2,5,4,1,4
-3272,Female,Below College,Marketing,Sales,Manager,L5,Medium,Medium,Medium,Medium,Very High,Travel Rarely,Never,Good,Married,L1,52,2,19845,266,57,25846,1,15,33,3,32,14,6,9
-3273,Male,Bachelor,Life Sciences,Research & Development,Research Scientist,L1,Low,Low,Low,Medium,Low,Travel Never,Never,Better,Single,L0,43,9,2438,343,52,24978,4,13,7,2,3,2,1,2
-3274,Female,Below College,Marketing,Sales,Manager,L5,High,High,High,High,Low,Travel Rarely,Never,Better,Married,L1,52,2,19845,266,57,25846,1,15,33,3,32,14,6,9
-3275,Female,Master,Life Sciences,Human Resources,Human Resources,L1,High,High,High,High,High,Travel Frequently,Frequently,Better,Divorced,L1,26,17,2741,426,58,22808,0,11,8,2,7,7,1,0
-3276,Male,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L2,Low,Low,Low,Very High,Low,Travel Frequently,Frequently,Best,Single,L0,34,7,6074,658,66,22887,1,24,9,3,9,7,0,6
-3277,Male,Bachelor,Medical,Research & Development,Laboratory Technician,L1,High,High,High,High,High,Travel Rarely,Frequently,Good,Married,L1,33,14,2436,813,58,22149,5,13,8,2,5,4,0,4
-3278,Male,Doctor,Marketing,Sales,Sales Executive,L2,High,High,High,High,Very High,Travel Rarely,Never,Best,Married,L1,32,7,9204,601,97,23343,4,12,7,3,4,3,0,3
-3279,Male,Master,Medical,Research & Development,Laboratory Technician,L2,Medium,Medium,Medium,Very High,Low,Travel Frequently,Never,Better,Single,L0,40,16,5094,720,51,11983,6,14,10,6,1,0,0,0
-3280,Female,College,Medical,Research & Development,Research Scientist,L2,High,High,High,Very High,Very High,Travel Rarely,Never,Better,Married,L2,30,28,5775,1275,64,11934,1,13,11,2,10,8,1,9
-3281,Male,Bachelor,Marketing,Sales,Sales Representative,L1,High,High,High,Low,Very High,Travel Frequently,Never,Good,Married,L1,23,9,1790,638,33,26956,1,19,1,3,1,0,1,0
-3282,Female,Bachelor,Medical,Sales,Sales Representative,L1,Medium,Medium,Medium,Very High,High,Travel Rarely,Never,Better,Single,L0,20,2,2044,500,49,22052,1,13,2,3,2,2,0,2
-3283,Female,Bachelor,Other,Research & Development,Healthcare Representative,L2,High,High,High,Low,Very High,Travel Rarely,Never,Good,Single,L0,37,3,4107,124,35,13848,3,15,8,3,4,3,0,1
-3284,Male,Bachelor,Marketing,Sales,Sales Executive,L2,Medium,Medium,Medium,Low,Low,Travel Never,Never,Better,Married,L1,45,26,4385,336,52,24162,1,15,10,2,10,7,4,5
-3285,Female,College,Medical,Research & Development,Manager,L5,Low,Low,Low,Very High,Very High,Travel Rarely,Never,Better,Married,L1,55,2,19187,282,58,6992,4,14,23,5,19,9,9,11
-3286,Female,College,Medical,Research & Development,Manufacturing Director,L4,Very High,Very High,Very High,Medium,Very High,Travel Frequently,Frequently,Better,Married,L1,52,28,13247,322,59,9731,2,11,24,3,5,3,0,2
-3287,Male,Master,Medical,Sales,Sales Executive,L2,High,High,High,Very High,Medium,Travel Frequently,Never,Better,Married,L3,40,2,4327,1184,62,25440,5,12,5,2,0,0,0,0
-3288,Male,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L2,Low,Low,Low,Very High,Low,Travel Frequently,Frequently,Better,Single,L0,34,7,6074,658,66,22887,1,24,9,3,9,7,0,6
-3289,Male,College,Life Sciences,Research & Development,Research Scientist,L1,Very High,Very High,Very High,Low,Very High,Travel Rarely,Never,Best,Single,L0,37,10,4680,1225,80,15232,3,17,4,2,1,0,0,0
-3290,Male,College,Life Sciences,Research & Development,Research Scientist,L1,High,High,High,High,High,Travel Rarely,Never,Good,Single,L0,19,9,2552,645,54,7172,1,25,1,4,1,1,0,0
-3291,Female,College,Life Sciences,Research & Development,Laboratory Technician,L5,High,High,High,High,Very High,Travel Frequently,Frequently,Good,Single,L0,27,5,2379,1297,53,19826,0,14,6,3,5,4,0,2
-3292,Male,Bachelor,Medical,Sales,Sales Executive,L1,Medium,Medium,Medium,Medium,Low,Travel Rarely,Frequently,Better,Divorced,L1,29,5,4187,991,43,3356,1,13,10,3,10,0,0,9
-3293,Female,Below College,Technical Degree,Research & Development,Research Scientist,L1,High,High,High,High,Low,Travel Frequently,Frequently,Better,Single,L0,24,2,3760,567,32,17218,1,13,6,2,6,3,1,3
-3294,Female,Bachelor,Life Sciences,Research & Development,Research Scientist,L3,High,High,High,Very High,Very High,Travel Frequently,Never,Good,Divorced,L2,29,10,3291,490,61,17940,0,14,8,2,7,5,1,1
-3295,Male,Bachelor,Other,Sales,Sales Representative,L3,Medium,Medium,Medium,Medium,Very High,Travel Rarely,Frequently,Better,Single,L0,19,21,2121,419,37,9947,1,13,1,3,1,0,0,0
-3296,Female,Master,Life Sciences,Research & Development,Research Scientist,L4,High,High,High,Low,Very High,Travel Frequently,Frequently,Better,Divorced,L1,35,25,2022,130,96,16612,1,19,10,3,10,2,7,8
-3297,Female,Bachelor,Medical,Research & Development,Research Scientist,L1,Medium,Medium,Medium,Medium,Low,Travel Never,Frequently,Better,Single,L0,19,10,1859,504,96,6148,1,25,1,2,1,1,0,0
-3298,Female,Bachelor,Medical,Research & Development,Healthcare Representative,L4,Medium,Medium,Medium,Medium,Very High,Travel Rarely,Never,Best,Single,L0,34,9,8621,1442,46,17654,1,14,9,3,8,7,7,7
-3299,Female,Bachelor,Medical,Research & Development,Manager,L2,High,High,High,High,Very High,Travel Frequently,Never,Good,Married,L1,50,2,17856,1421,30,9490,2,22,32,3,2,2,2,2
-3300,Male,Bachelor,Technical Degree,Research & Development,Research Scientist,L5,High,High,High,Very High,Very High,Travel Rarely,Never,Best,Single,L0,32,2,2439,529,78,11288,1,14,4,4,4,2,1,2
-3301,Male,Bachelor,Medical,Research & Development,Research Scientist,L1,Very High,Very High,Very High,Very High,High,Travel Frequently,Frequently,Better,Divorced,L0,42,19,2759,933,57,20366,6,12,7,2,2,2,2,2
-3302,Male,College,Marketing,Sales,Sales Representative,L2,High,High,High,Very High,Medium,Travel Rarely,Frequently,Better,Married,L1,53,6,2306,1436,34,16047,2,20,13,3,7,7,4,5
-3303,Female,Bachelor,Life Sciences,Research & Development,Manufacturing Director,L1,High,High,High,Low,High,Travel Frequently,Never,Good,Divorced,L1,26,1,6397,1479,84,26767,1,20,6,6,6,5,1,4
-3304,Male,College,Life Sciences,Research & Development,Research Scientist,L2,Medium,Medium,Medium,Very High,Very High,Travel Never,Never,Better,Single,L0,42,23,4332,335,37,14811,1,12,20,2,20,9,3,7
-3305,Male,Below College,Medical,Research & Development,Laboratory Technician,L1,Medium,Medium,Medium,Low,Very High,Travel Rarely,Frequently,Good,Single,L0,23,8,3989,1320,93,20586,1,11,5,2,5,4,1,2
-3306,Male,Bachelor,Medical,Research & Development,Research Scientist,L1,High,High,High,High,High,Travel Rarely,Never,Best,Divorced,L1,40,2,2345,896,68,8045,2,14,8,3,3,1,1,2
-3307,Female,Master,Other,Research & Development,Research Scientist,L4,High,High,High,High,Low,Travel Rarely,Never,Better,Single,L0,34,6,4809,665,41,12482,1,14,16,3,16,13,2,10
-3308,Male,Master,Life Sciences,Sales,Sales Executive,L5,High,High,High,Very High,Medium,Travel Frequently,Never,Better,Divorced,L2,50,1,6728,878,94,14255,7,12,12,3,6,3,0,1
-3309,Female,Master,Marketing,Sales,Sales Executive,L1,High,High,High,High,Very High,Travel Frequently,Frequently,Good,Married,L1,35,18,4614,662,67,23288,0,18,5,0,4,2,3,2
-3310,Male,Bachelor,Other,Research & Development,Healthcare Representative,L1,Medium,Medium,Medium,High,Medium,Travel Rarely,Never,Better,Single,L0,49,7,10965,1261,31,12066,8,24,26,2,5,2,0,0
-3311,Male,Master,Life Sciences,Research & Development,Laboratory Technician,L1,Very High,Very High,Very High,Very High,High,Travel Frequently,Never,Better,Married,L2,36,18,3688,566,81,7122,4,18,4,2,1,0,0,0
-3312,Male,Bachelor,Life Sciences,Sales,Sales Executive,L3,High,High,High,Very High,High,Travel Frequently,Never,Better,Single,L0,28,7,4898,467,55,11827,0,14,5,5,4,2,1,3
-3313,Female,College,Other,Research & Development,Laboratory Technician,L1,Medium,Medium,Medium,Medium,Very High,Travel Rarely,Never,Better,Married,L1,38,6,3702,1153,40,16376,1,11,5,3,5,4,0,4
-3314,Male,Master,Marketing,Sales,Sales Executive,L1,High,High,High,High,Very High,Travel Frequently,Never,Best,Single,L0,32,10,4648,1318,79,26075,8,13,4,2,0,0,0,0
-3315,Male,Master,Medical,Research & Development,Research Director,L2,Very High,Very High,Very High,Very High,Medium,Travel Rarely,Never,Best,Divorced,L2,55,1,14732,1136,81,12414,2,13,31,4,7,7,0,0
-3316,Female,Master,Life Sciences,Sales,Sales Representative,L3,High,High,High,High,High,Travel Rarely,Never,Good,Single,L0,36,2,4502,530,51,7439,3,15,17,2,13,7,6,7
-3317,Female,College,Life Sciences,Research & Development,Laboratory Technician,L1,High,High,High,Low,Low,Travel Rarely,Never,Best,Married,L0,33,2,2707,465,39,21509,7,20,13,3,9,7,1,7
-3318,Male,Master,Medical,Research & Development,Research Director,L3,High,High,High,Low,Medium,Travel Frequently,Never,Better,Divorced,L1,31,3,13675,1327,73,13523,9,12,9,3,2,2,2,2
-3319,Female,Bachelor,Technical Degree,Research & Development,Research Scientist,L1,High,High,High,High,Very High,Travel Rarely,Frequently,Better,Single,L0,30,3,2657,1005,88,8556,5,11,8,5,5,2,0,4
-3320,Male,Bachelor,Life Sciences,Research & Development,Healthcare Representative,L4,High,High,High,Very High,Low,Travel Frequently,Never,Better,Divorced,L3,39,2,12169,203,84,13547,7,11,21,4,18,7,11,5
-3321,Female,Bachelor,Medical,Research & Development,Research Scientist,L1,High,High,High,High,High,Travel Rarely,Never,Better,Married,L1,28,1,3591,1217,67,12719,1,25,3,3,3,2,1,2
-3322,Male,College,Life Sciences,Sales,Sales Representative,L1,Medium,Medium,Medium,Low,Low,Travel Rarely,Never,Better,Married,L0,25,9,4400,383,68,15182,3,12,6,2,3,2,2,2
-3323,Male,Master,Life Sciences,Research & Development,Manager,L3,High,High,High,Very High,Low,Travel Never,Frequently,Good,Married,L1,47,29,11849,666,88,10268,1,12,10,2,10,7,9,9
-3324,Male,Bachelor,Life Sciences,Research & Development,Research Scientist,L1,High,High,High,Medium,Low,Travel Frequently,Frequently,Better,Married,L1,26,2,2042,342,57,15346,6,14,6,2,3,2,1,2
-3325,Female,Master,Medical,Research & Development,Research Scientist,L2,High,High,High,Medium,Very High,Travel Rarely,Never,Good,Married,L1,54,7,6854,431,68,15696,4,15,14,2,7,1,1,7
-3326,Female,Bachelor,Medical,Sales,Sales Representative,L1,Medium,Medium,Medium,High,Medium,Travel Rarely,Frequently,Better,Divorced,L3,29,1,2800,341,48,23522,6,19,5,3,3,2,0,2
-3327,Male,Bachelor,Other,Research & Development,Manufacturing Director,L3,High,High,High,High,High,Travel Rarely,Never,Better,Married,L1,37,3,9434,482,36,9606,1,15,10,2,10,7,7,8
-3328,Male,College,Medical,Research & Development,Healthcare Representative,L2,Very High,Very High,Very High,High,Medium,Travel Rarely,Never,Better,Single,L0,28,16,5661,1476,68,4824,0,19,9,2,8,3,0,7
-3329,Male,Bachelor,Technical Degree,Research & Development,Laboratory Technician,L1,Low,Low,Low,Medium,High,Travel Rarely,Frequently,Bad,Single,L0,26,24,2340,471,66,23213,1,18,1,3,1,0,0,0
-3330,Male,Master,Human Resources,Human Resources,Human Resources,L1,High,High,High,Very High,High,Travel Rarely,Frequently,Better,Divorced,L0,37,6,2073,807,63,23648,4,22,7,3,3,2,0,2
-3331,Male,Below College,Medical,Research & Development,Healthcare Representative,L2,High,High,High,Medium,Medium,Travel Rarely,Frequently,Better,Married,L0,38,29,6673,1180,70,11354,7,19,17,2,1,0,0,0
-3332,Female,College,Life Sciences,Sales,Sales Executive,L2,High,High,High,Low,Low,Travel Rarely,Never,Better,Single,L0,24,3,4577,693,65,24785,9,14,4,3,2,2,2,0
-3333,Male,Master,Life Sciences,Research & Development,Manufacturing Director,L2,Medium,Medium,Medium,Medium,Very High,Travel Rarely,Never,Better,Single,L0,32,5,9679,1373,56,10138,8,24,8,1,1,0,0,0
-3334,Male,Bachelor,Medical,Research & Development,Laboratory Technician,L1,High,High,High,High,High,Travel Rarely,Frequently,Good,Married,L3,28,24,2408,329,51,7324,1,17,1,3,1,1,0,0
-3335,Female,College,Life Sciences,Sales,Sales Executive,L2,Low,Low,Low,Low,Very High,Travel Rarely,Never,Better,Single,L0,34,3,6029,511,32,25353,5,12,6,3,2,2,2,2
-3336,Male,Bachelor,Life Sciences,Research & Development,Manager,L4,High,High,High,Low,High,Travel Rarely,Never,Good,Single,L0,49,1,15379,809,36,22384,4,14,23,2,8,7,0,0
-3337,Female,Bachelor,Medical,Sales,Sales Executive,L2,High,High,High,High,High,Travel Rarely,Frequently,Better,Married,L1,47,14,4591,571,78,24200,3,17,11,4,5,4,1,2
-3338,Male,Master,Marketing,Sales,Sales Executive,L2,Low,Low,Low,Low,Very High,Travel Never,Never,Better,Divorced,L1,36,15,5406,301,88,10436,1,24,15,4,15,12,11,11
-3339,Male,Bachelor,Medical,Human Resources,Manager,L5,High,High,High,High,Low,Travel Frequently,Never,Better,Married,L1,50,3,18200,1246,99,7999,1,11,32,2,32,5,10,7
-3340,Male,Master,Medical,Sales,Sales Executive,L3,Low,Low,Low,High,Very High,Travel Rarely,Never,Bad,Married,L0,32,4,10400,1045,32,25812,1,11,14,2,14,8,9,8
-3341,Female,Master,Life Sciences,Research & Development,Research Scientist,L1,Medium,Medium,Medium,High,High,Travel Frequently,Never,Better,Single,L0,34,16,2553,702,100,8306,1,16,6,3,5,2,1,3
-3342,Male,Master,Technical Degree,Research & Development,Research Scientist,L1,High,High,High,Medium,High,Travel Never,Never,Better,Married,L2,42,10,2936,355,38,6161,3,22,10,1,6,3,3,3
-3343,Male,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L1,Medium,Medium,Medium,Very High,Very High,Travel Rarely,Frequently,Better,Single,L0,32,1,3730,515,62,9571,0,14,4,2,3,2,1,2
-3344,Male,Master,Medical,Research & Development,Research Scientist,L1,High,High,High,Very High,High,Travel Rarely,Never,Better,Single,L0,28,2,4382,890,46,16374,6,17,5,3,2,2,2,1
-3345,Female,Bachelor,Medical,Research & Development,Research Scientist,L1,High,High,High,Medium,Low,Travel Frequently,Never,Better,Married,L1,56,9,2942,1240,63,12154,2,19,18,4,5,4,0,3
-3346,Male,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L3,High,High,High,Low,Low,Travel Frequently,Never,Better,Divorced,L1,45,7,5210,1249,97,20308,1,18,24,2,24,9,9,11
-3347,Male,Master,Other,Research & Development,Laboratory Technician,L1,Low,Low,Low,Very High,Medium,Travel Rarely,Frequently,Better,Married,L0,29,8,2119,318,77,4759,1,11,7,4,7,7,0,7
-3348,Male,Master,Other,Research & Development,Research Scientist,L1,High,High,High,High,Medium,Travel Rarely,Never,Good,Single,L0,36,7,4678,188,65,23293,2,18,8,6,6,2,0,1
-3349,Male,College,Medical,Research & Development,Research Scientist,L1,High,High,High,High,High,Travel Frequently,Frequently,Good,Divorced,L3,44,1,2342,429,99,11092,1,12,6,2,5,3,2,3
-3350,Male,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L1,High,High,High,High,Very High,Travel Rarely,Never,Better,Married,L1,36,6,3210,1403,47,20251,0,11,16,4,15,13,10,11
-3351,Female,Bachelor,Life Sciences,Research & Development,Research Scientist,L1,High,High,High,Medium,Low,Travel Rarely,Frequently,Good,Married,L0,30,22,2132,138,48,11539,4,11,7,2,5,2,0,1
-3352,Male,Below College,Life Sciences,Sales,Sales Representative,L1,Low,Low,Low,Very High,High,Travel Frequently,Frequently,Better,Single,L0,25,24,1118,599,73,8040,1,14,1,4,1,0,1,0
-3353,Female,Doctor,Technical Degree,Research & Development,Research Scientist,L1,Medium,Medium,Medium,Medium,High,Travel Rarely,Never,Good,Married,L0,29,25,2546,408,71,18300,5,16,6,2,2,2,1,1
-3354,Female,Bachelor,Human Resources,Human Resources,Human Resources,L1,High,High,High,Medium,Very High,Travel Frequently,Never,Bad,Divorced,L1,30,8,2180,600,66,9732,6,11,6,0,4,2,1,2
-3355,Female,Master,Life Sciences,Sales,Sales Representative,L2,Medium,Medium,Medium,Low,Very High,Travel Rarely,Never,Good,Single,L0,36,2,4502,530,51,7439,3,15,17,2,13,7,6,7
-3356,Male,Bachelor,Technical Degree,Research & Development,Laboratory Technician,L1,Medium,Medium,Medium,Medium,Low,Travel Rarely,Never,Better,Divorced,L1,28,17,2367,1404,32,18779,5,12,6,2,4,1,0,3
-3357,Female,College,Medical,Sales,Sales Executive,L2,Very High,Very High,Very High,High,Very High,Travel Rarely,Never,Better,Married,L1,29,3,5561,1176,62,3487,1,14,6,5,6,0,1,2
-3358,Male,Bachelor,Technical Degree,Research & Development,Manufacturing Director,L3,High,High,High,High,Medium,Travel Rarely,Never,Good,Married,L0,35,25,10903,672,78,9129,3,16,16,2,13,10,4,8
-3359,Female,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L1,High,High,High,High,Low,Travel Never,Frequently,Better,Single,L0,39,2,3646,592,54,17181,2,23,11,2,1,0,0,0
-3360,Male,Master,Medical,Research & Development,Laboratory Technician,L1,High,High,High,Low,Very High,Travel Rarely,Frequently,Good,Divorced,L1,26,16,2373,1449,45,14180,2,13,5,2,3,2,0,2
-3361,Male,Bachelor,Technical Degree,Research & Development,Research Scientist,L1,High,High,High,High,High,Travel Rarely,Never,Better,Single,L0,58,2,2479,289,51,26227,4,24,7,4,1,0,0,0
-3362,Male,College,Medical,Human Resources,Human Resources,L2,High,High,High,Very High,Very High,Travel Rarely,Frequently,Better,Divorced,L1,46,5,5021,945,80,10425,8,22,16,2,4,2,0,2
-3363,Male,Bachelor,Life Sciences,Sales,Sales Representative,L1,High,High,High,High,Medium,Travel Rarely,Frequently,Better,Divorced,L1,23,7,2275,427,99,25103,1,21,3,2,3,2,0,2
-3364,Male,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L1,Very High,Very High,Very High,Low,High,Travel Rarely,Frequently,Bad,Single,L0,32,1,3730,515,62,9571,0,14,4,2,3,2,1,2
-3365,Female,Bachelor,Medical,Research & Development,Healthcare Representative,L2,High,High,High,Low,Low,Travel Rarely,Never,Better,Married,L1,38,10,9824,1495,76,22174,3,19,18,4,1,0,0,0
-3366,Male,Bachelor,Medical,Research & Development,Research Scientist,L2,Medium,Medium,Medium,Very High,Low,Travel Rarely,Never,Better,Married,L0,37,13,4285,674,47,3031,1,17,10,2,10,8,3,7
-3367,Male,Below College,Medical,Research & Development,Research Scientist,L1,Medium,Medium,Medium,Medium,Medium,Travel Rarely,Never,Better,Married,L0,22,6,2773,604,69,12145,0,20,3,3,2,2,2,2
-3368,Female,College,Medical,Human Resources,Human Resources,L1,High,High,High,Medium,High,Travel Rarely,Frequently,Better,Married,L0,26,20,2148,920,69,6889,0,11,6,3,5,1,1,4
-3369,Female,College,Life Sciences,Research & Development,Laboratory Technician,L1,High,High,High,Medium,Low,Travel Rarely,Never,Best,Married,L0,33,2,2707,465,39,21509,7,20,13,3,9,7,1,7
-3370,Male,Bachelor,Medical,Research & Development,Manufacturing Director,L2,Medium,Medium,Medium,Medium,High,Travel Rarely,Frequently,Better,Single,L0,41,6,6032,483,95,10110,6,15,8,3,5,4,1,2
-3371,Female,Bachelor,Technical Degree,Research & Development,Research Scientist,L1,Medium,Medium,Medium,Low,Very High,Travel Rarely,Frequently,Better,Single,L0,30,3,2657,1005,88,8556,5,11,8,5,5,2,0,4
-3372,Male,Master,Life Sciences,Research & Development,Laboratory Technician,L2,Medium,Medium,Medium,Medium,Very High,Travel Rarely,Never,Good,Divorced,L1,31,7,5915,655,48,9528,3,22,10,3,7,7,1,7
-3373,Male,Bachelor,Life Sciences,Sales,Sales Executive,L3,Low,Low,Low,Medium,Low,Travel Rarely,Frequently,Good,Single,L0,52,5,8446,1030,64,21534,9,19,10,2,8,7,7,7
-3374,Male,College,Life Sciences,Research & Development,Healthcare Representative,L2,High,High,High,High,Low,Travel Rarely,Never,Good,Single,L0,24,1,4617,771,45,14120,1,12,4,2,4,3,1,2
-3375,Male,Bachelor,Life Sciences,Sales,Sales Representative,L1,High,High,High,High,High,Travel Rarely,Frequently,Better,Divorced,L1,23,7,2275,427,99,25103,1,21,3,2,3,2,0,2
-3376,Female,Below College,Technical Degree,Sales,Sales Representative,L1,Low,Low,Low,Low,High,Travel Frequently,Never,Best,Single,L0,19,1,2325,602,100,20989,0,21,1,5,0,0,0,0
-3377,Male,Below College,Technical Degree,Research & Development,Laboratory Technician,L1,Medium,Medium,Medium,High,High,Travel Frequently,Never,Better,Single,L0,22,4,3894,1368,99,9129,5,16,4,3,2,2,1,2
-3378,Female,Bachelor,Medical,Sales,Sales Representative,L1,Medium,Medium,Medium,High,Medium,Travel Rarely,Frequently,Better,Divorced,L3,29,1,2800,341,48,23522,6,19,5,3,3,2,0,2
-3379,Female,Bachelor,Marketing,Sales,Sales Representative,L1,High,High,High,Medium,Very High,Travel Frequently,Frequently,Bad,Single,L0,20,9,2323,769,54,17205,1,14,2,3,2,2,0,2
-3380,Male,Master,Life Sciences,Research & Development,Manager,L3,High,High,High,Very High,Low,Travel Never,Frequently,Better,Married,L1,47,29,11849,666,88,10268,1,12,10,2,10,7,9,9
-3381,Male,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L1,High,High,High,Very High,Very High,Travel Frequently,Frequently,Better,Divorced,L1,44,24,3161,920,43,19920,3,22,19,0,1,0,0,0
-3382,Female,Bachelor,Technical Degree,Research & Development,Research Scientist,L1,High,High,High,High,Very High,Travel Rarely,Frequently,Better,Single,L0,30,3,2657,1005,88,8556,5,11,8,5,5,2,0,4
-3383,Male,Master,Medical,Sales,Sales Executive,L3,Low,Low,Low,High,Very High,Travel Rarely,Never,Better,Married,L0,32,4,10400,1045,32,25812,1,11,14,2,14,8,9,8
-3384,Male,Below College,Life Sciences,Research & Development,Laboratory Technician,L1,High,High,High,High,Medium,Travel Rarely,Never,Best,Married,L1,24,18,2774,1127,52,13257,0,12,6,2,5,3,1,2
-3385,Male,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L1,Medium,Medium,Medium,Low,Low,Travel Rarely,Never,Better,Single,L0,20,3,3033,805,87,12828,1,12,2,2,2,2,1,2
-3386,Male,Master,Life Sciences,Research & Development,Laboratory Technician,L1,High,High,High,Medium,Very High,Travel Rarely,Never,Better,Single,L0,40,9,2018,676,86,21831,3,14,15,3,5,4,1,0
-3387,Female,College,Medical,Research & Development,Healthcare Representative,L2,Medium,Medium,Medium,High,High,Travel Rarely,Never,Good,Divorced,L2,37,25,5731,367,52,17171,7,13,9,2,6,2,1,3
-3388,Male,Bachelor,Medical,Research & Development,Laboratory Technician,L1,High,High,High,High,Medium,Travel Frequently,Frequently,Good,Single,L0,24,9,3172,381,89,16998,2,11,4,2,0,0,0,0
-3389,Male,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L1,Very High,Very High,Very High,High,High,Travel Rarely,Frequently,Good,Married,L2,23,6,1601,1243,63,3445,1,21,1,2,0,0,0,0
-3390,Male,Bachelor,Marketing,Sales,Sales Executive,L2,High,High,High,Low,High,Travel Rarely,Never,Better,Divorced,L3,48,7,5486,1221,96,24795,4,11,15,3,2,2,2,2
-3391,Male,Bachelor,Medical,Research & Development,Research Scientist,L1,Medium,Medium,Medium,Medium,Low,Travel Rarely,Frequently,Best,Single,L0,33,25,2313,1017,55,2993,4,20,5,0,2,2,2,2
-3392,Female,Bachelor,Medical,Research & Development,Laboratory Technician,L1,Very High,Very High,Very High,Low,High,Travel Rarely,Frequently,Better,Married,L3,59,3,2670,1324,81,9964,4,20,12,3,1,0,0,0
-3393,Male,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L1,Medium,Medium,Medium,Very High,Very High,Travel Rarely,Frequently,Better,Single,L0,32,1,3730,515,62,9571,0,14,4,2,3,2,1,2
-3394,Male,College,Technical Degree,Sales,Sales Executive,L2,High,High,High,Low,Medium,Travel Frequently,Frequently,Better,Married,L1,50,8,6796,562,50,23452,3,14,18,4,4,3,1,3
-3395,Female,College,Other,Research & Development,Manager,L4,High,High,High,High,High,Travel Rarely,Frequently,Good,Married,L1,47,2,16752,202,33,12982,1,11,26,3,26,14,3,0
-3396,Male,Bachelor,Life Sciences,Research & Development,Healthcare Representative,L2,Very High,Very High,Very High,Very High,Very High,Travel Frequently,Frequently,Bad,Single,L0,29,1,6294,461,70,23060,8,12,10,5,3,2,0,2
-3397,Female,Bachelor,Marketing,Sales,Sales Representative,L1,High,High,High,Medium,Very High,Travel Frequently,Frequently,Better,Single,L0,20,9,2323,769,54,17205,1,14,2,3,2,2,0,2
-3398,Female,College,Life Sciences,Research & Development,Research Scientist,L2,Medium,Medium,Medium,Low,Very High,Travel Rarely,Never,Better,Married,L1,32,5,5878,824,67,15624,3,12,12,2,7,1,2,5
-3399,Male,Bachelor,Medical,Research & Development,Research Scientist,L1,Medium,Medium,Medium,Medium,Low,Travel Rarely,Frequently,Better,Single,L0,33,25,2313,1017,55,2993,4,20,5,0,2,2,2,2
-3400,Female,College,Life Sciences,Research & Development,Research Scientist,L2,Very High,Very High,Very High,High,Very High,Travel Rarely,Frequently,Better,Single,L0,42,17,6545,916,82,23016,3,13,10,1,3,2,0,2
-3401,Male,Bachelor,Marketing,Sales,Sales Executive,L2,High,High,High,High,Medium,Travel Rarely,Never,Better,Married,L0,35,1,4717,619,85,18659,9,11,15,2,11,9,6,9
-3402,Male,Master,Life Sciences,Research & Development,Laboratory Technician,L1,High,High,High,High,Low,Travel Rarely,Never,Bad,Single,L0,28,2,3485,529,79,14935,2,11,5,5,0,0,0,0
-3403,Female,Master,Life Sciences,Research & Development,Research Scientist,L1,High,High,High,Low,Very High,Travel Frequently,Frequently,Good,Divorced,L1,35,25,2022,130,96,16612,1,19,10,3,10,2,7,8
-3404,Male,Bachelor,Medical,Research & Development,Laboratory Technician,L1,High,High,High,High,High,Travel Rarely,Frequently,Bad,Married,L1,33,14,2436,813,58,22149,5,13,8,2,5,4,0,4
-3405,Male,College,Technical Degree,Research & Development,Laboratory Technician,L1,High,High,High,Very High,Very High,Travel Rarely,Never,Bad,Married,L1,56,7,2339,310,72,3666,8,11,14,4,10,9,9,8
-3406,Female,College,Medical,Sales,Sales Representative,L1,High,High,High,High,Medium,Travel Frequently,Frequently,Best,Single,L0,18,3,1569,544,70,18420,1,12,0,2,0,0,0,0
-3407,Male,Bachelor,Medical,Research & Development,Research Scientist,L2,Very High,Very High,Very High,Low,High,Travel Rarely,Frequently,Better,Divorced,L2,37,6,5974,1319,51,17001,4,13,13,2,7,7,6,7
-3408,Male,Bachelor,Life Sciences,Research & Development,Healthcare Representative,L3,High,High,High,Low,Low,Travel Frequently,Never,Better,Married,L0,31,20,9824,534,66,22908,3,12,12,2,1,0,0,0
-3409,Male,College,Life Sciences,Research & Development,Laboratory Technician,L3,Medium,Medium,Medium,Very High,Low,Travel Rarely,Frequently,Better,Single,L0,48,1,5381,626,98,19294,9,13,23,2,1,0,0,0
-3410,Female,College,Medical,Research & Development,Laboratory Technician,L1,Medium,Medium,Medium,Medium,Medium,Travel Frequently,Never,Good,Single,L0,51,6,2838,968,40,4257,0,14,8,6,7,0,7,7
-3411,Male,Master,Life Sciences,Research & Development,Healthcare Representative,L3,High,High,High,Medium,High,Travel Rarely,Never,Better,Divorced,L2,49,7,10466,1490,35,20948,3,14,29,3,8,7,0,7
-3412,Male,Master,Life Sciences,Sales,Sales Executive,L3,High,High,High,Medium,Low,Travel Rarely,Frequently,Good,Single,L0,53,24,10448,1168,66,5843,6,13,15,2,2,2,2,2
-3413,Female,Doctor,Technical Degree,Research & Development,Manufacturing Director,L3,Medium,Medium,Medium,Medium,High,Travel Rarely,Never,Better,Married,L1,53,2,10169,607,78,14618,0,16,34,4,33,7,1,9
-3414,Female,Master,Life Sciences,Research & Development,Research Scientist,L2,Medium,Medium,Medium,Low,Very High,Travel Rarely,Frequently,Better,Divorced,L3,46,8,4615,1003,74,21029,8,23,19,2,16,13,1,7
-3415,Male,Master,Marketing,Sales,Sales Executive,L2,Medium,Medium,Medium,Medium,Very High,Travel Rarely,Frequently,Better,Single,L0,26,4,5828,950,48,8450,1,12,8,0,8,7,7,4
-3416,Female,Bachelor,Marketing,Sales,Sales Executive,L2,Low,Low,Low,Medium,Low,Travel Rarely,Never,Good,Single,L0,43,9,5346,1372,85,9489,8,13,7,2,4,3,1,3
-3417,Male,Master,Life Sciences,Sales,Sales Executive,L2,High,High,High,High,Low,Travel Frequently,Never,Better,Married,L1,43,2,5675,1422,92,19246,1,20,7,5,7,7,7,7
-3418,Male,Below College,Medical,Sales,Sales Executive,L2,High,High,High,High,High,Travel Rarely,Never,Good,Single,L0,55,2,5160,436,37,21519,4,16,12,3,9,7,7,3
-3419,Female,Bachelor,Medical,Research & Development,Laboratory Technician,L1,High,High,High,Low,Low,Travel Rarely,Never,Best,Single,L0,32,9,4200,1033,41,10224,7,22,10,2,5,4,0,4
-3420,Female,Below College,Medical,Research & Development,Laboratory Technician,L1,Low,Low,Low,High,Very High,Travel Rarely,Frequently,Better,Divorced,L3,31,2,1129,1276,59,17536,1,11,1,4,1,0,0,0
-3421,Female,Master,Medical,Research & Development,Manufacturing Director,L3,Medium,Medium,Medium,Very High,High,Travel Rarely,Frequently,Better,Married,L0,58,7,10008,601,53,12023,7,14,31,0,10,9,5,9
-3422,Male,Bachelor,Technical Degree,Sales,Sales Representative,L1,High,High,High,Very High,Low,Travel Frequently,Never,Better,Married,L1,28,1,2909,1496,92,15747,3,15,5,3,3,2,1,2
-3423,Female,Master,Medical,Sales,Sales Executive,L2,Medium,Medium,Medium,High,Low,Travel Rarely,Frequently,Bad,Single,L0,34,24,4599,790,40,7815,0,23,16,2,15,9,10,10
-3424,Male,Bachelor,Life Sciences,Research & Development,Research Scientist,L1,High,High,High,Low,Low,Travel Frequently,Frequently,Good,Single,L0,33,3,3348,1076,70,3164,1,11,10,3,10,8,9,7
-3425,Female,College,Marketing,Sales,Sales Representative,L1,Low,Low,Low,Very High,Very High,Travel Frequently,Never,Bad,Divorced,L1,34,6,2351,296,33,12253,0,16,3,3,2,2,1,0
-3426,Male,Master,Life Sciences,Sales,Sales Executive,L2,High,High,High,Low,Very High,Travel Rarely,Never,Bad,Married,L2,38,1,4440,1321,86,7636,0,15,16,3,15,13,5,8
-3427,Male,Bachelor,Technical Degree,Research & Development,Laboratory Technician,L1,Low,Low,Low,Medium,High,Travel Rarely,Frequently,Best,Single,L0,26,24,2340,471,66,23213,1,18,1,3,1,0,0,0
-3428,Female,Master,Life Sciences,Research & Development,Laboratory Technician,L1,High,High,High,Medium,Medium,Travel Rarely,Never,Better,Divorced,L1,42,1,2576,201,95,20490,3,16,8,5,5,2,1,2
-3429,Female,Bachelor,Technical Degree,Research & Development,Healthcare Representative,L3,Medium,Medium,Medium,Very High,High,Travel Rarely,Frequently,Better,Divorced,L1,58,5,10552,1272,37,9255,2,13,24,3,6,0,0,4
-3430,Female,College,Marketing,Sales,Sales Executive,L2,High,High,High,High,Very High,Travel Rarely,Never,Better,Divorced,L2,40,2,5715,759,46,22553,7,12,8,5,5,4,1,3
-3431,Male,Master,Marketing,Sales,Sales Executive,L4,Very High,Very High,Very High,High,Low,Travel Rarely,Frequently,Good,Single,L0,55,13,13695,267,85,9277,6,17,24,2,19,7,3,8
-3432,Female,Bachelor,Technical Degree,Research & Development,Laboratory Technician,L2,Medium,Medium,Medium,Low,Low,Travel Rarely,Never,Better,Married,L1,30,6,4627,1138,48,23631,0,12,10,6,9,2,6,7
-3433,Male,College,Life Sciences,Research & Development,Manager,L5,Very High,Very High,Very High,Very High,High,Travel Rarely,Never,Good,Divorced,L2,44,4,19190,1199,92,17477,1,14,26,4,25,9,14,13
-3434,Male,Master,Life Sciences,Research & Development,Manager,L5,Medium,Medium,Medium,Low,High,Travel Rarely,Never,Better,Married,L1,52,1,19999,699,65,5678,0,14,34,5,33,18,11,9
-3435,Male,Below College,Medical,Research & Development,Research Scientist,L1,Medium,Medium,Medium,High,High,Travel Rarely,Frequently,Better,Single,L0,29,18,2389,896,86,14961,1,13,4,3,4,3,0,1
-3436,Female,College,Life Sciences,Research & Development,Research Scientist,L2,Very High,Very High,Very High,High,Very High,Travel Rarely,Frequently,Better,Single,L0,42,17,6545,916,82,23016,3,13,10,1,3,2,0,2
-3437,Male,Bachelor,Technical Degree,Sales,Sales Executive,L2,Medium,Medium,Medium,High,Very High,Travel Rarely,Never,Good,Single,L0,26,8,5326,1146,38,3064,6,17,6,2,4,3,1,2
-3438,Female,Master,Other,Research & Development,Research Scientist,L1,Very High,Very High,Very High,Very High,Medium,Travel Rarely,Never,Better,Married,L2,32,5,3312,634,35,18783,3,17,6,3,3,2,0,2
-3439,Male,College,Other,Research & Development,Laboratory Technician,L1,Medium,Medium,Medium,Medium,Very High,Travel Rarely,Frequently,Good,Single,L0,37,2,2090,1373,92,2396,6,15,7,3,0,0,0,0
-3440,Female,College,Marketing,Sales,Sales Executive,L3,High,High,High,High,Medium,Travel Rarely,Never,Best,Divorced,L3,46,1,10453,526,92,2137,1,25,24,2,24,13,15,7
-3441,Female,Bachelor,Technical Degree,Research & Development,Research Director,L5,High,High,High,Very High,Medium,Travel Rarely,Never,Better,Married,L0,41,12,19545,1360,49,16280,1,12,23,0,22,15,15,8
-3442,Male,Bachelor,Medical,Research & Development,Manufacturing Director,L3,High,High,High,Very High,Very High,Travel Rarely,Frequently,Good,Married,L1,42,24,7406,319,56,6950,1,21,10,5,10,9,5,8
-3443,Female,Bachelor,Technical Degree,Research & Development,Research Scientist,L1,High,High,High,High,Very High,Travel Rarely,Frequently,Best,Single,L0,30,3,2657,1005,88,8556,5,11,8,5,5,2,0,4
-3444,Male,Below College,Life Sciences,Research & Development,Laboratory Technician,L1,Medium,Medium,Medium,Very High,Very High,Travel Frequently,Frequently,Best,Divorced,L1,58,2,2380,781,57,13384,9,14,3,3,1,0,0,0
-3445,Male,Bachelor,Medical,Research & Development,Laboratory Technician,L2,High,High,High,High,High,Travel Never,Never,Better,Divorced,L2,30,9,3072,111,66,11012,1,11,12,4,12,9,6,10
-3446,Female,College,Life Sciences,Research & Development,Laboratory Technician,L1,High,High,High,Low,Low,Travel Rarely,Never,Good,Married,L0,33,2,2707,465,39,21509,7,20,13,3,9,7,1,7
-3447,Male,Bachelor,Life Sciences,Research & Development,Research Scientist,L1,High,High,High,High,Very High,Travel Rarely,Frequently,Better,Single,L0,38,2,3944,371,45,4306,5,11,6,3,3,2,1,2
-3448,Male,Below College,Technical Degree,Research & Development,Laboratory Technician,L1,Medium,Medium,Medium,High,High,Travel Frequently,Never,Bad,Single,L0,22,4,3894,1368,99,9129,5,16,4,3,2,2,1,2
-3449,Female,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L1,Medium,Medium,Medium,Medium,Very High,Travel Frequently,Frequently,Better,Single,L0,20,6,2926,871,66,19783,1,18,1,5,1,0,1,0
-3450,Female,College,Life Sciences,Research & Development,Laboratory Technician,L1,High,High,High,High,High,Travel Rarely,Never,Better,Single,L0,38,9,2288,1380,75,6319,1,12,2,3,2,2,2,1
-3451,Female,College,Marketing,Sales,Sales Executive,L2,High,High,High,Very High,Very High,Travel Never,Never,Good,Married,L1,31,20,6932,1188,45,24406,1,13,9,2,9,8,0,0
-3452,Male,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L1,High,High,High,Medium,Low,Travel Rarely,Never,Better,Married,L0,50,9,2380,804,64,20165,4,18,8,5,1,0,0,0
-3453,Female,College,Marketing,Sales,Sales Representative,L1,Low,Low,Low,Very High,Very High,Travel Frequently,Never,Good,Divorced,L1,34,6,2351,296,33,12253,0,16,3,3,2,2,1,0
-3454,Female,Master,Life Sciences,Research & Development,Laboratory Technician,L1,Low,Low,Low,High,Medium,Travel Rarely,Frequently,Good,Divorced,L1,41,2,2778,1085,57,17725,4,13,10,1,7,7,1,0
-3455,Female,College,Medical,Research & Development,Healthcare Representative,L2,Low,Low,Low,Low,Low,Travel Rarely,Never,Bad,Married,L0,37,11,4777,1141,61,14382,5,15,15,2,1,0,0,0
-3456,Female,Bachelor,Life Sciences,Research & Development,Research Scientist,L1,High,High,High,Low,Very High,Travel Frequently,Never,Bad,Single,L0,31,3,4084,561,33,4156,1,12,7,2,7,2,7,7
-3457,Male,Bachelor,Marketing,Sales,Sales Executive,L3,High,High,High,Low,Low,Travel Rarely,Never,Best,Divorced,L1,46,9,10096,377,52,15986,4,11,28,1,7,7,4,3
-3458,Male,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L1,Very High,Very High,Very High,High,High,Travel Rarely,Frequently,Better,Married,L2,23,6,1601,1243,63,3445,1,21,1,2,0,0,0,0
-3459,Male,College,Life Sciences,Research & Development,Healthcare Representative,L3,Very High,Very High,Very High,Medium,High,Travel Rarely,Frequently,Bad,Divorced,L1,57,24,9439,334,83,23402,3,16,12,2,5,3,1,4
-3460,Male,College,Life Sciences,Research & Development,Laboratory Technician,L2,High,High,High,Low,Very High,Travel Rarely,Never,Better,Married,L1,32,7,4883,1089,79,22845,1,18,10,3,10,4,1,1
-3461,Male,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L1,High,High,High,High,Very High,Travel Rarely,Frequently,Bad,Single,L0,32,1,3730,515,62,9571,0,14,4,2,3,2,1,2
-3462,Female,College,Life Sciences,Research & Development,Research Scientist,L2,High,High,High,High,Very High,Travel Rarely,Never,Better,Married,L1,32,5,5878,824,67,15624,3,12,12,2,7,1,2,5
-3463,Female,Bachelor,Marketing,Sales,Sales Representative,L1,High,High,High,Medium,Low,Travel Rarely,Never,Better,Married,L0,35,2,2014,890,97,9687,1,13,2,3,2,2,2,2
-3464,Male,Master,Life Sciences,Sales,Sales Representative,L1,High,High,High,High,Low,Travel Rarely,Never,Better,Single,L0,36,9,3407,1218,82,6986,7,23,10,4,5,3,0,3
-3465,Female,Master,Life Sciences,Research & Development,Manufacturing Director,L2,High,High,High,High,Low,Travel Frequently,Frequently,Better,Single,L0,38,2,5980,240,75,26085,6,12,17,2,15,7,4,12
-3466,Female,Master,Life Sciences,Research & Development,Laboratory Technician,L2,Medium,Medium,Medium,Low,Very High,Travel Frequently,Never,Best,Divorced,L1,43,10,5257,559,82,6227,1,11,9,3,9,7,0,0
-3467,Male,Bachelor,Life Sciences,Research & Development,Healthcare Representative,L3,High,High,High,Medium,Low,Travel Rarely,Frequently,Better,Married,L1,36,10,8321,1383,90,25949,7,13,15,1,12,8,5,7
-3468,Female,College,Life Sciences,Sales,Sales Executive,L2,Medium,Medium,Medium,High,Low,Travel Rarely,Never,Better,Single,L0,24,3,4577,693,65,24785,9,14,4,3,2,2,2,0
-3469,Male,Below College,Life Sciences,Research & Development,Research Scientist,L1,Medium,Medium,Medium,High,Low,Travel Rarely,Frequently,Better,Single,L0,22,7,2472,391,75,26092,1,23,1,2,1,0,0,0
-3470,Male,Master,Other,Research & Development,Research Scientist,L2,Very High,Very High,Very High,Very High,Medium,Travel Frequently,Frequently,Better,Married,L0,34,22,5747,735,86,26496,1,15,16,3,15,10,6,11
-3471,Female,College,Marketing,Sales,Sales Representative,L1,Very High,Very High,Very High,Low,Medium,Travel Rarely,Frequently,Good,Single,L0,41,20,3140,1356,70,21728,1,22,4,5,4,3,0,2
-3472,Female,Bachelor,Marketing,Sales,Sales Executive,L3,High,High,High,High,Very High,Travel Rarely,Never,Good,Married,L3,29,27,7639,121,35,24525,1,22,10,3,10,4,1,9
-3473,Female,Master,Marketing,Sales,Sales Representative,L2,Medium,Medium,Medium,High,Low,Travel Rarely,Frequently,Good,Married,L2,38,2,5405,723,77,4244,2,20,20,4,4,2,0,3
-3474,Male,College,Marketing,Sales,Sales Executive,L3,High,High,High,High,Very High,Travel Rarely,Never,Better,Divorced,L1,30,15,7140,979,94,3088,2,11,12,2,7,7,1,7
-3475,Female,College,Life Sciences,Sales,Sales Executive,L1,High,High,High,Low,Very High,Travel Rarely,Never,Better,Single,L0,24,3,4577,693,65,24785,9,14,4,3,2,2,2,0
-3476,Female,Below College,Life Sciences,Research & Development,Research Scientist,L2,Very High,Very High,Very High,High,High,Travel Frequently,Frequently,Better,Single,L0,32,16,3919,1125,72,4681,1,22,10,5,10,2,6,7
-3477,Male,Bachelor,Life Sciences,Research & Development,Healthcare Representative,L2,High,High,High,High,High,Travel Frequently,Frequently,Bad,Married,L1,42,2,10124,288,40,18611,2,14,24,3,20,8,13,9
-3478,Female,Bachelor,Technical Degree,Sales,Sales Executive,L2,High,High,High,Very High,Low,Travel Frequently,Never,Bad,Single,L0,29,13,5765,115,51,17485,5,11,7,4,5,3,0,0
-3479,Female,Bachelor,Medical,Research & Development,Laboratory Technician,L1,High,High,High,High,High,Travel Rarely,Never,Better,Married,L1,32,2,2370,1062,75,3956,1,13,8,4,8,0,0,7
-3480,Male,Bachelor,Marketing,Sales,Sales Representative,L2,High,High,High,Low,Very High,Travel Frequently,Never,Good,Married,L1,23,9,1790,638,33,26956,1,19,1,3,1,0,1,0
-3481,Female,College,Medical,Human Resources,Human Resources,L4,High,High,High,High,Very High,Travel Rarely,Frequently,Better,Married,L0,26,20,2148,920,69,6889,0,11,6,3,5,1,1,4
-3482,Male,Doctor,Marketing,Sales,Sales Executive,L2,High,High,High,High,Very High,Travel Rarely,Never,Good,Married,L1,32,7,9204,601,97,23343,4,12,7,3,4,3,0,3
-3483,Male,Bachelor,Life Sciences,Research & Development,Healthcare Representative,L2,High,High,High,Medium,Low,Travel Rarely,Never,Better,Married,L1,43,11,7510,574,30,16873,1,17,10,1,10,9,0,9
-3484,Female,College,Other,Research & Development,Laboratory Technician,L5,High,High,High,High,Low,Travel Rarely,Never,Good,Married,L1,49,8,7403,527,51,22477,4,11,29,3,26,9,1,7
-3485,Male,College,Medical,Research & Development,Manufacturing Director,L3,High,High,High,High,Low,Travel Rarely,Never,Better,Married,L0,34,1,4325,1153,94,17736,1,15,5,2,5,2,1,3
-3486,Male,Below College,Medical,Research & Development,Healthcare Representative,L1,Medium,Medium,Medium,Low,Very High,Travel Rarely,Never,Better,Married,L1,39,6,9991,613,42,21457,4,15,9,5,7,7,1,7
-3487,Male,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L1,High,High,High,Medium,Low,Travel Rarely,Frequently,Bad,Single,L0,40,7,2166,1329,73,3339,3,14,10,3,4,2,0,3
-3488,Female,Below College,Technical Degree,Sales,Sales Representative,L1,Medium,Medium,Medium,High,Low,Travel Frequently,Frequently,Better,Single,L0,21,1,2174,756,99,9150,1,11,3,3,3,2,1,2
-3489,Female,Master,Medical,Sales,Sales Executive,L1,Medium,Medium,Medium,High,Low,Travel Rarely,Frequently,Best,Single,L0,34,24,4599,790,40,7815,0,23,16,2,15,9,10,10
-3490,Female,College,Life Sciences,Sales,Sales Executive,L1,Very High,Very High,Very High,Very High,Medium,Travel Frequently,Frequently,Better,Single,L0,47,27,6397,719,77,10339,4,12,8,2,5,4,1,3
-3491,Male,College,Life Sciences,Research & Development,Research Scientist,L3,Very High,Very High,Very High,Low,Medium,Travel Rarely,Never,Good,Married,L1,57,1,4900,405,93,2721,0,24,13,2,12,9,2,8
-3492,Female,Bachelor,Technical Degree,Research & Development,Research Scientist,L1,High,High,High,High,Very High,Travel Rarely,Frequently,Better,Single,L0,30,3,2657,1005,88,8556,5,11,8,5,5,2,0,4
-3493,Male,College,Technical Degree,Human Resources,Human Resources,L1,Medium,Medium,Medium,High,Low,Travel Rarely,Never,Best,Single,L0,19,2,2564,489,52,18437,1,12,1,3,1,0,0,0
-3494,Female,Bachelor,Medical,Research & Development,Healthcare Representative,L1,High,High,High,High,Very High,Travel Rarely,Frequently,Bad,Married,L2,31,12,5855,616,41,17369,0,11,10,2,9,7,8,5
-3495,Male,College,Life Sciences,Research & Development,Laboratory Technician,L1,High,High,High,Low,Very High,Travel Rarely,Never,Better,Married,L1,32,7,4883,1089,79,22845,1,18,10,3,10,4,1,1
-3496,Male,Bachelor,Life Sciences,Research & Development,Laboratory Technician,L1,Very High,Very High,Very High,High,High,Travel Rarely,Frequently,Better,Married,L2,23,6,1601,1243,63,3445,1,21,1,2,0,0,0,0
-3497,Male,Bachelor,Other,Research & Development,Manufacturing Director,L1,High,High,High,High,High,Travel Rarely,Never,Better,Married,L1,37,3,9434,482,36,9606,1,15,10,2,10,7,7,8
-3498,Male,Bachelor,Medical,Human Resources,Human Resources,L1,High,High,High,Very High,Low,Travel Frequently,Never,Better,Married,L1,24,10,2145,897,59,2097,0,14,3,2,2,2,2,1
-3499,Female,Below College,Medical,Research & Development,Manager,L5,High,High,High,Medium,Very High,Travel Rarely,Never,Better,Married,L1,40,4,19033,989,46,6499,1,14,21,2,20,8,9,9
-3500,Male,Bachelor,Marketing,Sales,Sales Executive,L3,Medium,Medium,Medium,Medium,Very High,Travel Rarely,Frequently,Better,Divorced,L1,50,28,10854,410,39,16586,4,13,20,3,3,2,2,0
+credit_limit,sex,education,marriage,age,repayment_status_1,repayment_status_2,repayment_status_3,repayment_status_4,repayment_status_5,repayment_status_6,bill_amount_1,bill_amount_2,bill_amount_3,bill_amount_4,bill_amount_5,bill_amount_6,payment_amount_1,payment_amount_2,payment_amount_3,payment_amount_4,payment_amount_5,payment_amount_6
+40000,female,university,single,55,no_delay,no_delay,no_delay,no_delay,no_delay,no_delay,14610.95,7010.35,6770.95,7160.55,7470.4,7770.45,14250,7500,5000,5000,5250,7600
+36000,male,university,married,37,no_delay,no_delay,no_delay,no_delay,no_delay,no_delay,4174.56,2002.96,1934.56,2045.87,2134.40,2220.13,4071.43,2142.86,1428.57,1428.57,1500.00,2171.43
+13000,female,university,married,47,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,9.90,0.00,0.00,0.00,235.30,0.00,0.00,0.00,0.00,235.30,0.00,0.00
+10000,male,graduate_school,married,55,duly_paid,duly_paid,duly_paid,duly_paid,delay_2_months,delay_2_months,7625.95,7437.55,7203.8,408.7,409.9,395.9,0,0,411.1,15,0,50
+1000,male,university,married,53,delay_2_months,delay_2_months,delay_2_months,no_delay,no_delay,no_delay,104.85,209.65,198.9,203.1,209.8,216.3,115,0,7.5,10,10,8
+10500,female,graduate_school,single,26,delay_2_months,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,30,30,115.9,228,30,425,30,115.9,228,30,425,90.9
+6500,female,high_school,single,27,delay_1_month,duly_paid,duly_paid,duly_paid,delay_2_months,duly_paid,-9.5,-492.5,-492.5,515.55,508.05,365.95,0,0,1008.05,0,365.95,694.95
+1000,male,university,married,39,no_delay,no_delay,no_delay,no_delay,no_delay,duly_paid,898.65,968.35,977.95,912,896.4,7.5,84.95,73,31.3,87.5,7.5,0
+7000,male,graduate_school,single,36,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,67.2,1021.2,85,41.5,10,143,1021.2,85,41.5,10,143,0
+19000,female,graduate_school,single,30,duly_paid,duly_paid,duly_paid,no_delay,no_delay,no_delay,-4.05,-15.15,1623.75,1644.55,1678.2,1702.8,11.15,1658.9,58.55,59.85,62.5,250
+24000,male,graduate_school,married,61,no_delay,no_delay,no_delay,delay_2_months,delay_2_months,no_delay,21103.45,21567.1,23971.6,24353.3,23557.25,23498.05,803.9,2784.65,850,0,900,1210
+2500,female,high_school,single,17,no_delay,no_delay,no_delay,no_delay,no_delay,no_delay,2234.9,2112.7,1917.35,1624.8,1173.85,1204.7,88.35,68.1,50.1,42,49.75,45.2
+3000,female,university,single,25,delay_2_months,delay_2_months,delay_2_months,delay_2_months,delay_2_months,no_delay,5668.5,5520.8,5917.5,6021.8,5544.7,5530.5,0,500,251.1,0.6,300,300
+7000,female,university,single,20,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,558,0,0,0,0,2652.9,0,0,0,0,2652.9,200
+4000,female,university,married,36,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,305.4,143.05,163.85,165.95,57.5,57.5,143.05,163.95,165.95,57.5,57.5,51.75
+35000,male,graduate_school,single,48,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,35.65,113.6,36.1,43.35,57.5,263.15,113.6,36.1,43.35,57.5,263.15,250.55
+6500,male,university,single,42,no_delay,no_delay,no_delay,duly_paid,duly_paid,duly_paid,17143.8,17838.2,3994,12048.3,4412.7,12656.8,1090.8,0,13365.7,456.6,13384.1,479.6
+36000,male,university,married,36,delay_1_month,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,-5.15,-5.15,-5.15,-5.15,-5.15,-5.15,0,0,0,0,0,0
+16500,female,graduate_school,married,36,no_delay,no_delay,delay_2_months,no_delay,no_delay,no_delay,10587.9,10843.1,10559.4,10589.6,10649.1,10728.9,926,0,359.3,410,1579.4,0
+5000,male,high_school,married,43,no_delay,no_delay,delay_2_months,no_delay,no_delay,no_delay,1324.4,1472.2,1518.1,1592.8,1667.1,1739.3,200,100,100,100,100,100
+14000,male,university,married,38,delay_2_months,delay_2_months,delay_2_months,delay_2_months,delay_2_months,delay_3_months,6783.65,6926.6,6740.65,7220.05,7608.7,7470.75,325,0,712.7,742.5,0,250
+5000,female,graduate_school,single,27,no_delay,no_delay,no_delay,no_delay,no_delay,no_delay,5212.8,5269.2,5447.7,5607.6,6010,5971.3,200,267.7,307.6,508,300,203.3
+5000,male,university,single,37,no_delay,no_delay,no_delay,no_delay,no_delay,no_delay,950.75,964.7,1012.95,1013.7,1015.55,997.85,67,65.25,35,35.9,36.2,34.2
+3000,male,graduate_school,single,27,duly_paid,delay_2_months,no_delay,no_delay,delay_3_months,delay_2_months,909.95,880.9,931.55,1065.95,1034.6,1060.05,0,65.6,150,0,50,50
+24000,male,graduate_school,single,31,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,16.3,16.3,16.3,283.8,23.8,16.3,16.3,16.3,283.8,23.8,16.3,26.3
+8000,male,university,single,24,delay_2_months,no_delay,no_delay,no_delay,no_delay,no_delay,1402.9,1549.3,1663,1705.5,1762.9,1818.6,200,170,100,100,100,100
+40000,male,university,married,35,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,983,483.3,593.35,391.95,741.85,397.95,483.85,593.35,391.95,741.85,397.95,285.6
+12000,female,university,single,34,no_delay,no_delay,no_delay,no_delay,duly_paid,duly_paid,2512.7,2572.25,2650.75,2623.95,65.35,60.15,100,150,150,65.35,60.15,28.15
+5000,male,high_school,single,40,delay_2_months,delay_2_months,delay_2_months,delay_3_months,delay_2_months,delay_2_months,2300.2,2298.8,2447.65,2442.55,2465.9,2557.15,50,201.75,50,70,140,0
+45000,male,graduate_school,married,38,delay_1_month,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,0,0,0,0,0,0,0,0,0,0,0,0
+5500,female,graduate_school,married,52,delay_1_month,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,0,0,0,0,0,0,0,0,0,0,0,0
+15500,female,university,married,33,delay_2_months,no_delay,no_delay,no_delay,no_delay,no_delay,30499.1,31124.3,30631.4,25861,24649.1,19888.9,1301.9,1112.8,840.7,859.9,683.3,598.7
+2000,male,graduate_school,single,30,no_delay,no_delay,no_delay,no_delay,no_delay,no_delay,1911.5,1896.2,1929.8,1937.8,1971.7,1563,140.4,113,60,86.1,31.3,0
+2000,male,university,single,23,delay_1_month,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,0,0,0,0,0,0,0,0,0,0,0,0
+2500,male,university,single,30,delay_1_month,delay_2_months,no_delay,no_delay,no_delay,delay_2_months,2443,2390.05,2418.15,1511.05,1143.85,1118.05,0,75,50,100,0,100
+1000,female,university,single,23,no_delay,no_delay,no_delay,no_delay,no_delay,no_delay,1600.1,1262.2,1322.1,1313,1403.4,1490.6,121.2,120.1,50,150,150,100
+8000,female,university,married,32,no_delay,no_delay,delay_2_months,no_delay,no_delay,no_delay,3894.15,4090.55,4012.5,3073.35,533.1,574.3,290,50,30,20,50,0
+24000,male,graduate_school,single,38,duly_paid,duly_paid,delay_2_months,no_delay,no_delay,duly_paid,610.6,1328.9,1266.55,1330.25,1313.95,62.8,750,0,100,0,62.8,3296.75
+8000,female,high_school,single,30,no_delay,duly_paid,no_delay,no_delay,no_delay,no_delay,2480.4,620.6,743.65,868.2,888.5,873,625,325,150,100,150,100
+25000,female,graduate_school,married,46,no_delay,no_delay,no_delay,no_delay,no_delay,no_delay,2821.1,5530.8,5517,6148.35,5441.7,3503.2,3500.5,1517.85,1500,1000,2609.15,1000
+3000,female,university,married,28,no_delay,no_delay,no_delay,no_delay,no_delay,no_delay,2901.2,2894.55,2441.95,948.55,966.15,969.75,125,80,150,50,36.85,100
+1000,male,university,single,23,no_delay,no_delay,no_delay,no_delay,no_delay,duly_paid,1064.2,1167.7,1307,1228,161.5,162,120,159.3,60.1,13.5,182.4,0
+10000,female,university,married,36,delay_1_month,delay_2_months,no_delay,no_delay,delay_2_months,no_delay,1448.3,1396.1,1532.3,1626.8,1586.8,1644.8,0,160,150,0,100,150
+18000,female,graduate_school,single,37,delay_1_month,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,130.8,2853.85,264.35,3422.25,694.05,812,2854.35,264.75,3422.7,694.45,812.5,1915.65
+10000,female,high_school,single,42,delay_2_months,delay_2_months,delay_2_months,delay_2_months,delay_2_months,delay_2_months,9971.8,10147.35,9696.8,9809.3,10008.1,9495.75,410.7,350,340,356.7,0,341.8
+25000,female,graduate_school,married,31,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,20.6,6.9,114.95,62.55,60.3,57.55,6.9,114.95,62.55,60.3,57.55,790.8
+3000,female,high_school,single,27,delay_1_month,delay_2_months,delay_2_months,no_delay,no_delay,no_delay,2901,2925.6,2812.2,2983.6,163,0,100,8.5,171.4,10.4,0,0
+18000,female,graduate_school,married,35,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,75,0,0,0,0,0,0,0,0,0,0,0
+7000,male,graduate_school,single,26,no_delay,no_delay,delay_2_months,no_delay,no_delay,delay_2_months,1356.15,1364.95,899.25,1011.25,1370.35,541.65,1250,0,150,390,0,125
+7000,female,graduate_school,single,23,duly_paid,no_delay,duly_paid,duly_paid,duly_paid,duly_paid,671.2,900,650.05,290.9,675.3,24.35,500,650.05,292.05,675.3,24.35,350.2
+12000,male,university,single,21,no_delay,no_delay,no_delay,no_delay,no_delay,no_delay,10731.4,11057.8,11373.6,11600,11913.1,12213.5,500,500,415.2,500,500,500
+36000,female,university,married,50,no_delay,no_delay,no_delay,no_delay,no_delay,no_delay,22643,23187.8,23419.2,19021.1,17355.7,14651.1,910,730,580,560,560,410
+2000,male,high_school,married,47,duly_paid,duly_paid,no_delay,no_delay,no_delay,no_delay,11.35,1017.55,1011.85,966.95,972.5,966.85,1117.95,65.25,62.9,72.95,172.85,85
+10000,male,graduate_school,married,50,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,39,147.3,39,39,39,0,147.3,39,39,39,0,238
+21000,female,university,married,42,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,154.4,79.3,17.15,188.15,43.85,0,79.3,17.15,188.15,43.85,0,20.95
+4000,female,university,single,23,no_delay,no_delay,no_delay,no_delay,no_delay,no_delay,4081.25,4077.7,3979.95,2477.6,2475.45,2478.4,160,150,101.9,100,90,90
+33000,female,graduate_school,married,47,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,443.6,216.85,142.7,84.5,0,85.45,217.25,142.7,85.1,0,85.45,12.9
+22000,male,graduate_school,single,24,no_delay,no_delay,no_delay,duly_paid,duly_paid,duly_paid,10560.7,10891.7,11152,830.3,0,8563.2,500,505,830.3,0,8563.2,0
+10500,female,graduate_school,married,36,delay_1_month,duly_paid,duly_paid,no_delay,duly_paid,duly_paid,0,0,25,12.3,78.9,122.2,0,25,0,78.9,122.2,961.6
+2000,female,high_school,married,38,no_delay,no_delay,no_delay,no_delay,no_delay,no_delay,3825.7,3890.1,3810.3,3620.7,3313.8,3133.9,170,150.4,120,150,150,100
+1500,male,university,single,36,no_delay,no_delay,no_delay,delay_2_months,no_delay,no_delay,1417.35,1405.4,919.4,649.6,386.8,401.6,151.8,115.45,0,50,100,7.4
+47000,male,university,single,27,delay_2_months,delay_2_months,delay_2_months,delay_2_months,no_delay,no_delay,29657.3,30332,30784.3,47997.8,30514.5,30995.9,1300,1100.1,0,1048.4,1083.8,1036.7
+1500,male,high_school,married,41,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,delay_2_months,19.5,19.5,19.5,12,66,39,19.5,19.5,12,73.5,0,0
+17000,female,graduate_school,single,23,no_delay,no_delay,no_delay,no_delay,no_delay,no_delay,6518.5,6559.95,6445,6275.7,6364,6441.95,326.5,243,1125,241,243.85,248.1
+17500,male,high_school,married,43,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,326.5,268.6,186.4,56.9,0,0,268.6,186.4,56.9,0,0,0
+1000,male,university,married,40,no_delay,no_delay,no_delay,no_delay,no_delay,no_delay,1645.5,1651.1,1890.2,1876.8,1865,1917.5,160.9,300,66.3,67.6,83.4,78.2
+2500,male,university,single,27,delay_2_months,no_delay,no_delay,no_delay,no_delay,no_delay,2487.9,2422.8,2205.8,1062.35,1003.3,942.9,120.05,112.7,100.2,35.2,35.35,50.2
+1000,female,high_school,single,21,delay_1_month,delay_2_months,no_delay,no_delay,no_delay,no_delay,1915.4,1816.5,1723.3,763,173,0,0,133.3,50,10,0,320
+5000,female,graduate_school,single,22,no_delay,no_delay,no_delay,no_delay,no_delay,no_delay,3508.4,3579.6,3093.7,1942,1038.5,130.8,209,200.2,100.2,23.8,101.1,38.9
+2000,male,university,single,28,delay_1_month,delay_2_months,no_delay,no_delay,delay_2_months,no_delay,2023.5,1713.2,1685.6,1687.5,1345.4,1010.4,0,120,100,0,100,1000
+5000,male,university,married,21,no_delay,no_delay,duly_paid,duly_paid,duly_paid,no_delay,10280,0,0,262.4,4556.7,4655.7,0,0,262.4,4556.7,174.7,200
+9500,male,university,single,38,delay_2_months,no_delay,no_delay,no_delay,delay_2_months,delay_2_months,6490.05,6569.15,6718.95,7116.15,7006,7502.6,250,250,500,0,605.9,138.45
+6000,female,university,married,31,no_delay,no_delay,no_delay,no_delay,no_delay,no_delay,2910.15,1818.35,1046.7,1034.7,1008.75,971.05,75.3,64.9,50,36.05,40.55,29.95
+4000,male,graduate_school,single,39,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,399.4,198.85,342.4,85.95,68.9,997.1,199.15,342.65,85.95,68.9,997.1,120.9
+7500,female,university,single,24,no_delay,no_delay,no_delay,no_delay,no_delay,no_delay,6370.1,5502.5,2577.35,2219.2,1845,1474.85,225,87.25,78.3,60.4,53.85,126.45
+21000,female,graduate_school,single,33,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,duly_paid,144,0,742.2,89.3,608.2,229.3,0,742.2,89.3,608.2,229.3,329.9
+58000,female,graduate_school,married,32,no_delay,no_delay,no_delay,no_delay,no_delay,no_delay,7988,8109.45,8306.35,8468.25,8437.75,8398.2,321.1,328.25,297.55,300.3,294.7,297.3
+18000,male,high_school,married,59,no_delay,no_delay,duly_paid,duly_paid,duly_paid,duly_paid,921,848.5,1723.1,177,0,0,601.5,1745.4,177.5,0,0,0
+13500,female,university,married,35,delay_1_month,delay_2_months,delay_2_months,delay_2_months,delay_2_months,delay_2_months,11737.6,11651.8,11464.3,10882.2,11184.5,11070.65,500,400,0,800,400,0
+6000,female,graduate_school,single,23,duly_paid,duly_paid,duly_paid,duly_paid,delay_2_months,duly_paid,1407.2,0,0,30,15,15,0,0,30,0,15,20
+5500,male,high_school,married,42,no_delay,no_delay,no_delay,no_delay,no_delay,no_delay,3090.35,3124.95,3108.1,3030.25,3013.6,3007.25,115,110,115,110,115,115

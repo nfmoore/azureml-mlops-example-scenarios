@@ -1,4 +1,4 @@
-name: employee-attrition-drift
+name: credit_card_default_drift
 
 channels:
   - conda-forge

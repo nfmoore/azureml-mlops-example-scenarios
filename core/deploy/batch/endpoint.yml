@@ -1,3 +1,0 @@
-$schema: https://azuremlschemas.azureedge.net/latest/batchEndpoint.schema.json
-name: employee-attrition-be
-auth_mode: aad_token

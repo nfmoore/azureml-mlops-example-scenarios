@@ -6,12 +6,21 @@ inputs:
   environment_file:
     description: Local path to the YAML file containing the Azure ML environment specification
     required: true
+  target:
+    description: The destination to create the environment in. Can be a registry or workspace.
+    type: choice
+    options: [workspace, registry]
+    default: workspace
+  registry_name:
+    description: The name of the Azure ML registry to create the environment in.
+    required: false
 
 runs:
   using: "composite"
 
   steps:
-    - name: Create environment
+    - name: Create environment in workspace
+      if: ${{ inputs.target == 'workspace' }}
       shell: bash
       run: |
         ENVIRONMENT_NAME=$(yq '.name' < ${{ inputs.environment_file }})
@@ -19,7 +28,7 @@ runs:
         echo $ENVIRONMENT_NAME $ENVIRONMENT_VERSION
 
         ENVIRONMENT_EXISTS=$(az ml environment list --query "[?name=='$ENVIRONMENT_NAME']" | wc -l)
-        echo $ENVIRONMENT_EXISTS 
+        echo $ENVIRONMENT_EXISTS
 
         if [[ $ENVIRONMENT_EXISTS -ne 1 ]]; then
             ENVIRONMENT_VERSION_EXISTS=$(az ml environment list --name $ENVIRONMENT_NAME --query "[?version=='$ENVIRONMENT_VERSION']" | wc -l)
@@ -27,11 +36,37 @@ runs:
 
             if [[ $ENVIRONMENT_VERSION_EXISTS -ne 1 ]]; then
                   echo "Creating new environment version"
-                  az ml environment create --file ${{ inputs.environment_file }}
+                  az ml environment create --file ${{ inputs.environment_file }} # Note: In practice the environment specification in the repo would act as the source of truth. In this case the update parameter would be used.
               else
                   echo "Environment version exists"
               fi
         else
             echo "Creating new environment"
             az ml environment create --file ${{ inputs.environment_file }}
+        fi
+
+    - name: Create environment in registry
+      if: ${{ inputs.target == 'registry' }}
+      shell: bash
+      run: |
+        ENVIRONMENT_NAME=$(yq '.name' < ${{ inputs.environment_file }})
+        ENVIRONMENT_VERSION=$(yq '.version' < ${{ inputs.environment_file }})
+        echo $ENVIRONMENT_NAME $ENVIRONMENT_VERSION
+
+        ENVIRONMENT_EXISTS=$(az ml environment list --query "[?name=='$ENVIRONMENT_NAME']" --registry-name ${{ inputs.registry_name }} | wc -l)
+        echo $ENVIRONMENT_EXISTS 
+
+        if [[ $ENVIRONMENT_EXISTS -ne 1 ]]; then
+            ENVIRONMENT_VERSION_EXISTS=$(az ml environment list --name $ENVIRONMENT_NAME --query "[?version=='$ENVIRONMENT_VERSION']" --registry-name ${{ inputs.registry_name }} | wc -l)
+            echo $ENVIRONMENT_VERSION_EXISTS 
+
+            if [[ $ENVIRONMENT_VERSION_EXISTS -ne 1 ]]; then
+                  echo "Creating new environment version"
+                  az ml environment create --file ${{ inputs.environment_file }} --registry-name ${{ inputs.registry_name }} # Note: In practice the environment specification in the repo would act as the source of truth. In this case the update parameter would be used.
+              else
+                  echo "Environment version exists"
+              fi
+        else
+            echo "Creating new environment"
+            az ml environment create --file ${{ inputs.environment_file }} --registry-name ${{ inputs.registry_name }}
         fi

@@ -29,8 +29,8 @@ jobs:
       - name: Install dependencies
         uses: "./.github/templates/install-dependencies"
         with:
-          workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
-          workspace_name: mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
+          workspace_resource_group: ${{ vars.RESOURCE_GROUP }}
+          workspace_name: mlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Register curated data asset
@@ -67,8 +67,8 @@ jobs:
       - name: Install dependencies
         uses: "./.github/templates/install-dependencies"
         with:
-          workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
-          workspace_name: mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
+          workspace_resource_group: ${{ vars.RESOURCE_GROUP }}
+          workspace_name: mlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Register curated data asset

@@ -19,7 +19,7 @@ This repository contains several example scenarios for productionising models us
 
 Users of Azure Machine Learning might choose to integrate with other services available within Azure to better align with existing workflows, enable new inference scenarios, or gain greater flexibility.
 
-All example scenarios will focus on classical machine learning problems. An adapted version of the `IBM HR Analytics Employee Attrition & Performance` [dataset](https://www.kaggle.com/pavansubhasht/ibm-hr-analytics-attrition-dataset) (available on Kaggle) will be used to illustrate each example scenario.
+All example scenarios will focus on classical machine learning problems. An adapted version of the `UCI Credit Card Client Default` [dataset](https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients) will be used to illustrate each example scenario.
 
 ### Setup
 
@@ -45,7 +45,6 @@ Detailed instructions for deploying this proof-of-concept are outlined in the [S
 | Example Scenario | Inference Scenario | Description |
 | ---------------- | ------------------ | ----------- |
 | [Azure Data Factory / Synapse Pipeline](./.github/docs/data-factory-pipeline.md) | Batch | Consume a registered model as a batch managed endpoint within Azure Machine Learning for high-throughput scenarios orchestrated via Azure Data Factory or Azure Synapse Pipelines. |
-| [Azure Synapse Dedicated SQL Pool](./.github/docs/dedicated-sql-pool.md) | Batch | Consume a registered model within a SQL Stored Procedure for high-throughput scenarios when loading data into an Azure Synapse Dedicated SQL Pool. |
 | [Power BI](./.github/docs/powerbi.md) | Online | Consume a registered model deployed as an online managed endpoint within a Power BI report |
 | [Azure Stream Analytics](./.github/docs/stream-analytics.md) | Streaming | Consume a registered model deployed as an online managed endpoint within an Azure Stream Analytics User Defined Function for processing high-volume data streams. |
 

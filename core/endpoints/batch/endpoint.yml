@@ -1,0 +1,3 @@
+$schema: https://azuremlschemas.azureedge.net/latest/batchEndpoint.schema.json
+name: credit-card-default-be
+auth_mode: aad_token

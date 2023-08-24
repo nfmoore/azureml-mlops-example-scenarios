@@ -1,0 +1,10 @@
+$schema: https://azuremlschemas.azureedge.net/latest/schedule.schema.json
+name: credit-card-default-data-export-schedule
+display_name: credit-card-default-data-export-schedule
+description: Recurring job scheduled to export inference data from log analytics workspace and write to storage.
+
+trigger:
+  type: cron
+  expression: "0 0 * * 0"
+
+create_job: ../pipelines/data_export.yml

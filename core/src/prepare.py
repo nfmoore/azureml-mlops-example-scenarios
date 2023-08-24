@@ -11,7 +11,6 @@ from sklearn.model_selection import train_test_split
 
 
 def main(args: Namespace) -> None:
-
     # process data
     tbl = mltable.load(args.curated_dataset)
     df = tbl.to_pandas_dataframe()
@@ -21,7 +20,9 @@ def main(args: Namespace) -> None:
     df_test.to_csv(f"{args.prepared_data_dir}/test.csv", index=False)
 
 
-def prepare_data(df: pd.DataFrame, random_state: int) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def prepare_data(
+    df: pd.DataFrame, random_state: int
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
     # change data types of target and features
     df[TARGET] = df[TARGET].replace({"True": 1, "False": 0})
     df[NUMERIC_FEATURES] = df[NUMERIC_FEATURES].astype("float")
@@ -31,7 +32,7 @@ def prepare_data(df: pd.DataFrame, random_state: int) -> Tuple[pd.DataFrame, pd.
     df_train, df_test = train_test_split(
         df[CATEGORICAL_FEATURES + NUMERIC_FEATURES + TARGET],
         test_size=0.20,
-        random_state=random_state
+        random_state=random_state,
     )
 
     return df_train, df_test
@@ -44,8 +45,7 @@ def parse_args() -> Namespace:
     # add arguments
     parser.add_argument("--curated_dataset", type=str)
     parser.add_argument("--prepared_data_dir", type=str)
-    parser.add_argument(
-        "--random_state", type=lambda x: int(float(x)), default=24)
+    parser.add_argument("--random_state", type=lambda x: int(float(x)), default=24)
 
     # parse args
     args = parser.parse_args()

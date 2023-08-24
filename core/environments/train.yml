@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
-name: employee-attrition-train
+name: credit-card-default-train
 version: 1
 image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
 conda_file: conda/train.yml
-description: Training environment for the employee attrition model.
+description: Training environment for the credit card default model.

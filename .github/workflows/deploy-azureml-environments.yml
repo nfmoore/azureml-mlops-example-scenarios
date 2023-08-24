@@ -8,8 +8,8 @@ on:
   #     - main
 
 jobs:
-  register-environments-staging:
-    name: Register Environments in Staging
+  register-environments-registry:
+    name: Register Environments in Registry
     runs-on: ubuntu-latest
 
     environment:
@@ -26,59 +26,27 @@ jobs:
       - name: Install dependencies
         uses: "./.github/templates/install-dependencies"
         with:
-          workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
-          workspace_name: mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
+          workspace_resource_group: ${{ vars.RESOURCE_GROUP }}
+          workspace_name: mlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Register training environment
         uses: "./.github/templates/create-environment"
         with:
           environment_file: ./core/environments/train.yml
+          target: "registry"
+          registry_name: mlr${{ vars.WORKLOAD_IDENTIFIER }}
 
       - name: Register scoring environment
         uses: "./.github/templates/create-environment"
         with:
           environment_file: ./core/environments/score.yml
+          target: "registry"
+          registry_name: mlr${{ vars.WORKLOAD_IDENTIFIER }}
 
       - name: Register drift environment
         uses: "./.github/templates/create-environment"
         with:
           environment_file: ./core/environments/drift.yml
-
-  register-environments-production:
-    name: Register Environments in Production
-    runs-on: ubuntu-latest
-    needs: register-environments-staging
-
-    environment:
-      name: Production
-
-    defaults:
-      run:
-        shell: bash -l {0}
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Install dependencies
-        uses: "./.github/templates/install-dependencies"
-        with:
-          workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
-          workspace_name: mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Register training environment
-        uses: "./.github/templates/create-environment"
-        with:
-          environment_file: ./core/environments/train.yml
-
-      - name: Register scoring environment
-        uses: "./.github/templates/create-environment"
-        with:
-          environment_file: ./core/environments/score.yml
-
-      - name: Register drift environment
-        uses: "./.github/templates/create-environment"
-        with:
-          environment_file: ./core/environments/drift.yml
+          target: "registry"
+          registry_name: mlr${{ vars.WORKLOAD_IDENTIFIER }}

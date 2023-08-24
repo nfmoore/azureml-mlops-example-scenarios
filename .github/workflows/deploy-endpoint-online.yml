@@ -29,55 +29,91 @@ jobs:
       - name: Install dependencies
         uses: "./.github/templates/install-dependencies"
         with:
-          workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
-          workspace_name: mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
+          workspace_resource_group: ${{ vars.RESOURCE_GROUP }}
+          workspace_name: mlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Download artifacts
+        uses: "./.github/templates/download-workflow-artifact"
+        with:
+          artifact_name: artifacts
+
+      - name: Set model name and version
+        run: |
+          MODEL_NAME=$(jq --raw-output '.model_name' model.json)
+          MODEL_VERSION=$(jq --raw-output '.model_version' model.json | bc -l)
+          echo "REGISTERED_MODEL=${MODEL_NAME}/versions/${MODEL_VERSION}" >> $GITHUB_ENV
+
+      - name: Get score enviroment from registry
+        run: |
+          ENVIRONMENT_NAME=$(yq '.name' < core/environments/score.yml)
+          ENVIRONMENT_VERSION=$(yq '.version' < core/environments/score.yml)
+          echo "ENVIRONMENT_SCORE=${ENVIRONMENT_NAME}/versions/${ENVIRONMENT_VERSION}" >> $GITHUB_ENV
+
+      - name: Overwrite parameters for deployment
+        run: |
+          yq -i '.model = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/models/${{ env.REGISTERED_MODEL }}"' core/endpoints/online/deployment.yml
+          yq -i '.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/${{ env.ENVIRONMENT_SCORE }}"' core/endpoints/online/deployment.yml
+          cat core/endpoints/online/deployment.yml
 
       - name: Create online endpoint
         uses: "./.github/templates/create-endpoint"
         with:
           endpoint_type: online
-          endpoint_file: core/deploy/online/endpoint.yml
-          endpoint_suffix: ${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
-          log_analytics_workspace_name: law${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
+          endpoint_file: core/endpoints/online/endpoint.yml
+          endpoint_suffix: ${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
+          log_analytics_workspace_name: lawmlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
 
       - name: Create online deployment
         uses: "./.github/templates/create-deployment"
         with:
           deployment_type: online
-          deployment_file: core/deploy/online/deployment.yml
-          endpoint_file: core/deploy/online/endpoint.yml
-          endpoint_suffix: ${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
+          deployment_file: core/endpoints/online/deployment.yml
+          endpoint_file: core/endpoints/online/endpoint.yml
+          endpoint_suffix: ${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
 
-      - name: Add variables to data export job specification
-        shell: bash
+      - name: Set log analytics workspace id
         run: |
-          export MODEL_NAME=$(yq '.jobs.register_step.inputs.model_name' < core/pipelines/train_model.yml)
-          export MODEL_VERSION=$(az ml model list --name $MODEL_NAME --query "[0].version" | bc -l)
-          export LOG_ANALYTICS_WORKSPACE_ID=$(az monitor log-analytics workspace show --workspace-name law${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }} | jq --raw-output '.customerId')
+          LOG_ANALYTICS_WORKSPACE_ID=$(az monitor log-analytics workspace show --workspace-name lawmlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }} | jq --raw-output '.customerId')
+          echo "LOG_ANALYTICS_WORKSPACE_ID=$LOG_ANALYTICS_WORKSPACE_ID" >> $GITHUB_ENV
 
-          envsubst '$MODEL_NAME:$MODEL_VERSION:$LOG_ANALYTICS_WORKSPACE_ID' < core/pipelines/data_export.yml > core/pipelines/temp_data_export.yml
-          cp core/pipelines/temp_data_export.yml core/pipelines/data_export.yml
+      - name: Get drift enviroment from registry
+        run: |
+          ENVIRONMENT_NAME=$(yq '.name' < core/environments/drift.yml)
+          ENVIRONMENT_VERSION=$(yq '.version' < core/environments/drift.yml)
+          echo "ENVIRONMENT_DRIFT=${ENVIRONMENT_NAME}/versions/${ENVIRONMENT_VERSION}" >> $GITHUB_ENV
+
+      - name: Overwrite parameters for data export job
+        run: |
+          yq -i '.jobs.data_export_step.inputs.model_name = "${{ vars.MODEL_NAME }}"' core/jobs/pipelines/data_export.yml
+          yq -i '.jobs.data_export_step.inputs.model_version = "${{ vars.MODEL_VERSION }}"' core/jobs/pipelines/data_export.yml
+          yq -i '.jobs.data_export_step.inputs.log_analytics_workspace_id = "${{ vars.LOG_ANALYTICS_WORKSPACE_ID }}"' core/jobs/pipelines/data_export.yml
+          yq -i '.jobs.data_export_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/${{ env.ENVIRONMENT_DRIFT }}"' core/jobs/pipelines/data_export.yml
+          cat core/jobs/pipelines/data_export.yml
 
       - name: Create data export schedule
         uses: "./.github/templates/schedule-job"
         with:
-          schedule_file: core/schedules/data_export.yml
-          log_analytics_workspace_name: law${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
+          schedule_file: core/jobs/schedules/data_export.yml
+          log_analytics_workspace_name: lawmlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
 
-      - name: Add variables to data drift job specification
-        shell: bash
+      - name: Set instrumentation key
         run: |
-          export INSTRUMENTATION_KEY=$(az resource show -g ${{ secrets.RESOURCE_GROUP }} -n appi${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
+          INSTRUMENTATION_KEY=$(az resource show -g ${{ vars.RESOURCE_GROUP }} -n appi${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
+          echo "INSTRUMENTATION_KEY=InstrumentationKey=${INSTRUMENTATION_KEY}" >> $GITHUB_ENV
 
-          envsubst '$INSTRUMENTATION_KEY' < core/pipelines/data_drift.yml > core/pipelines/temp_data_drift.yml
-          cp core/pipelines/temp_data_drift.yml core/pipelines/data_drift.yml
+      - name: Overwrite parameters for data drift job
+        run: |
+          yq -i '.inputs.target_data.path = "azureml:credit-card-default-online-inference-ds@latest"' core/jobs/pipelines/data_drift.yml
+          yq -i '.jobs.data_drift_step.environment_variables.APPLICATIONINSIGHTS_CONNECTION_STRING = "${{ env.INSTRUMENTATION_KEY }}"' core/jobs/pipelines/data_drift.yml
+          yq -i '.jobs.data_drift_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/${{ env.ENVIRONMENT_DRIFT }}"' core/jobs/pipelines/data_drift.yml
+          cat core/jobs/pipelines/data_drift.yml
 
       - name: Create data drift schedule
         uses: "./.github/templates/schedule-job"
         with:
-          schedule_file: core/schedules/data_drift.yml
-          log_analytics_workspace_name: law${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
+          schedule_file: core/jobs/schedules/data_drift.yml
+          log_analytics_workspace_name: lawmlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
 
   end-to-end-testing:
     name: End to End Testing
@@ -101,28 +137,26 @@ jobs:
       - name: Install dependencies
         uses: "./.github/templates/install-dependencies"
         with:
-          workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
-          workspace_name: mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
+          workspace_resource_group: ${{ vars.RESOURCE_GROUP }}
+          workspace_name: mlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Invoke online endpoint
         run: |
-          ENDPOINT_NAME=$(yq '.name' < core/deploy/online/endpoint.yml)-${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
-          DEPLOYMENT_NAME=$(yq '.name' < core/deploy/online/deployment.yml)
+          ENDPOINT_NAME=$(yq '.name' < core/endpoints/online/endpoint.yml)-${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
+          DEPLOYMENT_NAME=$(yq '.name' < core/endpoints/online/deployment.yml)
           echo $ENDPOINT_NAME $DEPLOYMENT_NAME
-
-          az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME --request-file core/deploy/online/sample.json
+          az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment $DEPLOYMENT_NAME --request-file core/endpoints/online/sample.json
 
       - name: Send all traffic to deployment
         run: |
-          ENDPOINT_NAME=$(yq '.name' < core/deploy/online/endpoint.yml)-${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
-          DEPLOYMENT_NAME=$(yq '.name' < core/deploy/online/deployment.yml)
+          ENDPOINT_NAME=$(yq '.name' < core/endpoints/online/endpoint.yml)-${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
+          DEPLOYMENT_NAME=$(yq '.name' < core/endpoints/online/deployment.yml)
           echo $ENDPOINT_NAME $DEPLOYMENT_NAME
-
           az ml online-endpoint update --name $ENDPOINT_NAME --traffic "$DEPLOYMENT_NAME=100"
 
-  upload-model-production:
-    name: Upload Model to Production
+  deploy-production:
+    name: Deploy to Production
     runs-on: ubuntu-latest
     needs: end-to-end-testing
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
@@ -140,103 +174,91 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_branch }}
 
+      - name: Install dependencies
+        uses: "./.github/templates/install-dependencies"
+        with:
+          workspace_resource_group: ${{ vars.RESOURCE_GROUP }}
+          workspace_name: mlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
+          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: Download artifacts
         uses: "./.github/templates/download-workflow-artifact"
         with:
           artifact_name: artifacts
 
-      - name: Install dependencies
-        uses: "./.github/templates/install-dependencies"
-        with:
-          workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
-          workspace_name: mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Upload and tag model
+      - name: Set model name and version
         run: |
-          MODEL_NAME=$(yq '.jobs.register_step.inputs.model_name' < core/pipelines/train_model.yml)
+          MODEL_NAME=$(jq --raw-output '.model_name' model.json)
           MODEL_VERSION=$(jq --raw-output '.model_version' model.json | bc -l)
+          echo "REGISTERED_MODEL=${MODEL_NAME}/versions/${MODEL_VERSION}" >> $GITHUB_ENV
 
-          az ml model create --name $MODEL_NAME --version $MODEL_VERSION --path $MODEL_NAME/model --type mlflow_model
-          az ml model update --name $MODEL_NAME --version $MODEL_VERSION \
-            --set tags.github_run_id=${{ github.run_id }} tags.github_workflow_url="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+      - name: Get score enviroment from registry
+        run: |
+          ENVIRONMENT_NAME=$(yq '.name' < core/environments/score.yml)
+          ENVIRONMENT_VERSION=$(yq '.version' < core/environments/score.yml)
+          echo "ENVIRONMENT_SCORE=${ENVIRONMENT_NAME}/versions/${ENVIRONMENT_VERSION}" >> $GITHUB_ENV
 
-  deploy-production:
-    name: Deploy to Production
-    runs-on: ubuntu-latest
-    needs: upload-model-production
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-
-    environment:
-      name: Production
-
-    defaults:
-      run:
-        shell: bash -l {0}
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.workflow_run.head_branch }}
-
-      - name: Install dependencies
-        uses: "./.github/templates/install-dependencies"
-        with:
-          workspace_resource_group: ${{ secrets.RESOURCE_GROUP }}
-          workspace_name: mlw${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Overwrite parameters for deployment
+        run: |
+          yq -i '.model = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/models/${{ env.REGISTERED_MODEL }}"' core/endpoints/online/deployment.yml
+          yq -i '.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/${{ env.ENVIRONMENT_SCORE }}"' core/endpoints/online/deployment.yml
+          cat core/endpoints/online/deployment.yml
 
       - name: Create online endpoint
         uses: "./.github/templates/create-endpoint"
         with:
           endpoint_type: online
-          endpoint_file: core/deploy/online/endpoint.yml
-          endpoint_suffix: ${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
-          log_analytics_workspace_name: law${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
+          endpoint_file: core/endpoints/online/endpoint.yml
+          endpoint_suffix: ${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
+          log_analytics_workspace_name: lawmlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
 
       - name: Create online deployment
         uses: "./.github/templates/create-deployment"
         with:
           deployment_type: online
-          deployment_file: core/deploy/online/deployment.yml
-          endpoint_file: core/deploy/online/endpoint.yml
-          endpoint_suffix: ${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
+          deployment_file: core/endpoints/online/deployment.yml
+          endpoint_file: core/endpoints/online/endpoint.yml
+          endpoint_suffix: ${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
 
-      - name: Send all traffic to deployment
+      - name: Set log analytics workspace id
         run: |
-          ENDPOINT_NAME=$(yq '.name' < core/deploy/online/endpoint.yml)-${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
-          DEPLOYMENT_NAME=$(yq '.name' < core/deploy/online/deployment.yml)
-          echo $ENDPOINT_NAME $DEPLOYMENT_NAME
+          LOG_ANALYTICS_WORKSPACE_ID=$(az monitor log-analytics workspace show --workspace-name law${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }} | jq --raw-output '.customerId')
+          echo "LOG_ANALYTICS_WORKSPACE_ID=$LOG_ANALYTICS_WORKSPACE_ID" >> $GITHUB_ENV
 
-          az ml online-endpoint update --name $ENDPOINT_NAME --traffic "$DEPLOYMENT_NAME=100"
-
-      - name: Add variables to data export job specification
-        shell: bash
+      - name: Get drift enviroment from registry
         run: |
-          export MODEL_NAME=$(yq '.jobs.register_step.inputs.model_name' < core/pipelines/train_model.yml)
-          export MODEL_VERSION=$(az ml model list --name $MODEL_NAME --query "[0].version" | bc -l)
-          export LOG_ANALYTICS_WORKSPACE_ID=$(az monitor log-analytics workspace show --workspace-name law${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }} | jq --raw-output '.customerId')
+          ENVIRONMENT_NAME=$(yq '.name' < core/environments/drift.yml)
+          ENVIRONMENT_VERSION=$(yq '.version' < core/environments/drift.yml)
+          echo "ENVIRONMENT_DRIFT=${ENVIRONMENT_NAME}/versions/${ENVIRONMENT_VERSION}" >> $GITHUB_ENV
 
-          envsubst '$MODEL_NAME:$MODEL_VERSION:$LOG_ANALYTICS_WORKSPACE_ID' < core/pipelines/data_export.yml > core/pipelines/temp_data_export.yml
-          cp core/pipelines/temp_data_export.yml core/pipelines/data_export.yml
+      - name: Overwrite parameters for data export job
+        run: |
+          yq -i '.jobs.data_export_step.inputs.model_name = "${{ vars.MODEL_NAME }}"' core/jobs/pipelines/data_export.yml
+          yq -i '.jobs.data_export_step.inputs.model_version = "${{ vars.MODEL_VERSION }}"' core/jobs/pipelines/data_export.yml
+          yq -i '.jobs.data_export_step.inputs.log_analytics_workspace_id = "${{ vars.LOG_ANALYTICS_WORKSPACE_ID }}"' core/jobs/pipelines/data_export.yml
+          yq -i '.jobs.data_export_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/${{ env.ENVIRONMENT_DRIFT }}"' core/jobs/pipelines/data_export.yml
+          cat core/jobs/pipelines/data_export.yml
 
       - name: Create data export schedule
         uses: "./.github/templates/schedule-job"
         with:
-          schedule_file: core/schedules/data_export.yml
-          log_analytics_workspace_name: law${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
+          schedule_file: core/jobs/schedules/data_export.yml
+          log_analytics_workspace_name: lawmlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}
 
-      - name: Add variables to data drift job specification
-        shell: bash
+      - name: Set instrumentation key
         run: |
-          export INSTRUMENTATION_KEY=$(az resource show -g ${{ secrets.RESOURCE_GROUP }} -n appi${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
+          INSTRUMENTATION_KEY=$(az resource show -g ${{ vars.RESOURCE_GROUP }} -n appi${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
+          echo "INSTRUMENTATION_KEY=InstrumentationKey=${INSTRUMENTATION_KEY}" >> $GITHUB_ENV
 
-          envsubst '$INSTRUMENTATION_KEY' < core/pipelines/data_drift.yml > core/pipelines/temp_data_drift.yml
-          cp core/pipelines/temp_data_drift.yml core/pipelines/data_drift.yml
+      - name: Overwrite parameters for data drift job
+        run: |
+          yq -i '.inputs.target_data.path = "azureml:credit-card-default-online-inference-ds@latest"' core/jobs/pipelines/data_drift.yml
+          yq -i '.jobs.data_drift_step.environment_variables.APPLICATIONINSIGHTS_CONNECTION_STRING = "${{ env.INSTRUMENTATION_KEY }}"' core/jobs/pipelines/data_drift.yml
+          yq -i '.jobs.data_drift_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/${{ env.ENVIRONMENT_DRIFT }}"' core/jobs/pipelines/data_drift.yml
+          cat core/jobs/pipelines/data_drift.yml
 
       - name: Create data drift schedule
         uses: "./.github/templates/schedule-job"
         with:
-          schedule_file: core/schedules/data_drift.yml
-          log_analytics_workspace_name: law${{ secrets.WORKLOAD_IDENTIFIER }}${{ secrets.RESOURCE_INSTANCE }}
+          schedule_file: core/jobs/schedules/data_drift.yml
+          log_analytics_workspace_name: lawmlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }}

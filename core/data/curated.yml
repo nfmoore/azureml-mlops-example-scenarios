@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
-name: employee-attrition-curated
+name: credit-card-default-uci-curated-ds
 version: 1
-description: Cruated employee attrition data for model training.
+description: This is a curated version of UCI's Credit Card Default Dataset. This dataset contains information on default payments, demographic factors, credit data, history of payment, and bill statements of credit card clients in Taiwan from April 2005 to September 2005.
 type: mltable
-path: azureml://datastores/workspaceblobstore/paths/data/employee-attrition/curated/
+path: azureml://datastores/workspaceblobstore/paths/data/uci-credit-card-default/curated/

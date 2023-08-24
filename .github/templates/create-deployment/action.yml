@@ -34,6 +34,13 @@ runs:
               --set tags.github_run_id=${{ github.run_id }} tags.github_workflow_url="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
         else
             echo "Updating deployment"
-            az ml ${{ inputs.deployment_type }}-deployment update --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file ${{ inputs.deployment_file }} \
+
+            if [[ "${{ inputs.deployment_type }}" == "online" ]]; then    
+                echo "Updating traffic for online endpoint deployment"
+                az ml ${{ inputs.deployment_type }}-endpoint update --name $ENDPOINT_NAME --traffic "${DEPLOYMENT_NAME}=0"
+            fi
+
+            az ml ${{ inputs.deployment_type }}-deployment delete --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --yes
+            az ml ${{ inputs.deployment_type }}-deployment create --name $DEPLOYMENT_NAME --endpoint $ENDPOINT_NAME --file ${{ inputs.deployment_file }} \
               --set tags.github_run_id=${{ github.run_id }} tags.github_workflow_url="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
         fi
