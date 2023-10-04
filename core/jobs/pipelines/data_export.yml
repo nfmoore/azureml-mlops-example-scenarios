@@ -27,7 +27,7 @@ jobs:
       number_of_previous_days: 7
     outputs:
       prepared_data_dir: ${{parent.outputs.prepared_data_dir}}
-    code: ..
+    code: ../../
     environment: azureml:credit-card-default-drift@latest
     command: >-
       python src/export.py 
