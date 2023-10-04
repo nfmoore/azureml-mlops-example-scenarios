@@ -4,15 +4,14 @@ from argparse import ArgumentParser, Namespace
 from datetime import datetime, timedelta, timezone
 
 import pandas as pd
-from azure.identity import ManagedIdentityCredential
+from azure.identity import DefaultAzureCredential
 from azure.monitor.query import LogsQueryClient, LogsQueryStatus
 
 
 def main(args: Namespace) -> None:
     """Query log analytics workspace and write inference data to a datastore"""
     # setup log analytics client
-    client_id = os.environ.get("DEFAULT_IDENTITY_CLIENT_ID")
-    credential = ManagedIdentityCredential(client_id=client_id)
+    credential = DefaultAzureCredential()
     client = LogsQueryClient(credential)
 
     # specify query window
