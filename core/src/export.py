@@ -43,7 +43,7 @@ def main(args: Namespace) -> None:
 
     # define file name and path
     file_name = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-    file_path = f"{args.prepared_data_dir}/uci-credit-default/inference/online/"
+    file_path = f"{args.prepared_data_dir}/uci-credit-card-default/inference/online/"
 
     # create directories if they do not exist
     os.makedirs(file_path, exist_ok=True)
