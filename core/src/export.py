@@ -4,15 +4,14 @@ from argparse import ArgumentParser, Namespace
 from datetime import datetime, timedelta, timezone
 
 import pandas as pd
-from azure.identity import ManagedIdentityCredential
+from azure.identity import DefaultAzureCredential
 from azure.monitor.query import LogsQueryClient, LogsQueryStatus
 
 
 def main(args: Namespace) -> None:
     """Query log analytics workspace and write inference data to a datastore"""
     # setup log analytics client
-    client_id = os.environ.get("DEFAULT_IDENTITY_CLIENT_ID")
-    credential = ManagedIdentityCredential(client_id=client_id)
+    credential = DefaultAzureCredential()
     client = LogsQueryClient(credential)
 
     # specify query window
@@ -44,7 +43,7 @@ def main(args: Namespace) -> None:
 
     # define file name and path
     file_name = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-    file_path = f"{args.prepared_data_dir}/uci-credit-default/inference/online/"
+    file_path = f"{args.prepared_data_dir}/uci-credit-card-default/inference/online/"
 
     # create directories if they do not exist
     os.makedirs(file_path, exist_ok=True)

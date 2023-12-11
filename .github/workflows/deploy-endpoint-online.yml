@@ -42,6 +42,8 @@ jobs:
         run: |
           MODEL_NAME=$(jq --raw-output '.model_name' model.json)
           MODEL_VERSION=$(jq --raw-output '.model_version' model.json | bc -l)
+          echo "MODEL_NAME=${MODEL_NAME}" >> $GITHUB_ENV
+          echo "MODEL_VERSION=${MODEL_VERSION}" >> $GITHUB_ENV
           echo "REGISTERED_MODEL=${MODEL_NAME}/versions/${MODEL_VERSION}" >> $GITHUB_ENV
 
       - name: Get score enviroment from registry
@@ -85,9 +87,9 @@ jobs:
 
       - name: Overwrite parameters for data export job
         run: |
-          yq -i '.jobs.data_export_step.inputs.model_name = "${{ vars.MODEL_NAME }}"' core/jobs/pipelines/data_export.yml
-          yq -i '.jobs.data_export_step.inputs.model_version = "${{ vars.MODEL_VERSION }}"' core/jobs/pipelines/data_export.yml
-          yq -i '.jobs.data_export_step.inputs.log_analytics_workspace_id = "${{ vars.LOG_ANALYTICS_WORKSPACE_ID }}"' core/jobs/pipelines/data_export.yml
+          yq -i '.jobs.data_export_step.inputs.model_name = "${{ env.MODEL_NAME }}"' core/jobs/pipelines/data_export.yml
+          yq -i '.jobs.data_export_step.inputs.model_version = "${{ env.MODEL_VERSION }}"' core/jobs/pipelines/data_export.yml
+          yq -i '.jobs.data_export_step.inputs.log_analytics_workspace_id = "${{ env.LOG_ANALYTICS_WORKSPACE_ID }}"' core/jobs/pipelines/data_export.yml
           yq -i '.jobs.data_export_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/${{ env.ENVIRONMENT_DRIFT }}"' core/jobs/pipelines/data_export.yml
           cat core/jobs/pipelines/data_export.yml
 
@@ -99,7 +101,7 @@ jobs:
 
       - name: Set instrumentation key
         run: |
-          INSTRUMENTATION_KEY=$(az resource show -g ${{ vars.RESOURCE_GROUP }} -n appi${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
+          INSTRUMENTATION_KEY=$(az resource show -g ${{ vars.RESOURCE_GROUP }} -n appimlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
           echo "INSTRUMENTATION_KEY=InstrumentationKey=${INSTRUMENTATION_KEY}" >> $GITHUB_ENV
 
       - name: Overwrite parameters for data drift job
@@ -190,6 +192,8 @@ jobs:
         run: |
           MODEL_NAME=$(jq --raw-output '.model_name' model.json)
           MODEL_VERSION=$(jq --raw-output '.model_version' model.json | bc -l)
+          echo "MODEL_NAME=${MODEL_NAME}" >> $GITHUB_ENV
+          echo "MODEL_VERSION=${MODEL_VERSION}" >> $GITHUB_ENV
           echo "REGISTERED_MODEL=${MODEL_NAME}/versions/${MODEL_VERSION}" >> $GITHUB_ENV
 
       - name: Get score enviroment from registry
@@ -233,9 +237,9 @@ jobs:
 
       - name: Overwrite parameters for data export job
         run: |
-          yq -i '.jobs.data_export_step.inputs.model_name = "${{ vars.MODEL_NAME }}"' core/jobs/pipelines/data_export.yml
-          yq -i '.jobs.data_export_step.inputs.model_version = "${{ vars.MODEL_VERSION }}"' core/jobs/pipelines/data_export.yml
-          yq -i '.jobs.data_export_step.inputs.log_analytics_workspace_id = "${{ vars.LOG_ANALYTICS_WORKSPACE_ID }}"' core/jobs/pipelines/data_export.yml
+          yq -i '.jobs.data_export_step.inputs.model_name = "${{ env.MODEL_NAME }}"' core/jobs/pipelines/data_export.yml
+          yq -i '.jobs.data_export_step.inputs.model_version = "${{ env.MODEL_VERSION }}"' core/jobs/pipelines/data_export.yml
+          yq -i '.jobs.data_export_step.inputs.log_analytics_workspace_id = "${{ env.LOG_ANALYTICS_WORKSPACE_ID }}"' core/jobs/pipelines/data_export.yml
           yq -i '.jobs.data_export_step.environment = "azureml://registries/mlr${{ vars.WORKLOAD_IDENTIFIER }}/environments/${{ env.ENVIRONMENT_DRIFT }}"' core/jobs/pipelines/data_export.yml
           cat core/jobs/pipelines/data_export.yml
 
@@ -247,7 +251,7 @@ jobs:
 
       - name: Set instrumentation key
         run: |
-          INSTRUMENTATION_KEY=$(az resource show -g ${{ vars.RESOURCE_GROUP }} -n appi${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
+          INSTRUMENTATION_KEY=$(az resource show -g ${{ vars.RESOURCE_GROUP }} -n appimlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
           echo "INSTRUMENTATION_KEY=InstrumentationKey=${INSTRUMENTATION_KEY}" >> $GITHUB_ENV
 
       - name: Overwrite parameters for data drift job

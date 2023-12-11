@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
 name: credit-card-default-online-inference-ds
 version: 1
-description: This dataset contains data collected from online model inferencing.
+description: This dataset contains data collected from the online endpoint.
 type: mltable
 path: azureml://datastores/workspaceblobstore/paths/data/uci-credit-card-default/inference/online/

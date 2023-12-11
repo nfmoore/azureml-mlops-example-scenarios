@@ -68,7 +68,7 @@ jobs:
 
       - name: Set instrumentation key
         run: |
-          INSTRUMENTATION_KEY=$(az resource show -g ${{ vars.RESOURCE_GROUP }} -n appi${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
+          INSTRUMENTATION_KEY=$(az resource show -g ${{ vars.RESOURCE_GROUP }} -n appimlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
           echo "INSTRUMENTATION_KEY=InstrumentationKey=${INSTRUMENTATION_KEY}" >> $GITHUB_ENV
 
       - name: Get drift enviroment from registry
@@ -150,7 +150,7 @@ jobs:
 
       - name: Set instrumentation key
         run: |
-          INSTRUMENTATION_KEY=$(az resource show -g ${{ vars.RESOURCE_GROUP }} -n appi${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
+          INSTRUMENTATION_KEY=$(az resource show -g ${{ vars.RESOURCE_GROUP }} -n appimlw${{ vars.WORKLOAD_IDENTIFIER }}${{ vars.RESOURCE_INSTANCE }} --resource-type "microsoft.insights/components" --query properties.InstrumentationKey | xargs)
           echo "INSTRUMENTATION_KEY=InstrumentationKey=${INSTRUMENTATION_KEY}" >> $GITHUB_ENV
 
       - name: Get drift enviroment from registry

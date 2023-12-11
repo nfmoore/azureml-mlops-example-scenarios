@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "7957845204622906783"
+      "version": "0.13.1.58284",
+      "templateHash": "17047871766503586191"
     }
   },
   "parameters": {
@@ -68,7 +68,7 @@
       }
     },
     "servicePrincipalSecret": {
-      "type": "securestring",
+      "type": "secureString",
       "metadata": {
         "description": "The secret for the service principal used to authenticate with Azure services."
       }
@@ -77,7 +77,7 @@
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2020-10-01",
       "name": "deploy_azureml_shared",
       "resourceGroup": "[resourceGroup().name]",
       "properties": {
@@ -99,8 +99,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "107697192335138460"
+              "version": "0.13.1.58284",
+              "templateHash": "7106766732178063907"
             }
           },
           "parameters": {
@@ -154,7 +154,7 @@
         "count": "[length(createArray(parameters('stagingEnvironmentIdentifier'), parameters('productionEnvironmentIdentifier')))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2020-10-01",
       "name": "[format('deploy_azureml_workspace_{0}', createArray(parameters('stagingEnvironmentIdentifier'), parameters('productionEnvironmentIdentifier'))[copyIndex()])]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -162,7 +162,9 @@
         },
         "mode": "Incremental",
         "parameters": {
-          "environmentName": "[if(equals(createArray(parameters('stagingEnvironmentIdentifier'), parameters('productionEnvironmentIdentifier'))[copyIndex()], parameters('stagingEnvironmentIdentifier')), createObject('value', parameters('stagingEnvironmentName')), createObject('value', parameters('productionEnvironmentName')))]",
+          "environmentName": {
+            "value": "[if(equals(createArray(parameters('stagingEnvironmentIdentifier'), parameters('productionEnvironmentIdentifier'))[copyIndex()], parameters('stagingEnvironmentIdentifier')), parameters('stagingEnvironmentName'), parameters('productionEnvironmentName'))]"
+          },
           "deploymentLocation": {
             "value": "[parameters('deploymentLocation')]"
           },
@@ -194,8 +196,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "15821268740461101659"
+              "version": "0.13.1.58284",
+              "templateHash": "6423414941784049699"
             }
           },
           "parameters": {
@@ -421,7 +423,7 @@
         "count": "[length(createArray(parameters('stagingEnvironmentIdentifier'), parameters('productionEnvironmentIdentifier')))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2020-10-01",
       "name": "[format('deploy_data_factory_{0}', createArray(parameters('stagingEnvironmentIdentifier'), parameters('productionEnvironmentIdentifier'))[copyIndex()])]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -451,8 +453,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "3286325288868263935"
+              "version": "0.13.1.58284",
+              "templateHash": "3954499681917501524"
             }
           },
           "parameters": {
@@ -490,7 +492,7 @@
               "defaultValue": ""
             },
             "servicePrincipalSecret": {
-              "type": "securestring"
+              "type": "secureString"
             }
           },
           "resources": [

@@ -9,3 +9,11 @@ model: azureml:credit-card-default@latest
 instance_type: Standard_F2s_v2
 instance_count: 1
 app_insights_enabled: true
+data_collector:
+  collections:
+    model_inputs:
+      enabled: "true"
+    model_outputs:
+      enabled: "true"
+    model_inputs_outputs:
+      enabled: "true"
