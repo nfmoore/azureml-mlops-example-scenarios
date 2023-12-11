@@ -84,7 +84,7 @@ jobs:
     limits:
       max_total_trials: 8
       max_concurrent_trials: 4
-      timeout: 720
+      timeout: 1200
     trial: ../components/sweep_trial.yml
 
   register_step:
