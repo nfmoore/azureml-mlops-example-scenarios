@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
 name: credit-card-default-train
 version: 1
-image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
 conda_file: conda/train.yml
 description: Training environment for the credit card default model.
