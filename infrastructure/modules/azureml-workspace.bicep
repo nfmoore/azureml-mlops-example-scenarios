@@ -134,6 +134,7 @@ resource r_azureMlStorageAccount 'Microsoft.Storage/storageAccounts@2019-04-01' 
     supportsHttpsTrafficOnly: true
     allowBlobPublicAccess: false
     isHnsEnabled: false
+    minimumTlsVersion: 'TLS1_2'
   }
 }
 
