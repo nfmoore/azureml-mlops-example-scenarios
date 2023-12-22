@@ -22,10 +22,13 @@ outputs:
 
 settings:
   default_datastore: azureml:workspaceblobstore
-  default_compute: azureml:cpu-cluster
+  default_compute: azureml:serverless
   continue_on_step_failure: false
   is_deterministic: false
 
+identity:
+  type: user_identity
+  
 jobs:
   prepare_step:
     type: command
